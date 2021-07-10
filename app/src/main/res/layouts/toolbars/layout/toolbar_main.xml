@@ -1,0 +1,91 @@
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbarMain"
+    android:layout_width="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="55dp"
+    app:contentInsetStart="0dp"
+    app:layout_scrollFlags="scroll|enterAlways|snap">
+    <!-- Toolbar Layout !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- Items Layout !-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+            <!-- Input Layout !-->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1">
+                <!-- Fixed Icon & Text bug !-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!-- Browser Search !-->
+                    <EditText
+                        android:id="@+id/browserSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="?android:attr/windowBackground"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text|textNoSuggestions"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:singleLine="true"
+                        android:hint="@string/search_or_url_text"/>
+                    <!-- Incognito Icon !-->
+                    <ImageView
+                        android:id="@+id/incognitoIcon"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:padding="5dp"
+                        android:background="?android:attr/windowBackground"
+                        android:src="@drawable/ic_baseline_all_inclusive_24"
+                        android:tooltipText="@string/incognito_tab_title" />
+                </LinearLayout>
+            </FrameLayout>
+            <!-- Tab List Button !-->
+            <ImageButton
+                android:id="@+id/browserTabListButton"
+                android:layout_width="46dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="?attr/actionBarItemBackground"
+                android:src="@drawable/ic_tab_num_1"
+                android:tooltipText="@string/tabs_text" />
+            <!-- Menu Button !-->
+            <ImageButton
+                android:id="@+id/browserMenuButton"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="?attr/actionBarItemBackground"
+                android:src="@drawable/ic_baseline_more_vert_24"
+                android:tooltipText="@string/menu_text"/>
+        </LinearLayout>
+        <!-- Web Progress Bar !-->
+        <ProgressBar
+            android:id="@+id/browserProgressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="2dp"
+            android:indeterminate="false"
+            android:progress="0" />
+    </LinearLayout>
+</androidx.appcompat.widget.Toolbar>

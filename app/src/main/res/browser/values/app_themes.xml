@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names !-->
+    <string-array name="app_themes_name">
+        <item>@string/theme_system_text</item>
+        <item>@string/theme_light_text</item>
+        <item>@string/theme_dark_text</item>
+    </string-array>
+    <!-- Values !-->
+    <integer-array name="app_themes_value">
+        <item>2</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+</resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- Welcome Text & Logo Layout !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <!-- Logo !-->
+        <ImageView
+            android:id="@+id/welcomeAppLogo"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/app_icon" />
+        <!-- Welcome Text !-->
+        <TextView
+            android:id="@+id/welcomeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            android:textSize="30sp"
+            android:text="@string/welcome_text"/>
+        <!-- Welcome Summary !-->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:text="@string/welcome_summary_text"/>
+    </LinearLayout>
+    <!-- Continue Button & Notice Text Layout !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <!-- Next Button Layout !-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|center"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+            <!-- Notice Text !-->
+            <TextView
+                android:id="@+id/welcomeNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:text="@string/welcome_notice_text"/>
+            <!-- Next Button !-->
+            <Button
+                android:id="@+id/welcomeNextButton"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
+                android:drawableTint="@color/white"
+                android:textAllCaps="false"
+                android:text="@string/next_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

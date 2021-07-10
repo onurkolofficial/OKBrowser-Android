@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names !-->
+    <string-array name="app_languages_name">
+        <item>@string/lang_system_default</item>
+        <item>@string/lang_english_text</item>
+        <item>@string/lang_turkish_text</item>
+    </string-array>
+    <!-- Values !-->
+    <integer-array name="app_languages_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+</resources>

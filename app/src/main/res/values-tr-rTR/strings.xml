@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tarayıcı</string>
+    <string name="lang_english_text">İngilizce</string>
+    <string name="lang_turkish_text">Türkçe</string>
+    <string name="menu_text">Menü</string>
+    <string name="tabs_text">Sekmeler</string>
+    <string name="search_text">Ara</string>
+    <string name="search_the_web_text">Web\'de ara ...</string>
+    <string name="incognito_tab_title">Gizli Sekme</string>
+    <string name="incognito_tab_text">Gizli sekme etkin. Bu sekmede yapılacak işlemler geçmişe kaydedilmez.</string>
+    <string name="back_text">Geri</string>
+    <string name="settings_text">Ayarlar</string>
+    <string name="bookmarks_text">Yer işaretleri</string>
+    <string name="history_text">Geçmiş</string>
+    <string name="new_tab_text">Yeni Sekme</string>
+    <string name="new_incognito_tab_text">Yeni Gizli Sekme</string>
+    <string name="close_tab_text">Sekmeyi Kapat</string>
+    <string name="theme_system_text">Sistem Teması</string>
+    <string name="theme_light_text">Aydınlık</string>
+    <string name="theme_dark_text">Karanlık</string>
+    <string name="desktop_mode_text">Masaüstü Modu</string>
+    <string name="find_in_page_text">Sayfada Bul</string>
+    <string name="close_all_tabs_text">Tüm Sekmeleri Kapat</string>
+    <string name="exit_browser_text">Tarayıcıdan Çık</string>
+    <string name="downloads_text">İndirilenler</string>
+    <string name="welcome_text">OKTarayıcı\'ya Hoş Geldiniz.</string>
+    <string name="welcome_summary_text">Yeni tarayıcınızla iyi eğlenceler.</string>
+    <string name="next_text">İleri</string>
+    <string name="welcome_notice_text">Devam etmek için \'İleri\' düğmesine tıklayın.</string>
+    <string name="loading_text">Yükleniyor</string>
+    <string name="lang_system_default">Sistem Dili</string>
+    <string name="connection_failed_text">Bağlantı Başarısız!</string>
+    <string name="connection_failed_summary">Lütfen internet bağlantınızı veya girdiğiniz URL\'yi kontrol edin ve tekrar deneyin.</string>
+    <string name="search_or_url_text">Ara veya URL gir ...</string>
+    <string name="installer_language_settings_text">Dil Ayarları</string>
+    <string name="installer_theme_settings_text">Tema Ayarları</string>
+    <string name="installer_completed_text">Tamamlandı!</string>
+    <string name="installer_completed_summary1">Artık başlayabilirsiniz.</string>
+    <string name="installer_completed_summary2">İyi eğlenceler.</string>
+    <string name="start_text">Başla</string>
+</resources>

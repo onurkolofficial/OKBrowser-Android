@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Settings Activity !-->
+    <shortcut
+        android:shortcutId="sh_settings"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_settings"
+        android:shortcutShortLabel="@string/settings_text"
+        android:shortcutLongLabel="@string/settings_text"
+        android:shortcutDisabledMessage="@string/settings_text">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.onurkol.app.browser"
+            android:targetClass="com.onurkol.app.browser.activity.SettingsActivity" />
+    </shortcut>
+    <!-- Bookmarks Activity !-->
+    <shortcut
+        android:shortcutId="sh_bookmarks"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_bookmark"
+        android:shortcutShortLabel="@string/bookmarks_text"
+        android:shortcutLongLabel="@string/bookmarks_text"
+        android:shortcutDisabledMessage="@string/bookmarks_text">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.onurkol.app.browser"
+            android:targetClass="com.onurkol.app.browser.activity.browser.BookmarksActivity" />
+    </shortcut>
+    <!-- History Activity !-->
+    <shortcut
+        android:shortcutId="sh_history"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_history"
+        android:shortcutShortLabel="@string/history_text"
+        android:shortcutLongLabel="@string/history_text"
+        android:shortcutDisabledMessage="@string/history_text">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.onurkol.app.browser"
+            android:targetClass="com.onurkol.app.browser.activity.browser.HistoryActivity" />
+    </shortcut>
+</shortcuts>

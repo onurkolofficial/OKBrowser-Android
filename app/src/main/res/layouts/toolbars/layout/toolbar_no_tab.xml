@@ -1,0 +1,68 @@
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbarNoTab"
+    android:layout_width="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="55dp"
+    style="@style/toolbarTheme"
+    app:contentInsetStart="0dp">
+    <!-- Toolbar Layout !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <!-- Items Layout !-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+            <!-- New Tab Button !-->
+            <ImageButton
+                android:id="@+id/noTabNewTabButton"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="?attr/actionBarItemBackground"
+                android:src="@drawable/ic_baseline_add_24"
+                android:tooltipText="@string/new_tab_text" />
+            <!-- New Incognito Tab Button !-->
+            <ImageButton
+                android:id="@+id/noTabNewIncognitoTabButton"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="?attr/actionBarItemBackground"
+                android:src="@drawable/ic_baseline_add_box_24"
+                android:tooltipText="@string/new_incognito_tab_text" />
+            <!-- Right Item Layout !-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:orientation="horizontal">
+                <!-- No Tab Menu Button !-->
+                <ImageButton
+                    android:id="@+id/noTabMenuButton"
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:tooltipText="@string/menu_text" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+        <!-- Web Progress Bar !-->
+        <ProgressBar
+            android:id="@+id/browserProgressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:indeterminate="false"
+            android:progress="0" />
+    </LinearLayout>
+</androidx.appcompat.widget.Toolbar>

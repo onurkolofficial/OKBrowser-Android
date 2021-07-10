@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+    <!-- Toolbars & WebView Layout !-->
+    <!-- Coordinator Layout !-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Toolbars Layout !-->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/toolbarTheme"
+            app:elevation="0dp">
+            <!-- Toolbar Main !-->
+            <include
+                android:id="@+id/includeTabToolbar"
+                layout="@layout/toolbar_main"
+                android:visibility="visible" />
+            <!-- Toolbar No Tab !-->
+            <include
+                android:id="@+id/includeNoTabToolbar"
+                layout="@layout/toolbar_no_tab"
+                android:visibility="gone"/>
+        </com.google.android.material.appbar.AppBarLayout>
+        <!-- Swipe Refresh !-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/browserSwipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <!-- Nested Scroll View for Toolbar Scroll !-->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/browserNestedScroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+                <!-- Fragment Layout !-->
+                <LinearLayout
+                    android:id="@+id/browserFragmentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"/>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- WebView Fullscreen Video Layout !-->
+    <LinearLayout
+        android:id="@+id/WebViewVideoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+</LinearLayout>

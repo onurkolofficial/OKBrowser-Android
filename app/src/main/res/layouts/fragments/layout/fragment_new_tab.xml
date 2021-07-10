@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabPageRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- WebView !-->
+        <com.onurkol.app.browser.webview.OKWebView
+            android:id="@+id/okBrowserWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <!-- Home Page Layout !-->
+        <include
+            layout="@layout/page_new_tab"/>
+        <!-- No Connection Page Layout !-->
+        <include
+            layout="@layout/page_connect_failed"/>
+    </FrameLayout>
+</LinearLayout>

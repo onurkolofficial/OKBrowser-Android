@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Browser</string>
+    <string name="lang_english_text">English</string>
+    <string name="lang_turkish_text">Turkish</string>
+    <string name="menu_text">Menu</string>
+    <string name="tabs_text">Tabs</string>
+    <string name="search_text">Search</string>
+    <string name="search_the_web_text">Search the web ...</string>
+    <string name="incognito_tab_title">Incognito Tab</string>
+    <string name="incognito_tab_text">Incognito tab is active. Operations on this tab will not be saved in the history.</string>
+    <string name="back_text">Back</string>
+    <string name="settings_text">Settings</string>
+    <string name="bookmarks_text">Bookmarks</string>
+    <string name="history_text">History</string>
+    <string name="new_tab_text">New Tab</string>
+    <string name="new_incognito_tab_text">New Incognito Tab</string>
+    <string name="close_tab_text">Close Tab</string>
+    <string name="theme_system_text">System Theme</string>
+    <string name="theme_light_text">Light</string>
+    <string name="theme_dark_text">Dark</string>
+    <string name="desktop_mode_text">Desktop Mode</string>
+    <string name="find_in_page_text">Find in Page</string>
+    <string name="close_all_tabs_text">Close All Tabs</string>
+    <string name="exit_browser_text">Exit Browser</string>
+    <string name="downloads_text">Downloads</string>
+    <string name="welcome_text">Welcome to OKBrowser.</string>
+    <string name="welcome_summary_text">Have fun with your new browser.</string>
+    <string name="next_text">Next</string>
+    <string name="welcome_notice_text">Click \'Next\' button to continue.</string>
+    <string name="loading_text">Loading</string>
+    <string name="lang_system_default">System Language</string>
+    <string name="connection_failed_text">Connection Failed!</string>
+    <string name="connection_failed_summary">Please check your internet connection or entered URL and try again.</string>
+    <string name="search_or_url_text">Search or enter URL ...</string>
+    <string name="installer_language_settings_text">Language Settings</string>
+    <string name="installer_theme_settings_text">Theme Settings</string>
+    <string name="installer_completed_text">Completed!</string>
+    <string name="installer_completed_summary2">Have fun.</string>
+    <string name="installer_completed_summary1">You can start now.</string>
+    <string name="start_text">Start</string>
+</resources>
