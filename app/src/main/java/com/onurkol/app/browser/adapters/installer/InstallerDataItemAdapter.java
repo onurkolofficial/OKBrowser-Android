@@ -18,8 +18,8 @@ import com.onurkol.app.browser.data.installer.InstallerDataType;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.LanguageManager;
-import com.onurkol.app.browser.lib.ThemeManager;
+import com.onurkol.app.browser.lib.core.LanguageManager;
+import com.onurkol.app.browser.lib.core.ThemeManager;
 
 import java.util.ArrayList;
 

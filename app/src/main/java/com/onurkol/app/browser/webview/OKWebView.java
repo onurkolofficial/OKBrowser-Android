@@ -1,11 +1,14 @@
 package com.onurkol.app.browser.webview;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.MotionEventCompat;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
@@ -15,10 +18,14 @@ import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
 import com.onurkol.app.browser.fragments.tabs.TabFragment;
 import com.onurkol.app.browser.interfaces.webview.WebViewClientManager;
 
+import java.util.Map;
+
 
 public class OKWebView extends WebView implements WebViewClientManager {
     // Variables
-    public boolean isIncognitoWebView=false;
+    public boolean isIncognitoWebView=false,
+            isRefreshing=false,onBackView=false;
+    private boolean addedJavascriptInterface;
     // Fragments
     private TabFragment webviewTabFragment;
     private IncognitoTabFragment webviewIncognitoTabFragment;
@@ -65,18 +72,36 @@ public class OKWebView extends WebView implements WebViewClientManager {
     }
 
     // Sync on Back Url
-    public void syncOnBack(String url){
+    public void syncOnBackForward(String url){
         currentWebViewClient.onPageFinished(this,url);
+    }
+
+    // Fullscreen Video
+    public class JavascriptInterface {
+        @android.webkit.JavascriptInterface
+        public void notifyVideoEnd(){
+            // End Video
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run(){
+                    if (currentWebViewChromeClient != null)
+                        currentWebViewChromeClient.onHideCustomView();
+                }
+            });
+        }
     }
 
     public OKWebView(@NonNull Context context) {
         super(context);
+        addedJavascriptInterface = false;
     }
     public OKWebView(@NonNull Context context, AttributeSet attrs){
         super(context, attrs);
+        addedJavascriptInterface = false;
     }
     public OKWebView(@NonNull Context context, AttributeSet attrs, int defStyle){
         super(context, attrs);
+        addedJavascriptInterface = false;
     }
 
 }

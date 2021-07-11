@@ -3,6 +3,8 @@ package com.onurkol.app.browser.webview;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -28,14 +30,22 @@ public class OKWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         // Get Root View
-        View rootView = view.getRootView();
+        View rootView=view.getRootView();
         // Variables
         redirectLoad=false;
         // Get Classes
         tabBuilder=TabBuilder.Build();
         // Get Elements
         EditText browserSearch=rootView.findViewById(R.id.browserSearch);
+        LinearLayout connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
+        // Get WebView
+        OKWebView webView=((OKWebView)view);
 
+        // Remove Error Page
+        if(connectFailedLayout.getVisibility()==View.VISIBLE) {
+            connectFailedLayout.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+        }
         // Set Url
         browserSearch.setText(url);
 
@@ -51,13 +61,20 @@ public class OKWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         // Get Root View
-        View rootView = view.getRootView();
+        View rootView=view.getRootView();
 
         // Get Elements
         SwipeRefreshLayout browserSwipeRefresh = rootView.findViewById(R.id.browserSwipeRefresh);
         NestedScrollView browserNestedScroll = rootView.findViewById(R.id.browserNestedScroll);
         // Get WebView
         OKWebView webView=((OKWebView)view);
+
+        // Set Refresh Status
+        webView.isRefreshing=false;
+
+        // Stop Swipe Refresh
+        if(browserSwipeRefresh!=null)
+            browserSwipeRefresh.setRefreshing(false);
 
         // Fixed Nested Scroll Height:
         int getScreenHeigth=ScreenManager.getScreenHeight();
@@ -76,6 +93,8 @@ public class OKWebViewClient extends WebViewClient {
             webView.setLayoutParams(heightMatch);
 
         if(redirectLoad){
+            if(tabBuilder==null)
+                tabBuilder=TabBuilder.Build();
             //...
 
             // Reset Scroll Position
@@ -104,5 +123,22 @@ public class OKWebViewClient extends WebViewClient {
         }
         redirectLoad=true;
         super.onPageFinished(view, url);
+    }
+
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        // Get Root View
+        View rootView=view.getRootView();
+
+        // Get Elements
+        LinearLayout connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
+        // Get WebView
+        OKWebView webView=((OKWebView)view);
+
+        // Hide WebView
+        webView.setVisibility(View.GONE);
+        connectFailedLayout.setVisibility(View.VISIBLE);
+
+        super.onReceivedError(view, request, error);
     }
 }

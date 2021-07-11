@@ -1,4 +1,4 @@
-package com.onurkol.app.browser.lib;
+package com.onurkol.app.browser.lib.core;
 
 import androidx.appcompat.app.AppCompatDelegate;
 

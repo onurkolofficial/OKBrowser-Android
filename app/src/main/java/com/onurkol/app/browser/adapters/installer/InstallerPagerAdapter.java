@@ -7,11 +7,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.onurkol.app.browser.fragments.installer.InstallerCompletedFragment;
 import com.onurkol.app.browser.fragments.installer.InstallerLanguageFragment;
+import com.onurkol.app.browser.fragments.installer.InstallerPermissionsFragment;
 import com.onurkol.app.browser.fragments.installer.InstallerThemeFragment;
 import com.onurkol.app.browser.fragments.installer.InstallerWelcomeFragment;
 
 public class InstallerPagerAdapter extends FragmentStateAdapter {
-    public static int pageCount=4;
+    public static int pageCount=5;
 
     public InstallerPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -25,10 +26,12 @@ public class InstallerPagerAdapter extends FragmentStateAdapter {
             default:
                 return new InstallerWelcomeFragment(); // Default
             case 1:
-                return  new InstallerLanguageFragment();
+                return new InstallerLanguageFragment();
             case 2:
                 return new InstallerThemeFragment();
             case 3:
+                return new InstallerPermissionsFragment();
+            case 4:
                 return new InstallerCompletedFragment();
         }
     }

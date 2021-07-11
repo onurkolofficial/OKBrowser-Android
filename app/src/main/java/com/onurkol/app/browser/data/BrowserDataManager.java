@@ -1,14 +1,12 @@
 package com.onurkol.app.browser.data;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.LanguageManager;
-import com.onurkol.app.browser.lib.ThemeManager;
+import com.onurkol.app.browser.lib.core.LanguageManager;
+import com.onurkol.app.browser.lib.core.ThemeManager;
 import com.onurkol.app.browser.lib.browser.SearchEngine;
 import com.onurkol.app.browser.lib.tabs.TabBuilder;
 

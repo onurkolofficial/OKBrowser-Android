@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.data.tabs.IncognitoTabData;
@@ -107,7 +108,6 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
         // Close Tab Button
         holder.incognitoTabCloseButton.setOnClickListener(view -> {
             IncognitoTabListFragment.isChanged=true;
-
             if(((tabBuilder.getIncognitoTabDataList().size()-1)<=0)){
                 IncognitoTabListFragment.changedIndexList.add(0); // Fixed Remove View
                 // Clear Data List
@@ -116,6 +116,9 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
                 if(tabBuilder.getTabDataList().size()<=0)
                     // Close This Activity
                     contextActivity.finish();
+                else
+                    // Change Tab Pager (Show Normal Tabs)
+                    ((ViewPager2)contextActivity.findViewById(R.id.tabListPager)).setCurrentItem(0);
             }
             else {
                 IncognitoTabListFragment.changedIndexList.add(position);

@@ -3,18 +3,15 @@ package com.onurkol.app.browser.activity.browser.installer;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.adapters.installer.InstallerPagerAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.LanguageManager;
 
 import java.lang.ref.WeakReference;
 

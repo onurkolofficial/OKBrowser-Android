@@ -30,7 +30,6 @@ public class TabFragment extends Fragment {
     LinearLayout newTabHomeLayout, connectFailedLayout;
     EditText searchInput;
     View fragmentView;
-
     // Types
     private Bitmap fragmentScreen;
 

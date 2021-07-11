@@ -1,21 +1,35 @@
 package com.onurkol.app.browser.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.core.TabListViewActivity;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
@@ -41,7 +55,6 @@ import com.onurkol.app.browser.webview.OKWebView;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     // Classes
@@ -49,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     TabBuilder tabBuilder;
     ToolbarTabCounter tabCounter;
     // Elements
-    SwipeRefreshLayout swipeRefresh;
+    SwipeRefreshLayout browserSwipeRefresh;
     ProgressBar toolbarProgressBar;
     ImageView incognitoIcon;
     ImageButton browserTabListButton, browserMenuButton, noTabMenuButton, noTabNewTabButton, noTabNewIncognitoButton;
@@ -59,10 +72,15 @@ public class MainActivity extends AppCompatActivity {
     static WeakReference<ImageButton> browserTabListButtonStatic;
     static WeakReference<ImageView> incognitoIconStatic;
     static WeakReference<EditText> browserSearchStatic;
+    static WeakReference<SwipeRefreshLayout> browserSwipeRefreshStatic;
     // Intents
     Intent tabListIntent,welcomeIntent;
     // Variables
-    boolean backPressHomeLayout=false;
+    boolean backPressHomeLayout=false, onResumeCalled=false;
+
+    // Update Manager
+    private AppUpdateManager mAppUpdateManager;
+    private static final int RC_APP_UPDATE = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Get Elements
-        swipeRefresh=findViewById(R.id.browserSwipeRefresh);
+        browserSwipeRefresh=findViewById(R.id.browserSwipeRefresh);
         toolbarProgressBar=findViewById(R.id.browserProgressbar);
         browserTabListButton=findViewById(R.id.browserTabListButton);
         incognitoIcon=findViewById(R.id.incognitoIcon);
@@ -95,13 +113,12 @@ public class MainActivity extends AppCompatActivity {
         browserTabListButtonStatic=new WeakReference<>(browserTabListButton);
         incognitoIconStatic=new WeakReference<>(incognitoIcon);
         browserSearchStatic=new WeakReference<>(browserSearch);
+        browserSwipeRefreshStatic=new WeakReference<>(browserSwipeRefresh);
 
         // Get Intents
         tabListIntent=new Intent(this, TabListViewActivity.class);
         welcomeIntent=new Intent(this, InstallerActivity.class);
 
-        // Disable Swipe Refresh (Default)
-        swipeRefresh.setEnabled(false);
         // Hide Toolbar Progressbar (Default)
         toolbarProgressBar.setVisibility(View.GONE);
         // Hide Incognito Icon for toolbar_main.
@@ -114,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
         noTabNewTabButton.setOnClickListener(createNewTabNoTabLayout);
         browserSearch.setOnKeyListener(searchWebUrlListener);
         noTabNewIncognitoButton.setOnClickListener(createNewIncognitoTabLayout);
+
+        // Swipe Refresh
+        browserSwipeRefresh.getViewTreeObserver().addOnScrollChangedListener(swipeRefreshOnScrollChanged);
+        browserSwipeRefresh.setOnRefreshListener(swipeRefreshListener);
 
         // Check Installer Activity
         if(dataManager.startInstallerActivity){
@@ -143,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
         dataManager.initBrowserSettings();
         // Re-Building ContextManager
         ContextManager.Build(this);
-        View toolbarNoTab=(View)findViewById(R.id.includeNoTabToolbar);
-        View toolbarMain=(View)findViewById(R.id.includeTabToolbar);
+        View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
+        View toolbarMain=findViewById(R.id.includeTabToolbar);
 
         // Reset Variables
         backPressHomeLayout=false;
@@ -157,27 +178,31 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<IncognitoTabData> incognitoDataList=tabBuilder.getIncognitoTabDataList();
         List<Integer> changeIncognitoList=IncognitoTabListFragment.changedIndexList;
 
-        // **
         // * Check Closed Tabs.
         // * 1- If all tabs closed, show the 'No Tab Toolbar'.
         // * 2- If tabs closed at TabListActivity, remove views(Fragments) at MainActivity.onResume()
         // **
         // * 1 & 2 valid for Incognito Tabs
-        // **
         // Check Tabs
         if(TabListFragment.isChanged || IncognitoTabListFragment.isChanged){
             // Check Exists Tab
             if (tabDataList.size() <= 0) {
-                // TEST
                 tabBuilder.getClassesTabDataList().clear();
-
                 if (incognitoDataList.size() <= 0) {
                     // (Closed All Tabs)
                     // Change Toolbar
                     toolbarNoTab.setVisibility(View.VISIBLE);
                     toolbarMain.setVisibility(View.GONE);
-                    // Remove Views
+                    // Remove Views & Fragments
                     browserFragmentView.removeAllViews();
+                    for(int in=0; in<tabBuilder.getTabDataList().size(); in++) {
+                        tabBuilder.getTabFragmentList().get(in).getWebView().destroy();
+                        tabBuilder.removeFragment(tabBuilder.getTabFragmentList().get(in));
+                    }
+                    for(int ii=0; ii<tabBuilder.getIncognitoTabDataList().size(); ii++) {
+                        tabBuilder.getIncognitoTabFragmentList().get(ii).getWebView().destroy();
+                        tabBuilder.removeFragment(tabBuilder.getIncognitoTabFragmentList().get(ii));
+                    }
                 }
                 else {
                     // Show Incognito Tab
@@ -198,8 +223,6 @@ public class MainActivity extends AppCompatActivity {
                     int index = changeList.get(i);
                     // Get Fragments
                     TabFragment frag = tabFragmentList.get(index);
-                    // Destroy WebView
-                    frag.getWebView().destroy();
                     // Remove View
                     tabBuilder.removeFragment(frag);
                     // Update Data List
@@ -213,8 +236,6 @@ public class MainActivity extends AppCompatActivity {
                     int index = changeIncognitoList.get(i);
                     // Get Fragments
                     IncognitoTabFragment frag = incognitoFragmentList.get(index);
-                    // Destroy WebView
-                    frag.getWebView().destroy();
                     // Remove View
                     tabBuilder.removeFragment(frag);
                     // Update Data List
@@ -266,9 +287,9 @@ public class MainActivity extends AppCompatActivity {
                 if(incognitoIconStatic.get().getVisibility()==View.VISIBLE)
                     incognitoIconStatic.get().setVisibility(View.GONE);
                 // Check Tab Events
-                if (signal.getSignalStatus() == signal.TAB_ON_CHANGE)
+                if (signal.getSignalStatus() == ActivityTabSignal.TAB_ON_CHANGE)
                     tabBuilder.changeTab(signal.getSignalData().tab_position);
-                else if (signal.getSignalStatus() == signal.TAB_ON_CREATE)
+                else if (signal.getSignalStatus() == ActivityTabSignal.TAB_ON_CREATE)
                     tabBuilder.createNewTab();
                 // Get Count Drawable
                 TabCountDrawable=new ToolbarTabCounter().getTabCountDrawable();
@@ -280,27 +301,28 @@ public class MainActivity extends AppCompatActivity {
                 if(incognitoIconStatic.get().getVisibility()==View.GONE)
                     incognitoIconStatic.get().setVisibility(View.VISIBLE);
                 // Check Tab Events
-                if(signal.getSignalStatus()==signal.INCOGNITO_ON_CHANGE)
+                if(signal.getSignalStatus()==ActivityTabSignal.INCOGNITO_ON_CHANGE)
                     tabBuilder.changeIncognitoTab(signal.getSignalData().tab_position);
-                else if (signal.getSignalStatus() == signal.INCOGNITO_ON_CREATE)
+                else if (signal.getSignalStatus() == ActivityTabSignal.INCOGNITO_ON_CREATE)
                     tabBuilder.createNewIncognitoTab();
                 // Get Count Drawable
                 TabCountDrawable=new ToolbarTabCounter().getIncognitoTabCountDrawable();
                 // Get Tab Web Url
                 browserSearchStatic.get().setText(tabBuilder.getIncognitoTabDataList().get(signal.getSignalData().tab_position).getUrl());
             }
+            // Stop SwipeRefresh Status
+            browserSwipeRefreshStatic.get().setRefreshing(false);
             // Update Tab Counts for Delay
             browserTabListButtonStatic.get().setImageDrawable(TabCountDrawable);
         };
         // Exec Runnable
-        ProcessDelay.Delay(checkSignalRunnable, 100);
+        ProcessDelay.Delay(checkSignalRunnable, 50);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -319,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 // Sync Tab Data
-                webView.syncOnBack("");
+                webView.syncOnBackForward("");
                 // Hide WebView & Show Page Layout
                 webView.setVisibility(View.GONE);
                 (fragmentView.findViewById(R.id.newTabHomeLayout)).setVisibility(View.VISIBLE);
@@ -350,22 +372,16 @@ public class MainActivity extends AppCompatActivity {
 
     // Event Listeners
     // Show Tabs
-    View.OnClickListener showTabsClickListener=view -> {
-        startActivity(tabListIntent);
-    };
+    View.OnClickListener showTabsClickListener=view -> startActivity(tabListIntent);
     // Open Toolbar Main Menu
-    View.OnClickListener showMainMenuListener=view -> {
-        MenuToolbarMain.getMenu().showAsDropDown(view);
-    };
+    View.OnClickListener showMainMenuListener=view -> MenuToolbarMain.getMenu().showAsDropDown(view);
     // Open Toolbar No Tab Menu
-    View.OnClickListener showNoTabMenuListener=view -> {
-        MenuToolbarNoTab.getMenu().showAsDropDown(view);
-    };
+    View.OnClickListener showNoTabMenuListener=view -> MenuToolbarNoTab.getMenu().showAsDropDown(view);
     // Create New Tab in No Tab Toolbar
     View.OnClickListener createNewTabNoTabLayout=view -> {
         // Get Elements
-        View toolbarNoTab=(View)findViewById(R.id.includeNoTabToolbar);
-        View toolbarMain=(View)findViewById(R.id.includeTabToolbar);
+        View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
+        View toolbarMain=findViewById(R.id.includeTabToolbar);
         // Hide No Tab Toolbar
         toolbarNoTab.setVisibility(View.GONE);
         toolbarMain.setVisibility(View.VISIBLE);
@@ -381,8 +397,8 @@ public class MainActivity extends AppCompatActivity {
     // Create New Incognito Tab in No Tab Toolbar
     View.OnClickListener createNewIncognitoTabLayout=view -> {
         // Get Elements
-        View toolbarNoTab=(View)findViewById(R.id.includeNoTabToolbar);
-        View toolbarMain=(View)findViewById(R.id.includeTabToolbar);
+        View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
+        View toolbarMain=findViewById(R.id.includeTabToolbar);
         // Hide No Tab Toolbar
         toolbarNoTab.setVisibility(View.GONE);
         toolbarMain.setVisibility(View.VISIBLE);
@@ -395,7 +411,6 @@ public class MainActivity extends AppCompatActivity {
         // Clear Url for New Tab
         browserSearch.setText("");
     };
-
     // Key Listener for toolbar Search Url
     View.OnKeyListener searchWebUrlListener=(view, i, keyEvent) -> {
         OKWebView webView;
@@ -446,5 +461,114 @@ public class MainActivity extends AppCompatActivity {
             KeyboardController.hideKeyboard(view);
         }
         return false;
+    };
+    // Swipe Refresh
+    ViewTreeObserver.OnScrollChangedListener swipeRefreshOnScrollChanged=() -> {
+        // Get WebView
+        OKWebView webView;
+        if(tabBuilder.getActiveTabFragment()!=null)
+            webView = tabBuilder.getActiveTabFragment().getWebView();
+        else
+            webView = tabBuilder.getActiveIncognitoFragment().getWebView();
+        // Check Swipe Refresh Enable
+        browserSwipeRefresh.setEnabled(webView.getScrollY()==0);
+    };
+    SwipeRefreshLayout.OnRefreshListener swipeRefreshListener=() -> {
+        // Get WebView
+        OKWebView webView;
+        if(tabBuilder.getActiveTabFragment()!=null)
+            webView = tabBuilder.getActiveTabFragment().getWebView();
+        else
+            webView = tabBuilder.getActiveIncognitoFragment().getWebView();
+        // Check Url
+        if(webView.getUrl()==null || webView.getUrl().equals(""))
+            // Stop Swipe Refresh
+            browserSwipeRefresh.setRefreshing(false);
+        else {
+            // Set Refresh Status
+            webView.isRefreshing = true;
+            // Set Swipe Refresh
+            browserSwipeRefresh.setRefreshing(true);
+            // Refres WebView
+            webView.reload();
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        // Create App Update Manager
+        mAppUpdateManager = AppUpdateManagerFactory.create(this);
+        // Register Listener
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(result -> {
+            if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && result.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE /*AppUpdateType.IMMEDIATE*/)){
+                try {
+                    mAppUpdateManager.startUpdateFlowForResult(result, AppUpdateType.FLEXIBLE, MainActivity.this, RC_APP_UPDATE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (result.installStatus() == InstallStatus.DOWNLOADED){
+                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                popupSnackbarForCompleteUpdate();
+            } else {
+                //Log.e(TAG, "checkForAppUpdateAvailability: something else");
+            }
+        });
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        if (mAppUpdateManager != null)
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        super.onStop();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_APP_UPDATE) {
+            if (resultCode != RESULT_OK)
+                Toast.makeText(this, getString(R.string.update_download_failed_text), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Popup for Update
+    private void popupSnackbarForCompleteUpdate() {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.activityMainLayout),
+                getString(R.string.update_new_version_available_text),
+                Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setAction(getString(R.string.install_text), view -> {
+            if (mAppUpdateManager != null)
+                mAppUpdateManager.completeUpdate();
+        });
+
+        snackbar.setActionTextColor(ContextCompat.getColor(this,R.color.primary));
+        snackbar.show();
+    }
+
+    // Update Listener
+    InstallStateUpdatedListener installStateUpdatedListener = new InstallStateUpdatedListener() {
+        @Override
+        public void onStateUpdate(InstallState state) {
+            if (state.installStatus() == InstallStatus.DOWNLOADED){
+                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                popupSnackbarForCompleteUpdate();
+            }
+            else if (state.installStatus() == InstallStatus.INSTALLED){
+                if (mAppUpdateManager != null)
+                    mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+                // Show Message
+                //Toast.makeText(this, getString(R.string.update_install_completed), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Log.e("MainAct/389", "InstallStateUpdatedListener: state: " + state.installStatus());
+            }
+        }
     };
 }

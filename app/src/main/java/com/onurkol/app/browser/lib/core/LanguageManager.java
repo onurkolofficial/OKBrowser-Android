@@ -1,7 +1,9 @@
-package com.onurkol.app.browser.lib;
+package com.onurkol.app.browser.lib.core;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
+
+import com.onurkol.app.browser.lib.ContextManager;
 
 import java.util.Locale;
 

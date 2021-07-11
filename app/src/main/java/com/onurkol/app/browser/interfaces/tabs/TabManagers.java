@@ -60,4 +60,8 @@ public interface TabManagers {
     void hideFragment(Fragment fragment);
     void attachFragment(Fragment fragment);
     void detachFragment(Fragment fragment);
+    boolean isShowingFragment(Fragment fragment);
+    boolean isHiddenFragment(Fragment fragment);
+    boolean isAttachedFragment(Fragment fragment);
+    boolean isDetachedFragment(Fragment fragment);
 }

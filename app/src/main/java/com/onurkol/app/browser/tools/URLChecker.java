@@ -50,9 +50,9 @@ public class URLChecker {
     public static String convertViewSourceUrl(String url){
         String outUrl, convert=url.replace(URL_SCHEME_VIEW_SOURCE,"");
         if(!url.contains("http") || !url.contains("https"))
-            outUrl="https://"+url;
+            outUrl="https://"+convert;
         else
-            outUrl=url;
+            outUrl=convert;
         return URL_SCHEME_VIEW_SOURCE+outUrl;
     }
 }

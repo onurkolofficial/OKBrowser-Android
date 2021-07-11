@@ -108,7 +108,8 @@ public class TabManager implements TabSettings, TabManagers {
             if(BROWSER_TAB_FRAGMENT_LIST.get(i)==newTabFragment)
                 showFragment(newTabFragment);
             else
-                hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
+                if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i)))
+                    hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
         }
         // Hide All Incognito Tabs
         hideAllIncognitos();
@@ -117,7 +118,7 @@ public class TabManager implements TabSettings, TabManagers {
     private void hideAllTabs(){
         // Hide All Normal Tabs
         for(int i=0; i<BROWSER_TAB_FRAGMENT_LIST.size(); i++){
-            if(!BROWSER_TAB_FRAGMENT_LIST.get(i).isHidden())
+            if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i)))
                 hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
         }
     }
@@ -141,7 +142,7 @@ public class TabManager implements TabSettings, TabManagers {
         int fragList=BROWSER_TAB_FRAGMENT_LIST.size();
         for (int i=0; i < fragList; i++) {
             if(BROWSER_TAB_FRAGMENT_LIST.get(i)==selectFragment){
-                if(selectFragment.isHidden()) {
+                if(isHiddenFragment(selectFragment)) {
                     showFragment(selectFragment);
                     // Call Fragment Data Refresh
                     selectFragment.refreshLoadView();
@@ -150,7 +151,7 @@ public class TabManager implements TabSettings, TabManagers {
                 }
             }
             else {
-                if(!BROWSER_TAB_FRAGMENT_LIST.get(i).isHidden()) {
+                if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i))) {
                     // Hide Fragments
                     hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
                     // Pause WebView <for BUG>
@@ -259,9 +260,10 @@ public class TabManager implements TabSettings, TabManagers {
             // Hide Fragments
             if(i==0)
                 // Call Fragment Data Refresh
-                ProcessDelay.Delay(() -> newDataFragment.refreshLoadView(),500);
+                ProcessDelay.Delay(() -> newDataFragment.refreshLoadView(), 100);
             else
-                hideFragment(newDataFragment);
+                if(isShowingFragment(newDataFragment))
+                    hideFragment(newDataFragment);
             // Add List
             BROWSER_TAB_FRAGMENT_LIST.add(newDataFragment);
             // Tab Classes Data
@@ -327,7 +329,8 @@ public class TabManager implements TabSettings, TabManagers {
             if(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)==incognitoTabFragment)
                 showFragment(incognitoTabFragment);
             else
-                hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
+                if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
+                    hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
         }
         // Hide All Tabs
         hideAllTabs();
@@ -336,7 +339,7 @@ public class TabManager implements TabSettings, TabManagers {
     private void hideAllIncognitos(){
         // Hide All Incognito Tabs
         for(int i=0; i<BROWSER_INCOGNITO_FRAGMENT_LIST.size(); i++){
-            if(!BROWSER_INCOGNITO_FRAGMENT_LIST.get(i).isHidden())
+            if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
                 hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
         }
     }
@@ -361,13 +364,13 @@ public class TabManager implements TabSettings, TabManagers {
 
         for (int i=0; i < fragList; i++) {
             if(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)==selectFragment){
-                if(selectFragment.isHidden())
+                if(isHiddenFragment(selectFragment))
                     // Note!
                     // Incognito tabs not saved. So fragment webview not required refresh view.
                     showFragment(selectFragment);
             }
             else{
-                if(!BROWSER_INCOGNITO_FRAGMENT_LIST.get(i).isHidden())
+                if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
                     // Hide Fragments
                     hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
             }
@@ -410,40 +413,50 @@ public class TabManager implements TabSettings, TabManagers {
     public ArrayList<IncognitoTabFragment> getIncognitoTabFragmentList() {
         return BROWSER_INCOGNITO_FRAGMENT_LIST;
     }
-
     @Override
     public ArrayList<IncognitoTabData> getIncognitoTabDataList() {
         return BROWSER_INCOGNITO_LIST;
     }
-
     // Fragments
     @Override
     public void addFragmentView(int viewId, Fragment fragment) {
         getFragmentManager().beginTransaction().add(viewId, fragment).commit();
     }
-
     @Override
     public void removeFragment(Fragment fragment) {
         getFragmentManager().beginTransaction().remove(fragment).commit();
     }
-
     @Override
     public void showFragment(Fragment fragment) {
         getFragmentManager().beginTransaction().show(fragment).commit();
     }
     @Override
     public void hideFragment(Fragment fragment) {
-        if(!fragment.isHidden())
-            getFragmentManager().beginTransaction().hide(fragment).commit();
+        getFragmentManager().beginTransaction().hide(fragment).commit();
     }
-
     @Override
     public void attachFragment(Fragment fragment) {
         getFragmentManager().beginTransaction().attach(fragment).commit();
     }
-
     @Override
     public void detachFragment(Fragment fragment) {
         getFragmentManager().beginTransaction().detach(fragment).commit();
+    }
+
+    @Override
+    public boolean isShowingFragment(Fragment fragment) {
+        return !fragment.isHidden();
+    }
+    @Override
+    public boolean isHiddenFragment(Fragment fragment) {
+        return fragment.isHidden();
+    }
+    @Override
+    public boolean isAttachedFragment(Fragment fragment) {
+        return !fragment.isDetached();
+    }
+    @Override
+    public boolean isDetachedFragment(Fragment fragment) {
+        return fragment.isDetached();
     }
 }
