@@ -24,7 +24,7 @@ import java.util.Map;
 public class OKWebView extends WebView implements WebViewClientManager {
     // Variables
     public boolean isIncognitoWebView=false,
-            isRefreshing=false,onBackView=false;
+            isRefreshing=false,isLoading=false,onBackView=false;
     private boolean addedJavascriptInterface;
     // Fragments
     private TabFragment webviewTabFragment;
@@ -73,7 +73,7 @@ public class OKWebView extends WebView implements WebViewClientManager {
 
     // Sync on Back Url
     public void syncOnBackForward(String url){
-        okWebViewClient.onPageFinished(this,url);
+        okWebViewClient.updateSyncForWeb(this);
     }
 
     // Fullscreen Video

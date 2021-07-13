@@ -45,10 +45,12 @@ public interface BrowserDefaultSettings {
 
     // History List
     List<HistoryData> BROWSER_HISTORY_LIST=new ArrayList<>();
-    List<String> BROWSER_HISTORY_DATE_LIST=new ArrayList<>();
 
     // Bookmark List
     List<BookmarkData> BROWSER_BOOKMARK_LIST=new ArrayList<>();
+
+    // Download List
+    List<BookmarkData> BROWSER_DOWNLOADS_LIST=new ArrayList<>();
 
     void initBrowserDataClasses();
     void initBrowserPreferenceSettings();

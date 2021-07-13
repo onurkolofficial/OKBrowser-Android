@@ -17,9 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.data.tabs.IncognitoTabData;
 import com.onurkol.app.browser.fragments.tabs.list.IncognitoTabListFragment;
-import com.onurkol.app.browser.fragments.tabs.list.TabListFragment;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.tabs.core.ActivityTabSignal;
@@ -102,7 +102,7 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
             // Close This Activity
             contextActivity.finish();
             // Send Tab Signal
-            TabListAdapter.sendTabSignal(position, ActivityTabSignal.INCOGNITO_ON_CHANGE, true);
+            sendTabSignal(position, ActivityTabSignal.INCOGNITO_ON_CHANGE, true);
         });
 
         // Close Tab Button
@@ -130,6 +130,25 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
         });
 
         return convertView;
+    }
+
+    // Tab Signals for Listeners (for Incognito Tabs)
+    public void sendTabSignal(int tabPosition, int signalCode, boolean incognito){
+        // Send Activity Status
+        // Create Tab Signal
+        ActivityTabSignal tabSignal=new ActivityTabSignal();
+        ActivityTabSignal.TabSignalData signalData=new ActivityTabSignal.TabSignalData();
+        // Set Status
+        tabSignal.setSignalStatus(signalCode);
+        // Set Incognito Mode
+        tabSignal.setTabIsIncognito(incognito);
+        // Set Data
+        signalData.tab_position=tabPosition;
+        signalData.tab_url=tabDataList.get(tabPosition).getUrl();
+        // Send Data
+        tabSignal.setSignalData(signalData);
+        // Send Signal
+        MainActivity.sendTabSignal(tabSignal);
     }
 
     //View Holder

@@ -2,7 +2,6 @@ package com.onurkol.app.browser.lib.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -11,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.data.tabs.ClassesTabData;
 import com.onurkol.app.browser.data.tabs.IncognitoTabData;
 import com.onurkol.app.browser.data.tabs.TabData;
@@ -36,7 +34,6 @@ public class TabManager implements TabSettings, TabManagers {
     private OKWebView activeTabWebView=null, activeIncognitoWebView=null;
     private TabFragment activeTabFragment=null;
     private IncognitoTabFragment activeIncognitoTabFragment=null;
-    private int activeTabPosition, activeIncognitoTabPosition;
 
     Gson gson=new Gson();
 
@@ -240,6 +237,11 @@ public class TabManager implements TabSettings, TabManagers {
             TabFragment newTabDataFragment=new TabFragment();
             // Set Fragment Data
             newTabDataFragment.setTabIndex(i);
+
+            if(fragmentManager.isDestroyed()){
+                fragmentManager=((FragmentActivity)ContextManager.getManager().getContextActivity()).getSupportFragmentManager();
+            }
+
             // Add Views
             addFragmentView(R.id.browserFragmentView, newTabDataFragment);
             // Hide Fragments
@@ -297,7 +299,7 @@ public class TabManager implements TabSettings, TabManagers {
         // Set Bundle
         newIncognitoTabFragment.setArguments(bundle);
         // Set Tab Index
-        newIncognitoTabFragment.setActiveTabIndex(BROWSER_INCOGNITO_TABDATA_LIST.size());
+        newIncognitoTabFragment.setTabIndex(BROWSER_INCOGNITO_TABDATA_LIST.size());
         // Default Tab Title
         String tabTitle=context.getString(R.string.loading_text)+" ...";
         // Tab Current Data
@@ -366,6 +368,14 @@ public class TabManager implements TabSettings, TabManagers {
     @Override
     public ArrayList<IncognitoTabData> getIncognitoTabDataList() {
         return BROWSER_INCOGNITO_TABDATA_LIST;
+    }
+
+    @Override
+    public void recreateIncognitoTabIndex() {
+        int tabCount=BROWSER_INCOGNITO_FRAGMENT_LIST.size();
+
+        for(int i=0; i<tabCount; i++)
+            BROWSER_INCOGNITO_FRAGMENT_LIST.get(i).setTabIndex(i);
     }
 
     // Fragments

@@ -84,7 +84,7 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
         ClassesTabData cData=classesTabDataList.get(position);
 
         // Check Url
-        if(data.getUrl().equals("")) {
+        if(data.getUrl()==null || data.getUrl().equals("")) {
             // Set Page Title
             holder.tabUrlText.setText(context.getString(R.string.new_tab_text));
             // Get View
@@ -139,8 +139,8 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
         return convertView;
     }
 
-    // Tab Signals for Listeners
-    public static void sendTabSignal(int tabPosition, int signalCode, boolean incognito){
+    // Tab Signals for Listeners ( Normal Tabs )
+    public void sendTabSignal(int tabPosition, int signalCode, boolean incognito){
         // Send Activity Status
         // Create Tab Signal
         ActivityTabSignal tabSignal=new ActivityTabSignal();

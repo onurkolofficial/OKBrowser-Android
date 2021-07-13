@@ -19,7 +19,7 @@ public class ToolbarTabCounter {
         context=ContextManager.getManager().getContext();
 
         // Get Tab Count
-        return tabCountHandler(tabBuilder.getSavedTabList().size());
+        return tabCountHandler(tabBuilder.getTabDataList().size());
     }
 
     public Drawable getIncognitoTabCountDrawable(){

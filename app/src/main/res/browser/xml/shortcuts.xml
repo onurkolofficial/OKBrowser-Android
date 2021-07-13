@@ -13,6 +13,19 @@
             android:targetPackage="com.onurkol.app.browser"
             android:targetClass="com.onurkol.app.browser.activity.SettingsActivity" />
     </shortcut>
+    <!-- Downloads Activity !-->
+    <shortcut
+        android:shortcutId="sh_downloads"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_downloads"
+        android:shortcutShortLabel="@string/downloads_text"
+        android:shortcutLongLabel="@string/downloads_text"
+        android:shortcutDisabledMessage="@string/downloads_text">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.onurkol.app.browser"
+            android:targetClass="com.onurkol.app.browser.activity.browser.core.DownloadsActivity" />
+    </shortcut>
     <!-- Bookmarks Activity !-->
     <shortcut
         android:shortcutId="sh_bookmarks"
@@ -23,8 +36,9 @@
         android:shortcutDisabledMessage="@string/bookmarks_text">
         <intent
             android:action="android.intent.action.VIEW"
+            android:data="isShortcut"
             android:targetPackage="com.onurkol.app.browser"
-            android:targetClass="com.onurkol.app.browser.activity.browser.BookmarksActivity" />
+            android:targetClass="com.onurkol.app.browser.activity.browser.BookmarkActivity" />
     </shortcut>
     <!-- History Activity !-->
     <shortcut

@@ -130,7 +130,7 @@ public class TabFragment extends Fragment {
         String webViewUrl=okBrowserWebView.getUrl();
 
         // Check Load Saved Url
-        if(tabDataUrl.equals("")){
+        if(tabDataUrl==null || tabDataUrl.equals("")){
             // Show New Tab Layout
             newTabHomeLayout.setVisibility(View.VISIBLE);
             // Hide WebView

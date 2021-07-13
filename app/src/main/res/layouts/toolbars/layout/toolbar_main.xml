@@ -5,6 +5,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:layout_height="55dp"
+    android:background="@color/transparent"
     app:contentInsetStart="0dp"
     app:layout_scrollFlags="scroll|enterAlways|snap">
     <!-- Toolbar Layout !-->
@@ -40,7 +41,7 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionSearch"
-                        android:inputType="text|textNoSuggestions"
+                        android:inputType="text|textNoSuggestions|textUri"
                         android:textSize="15sp"
                         android:layout_weight="1"
                         android:paddingStart="10dp"
@@ -62,8 +63,8 @@
             <!-- Tab List Button !-->
             <ImageButton
                 android:id="@+id/browserTabListButton"
-                android:layout_width="46dp"
-                android:layout_height="35dp"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="?attr/actionBarItemBackground"
                 android:src="@drawable/ic_tab_num_1"
@@ -71,8 +72,8 @@
             <!-- Menu Button !-->
             <ImageButton
                 android:id="@+id/browserMenuButton"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="?attr/actionBarItemBackground"
                 android:src="@drawable/ic_baseline_more_vert_24"

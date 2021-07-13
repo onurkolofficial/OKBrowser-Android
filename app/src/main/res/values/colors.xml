@@ -45,14 +45,11 @@
     <color name="tab_item_background">@color/gray5</color>
     <!-- Theme Variables (Light) !-->
     <color name="background_light">#FFFFFF</color>
-    <color name="toolbar_background_light">@color/white5</color>
     <color name="item_background_light">@color/white5</color>
     <color name="popups_background_light">@color/white5</color>
     <color name="cardview_background_light">@color/white5</color>
-
     <!-- Theme Variables (Dark) !-->
     <color name="background_dark">#121212</color>
-    <color name="toolbar_background_dark">@color/gray1</color>
     <color name="item_background_dark">@color/gray1</color>
     <color name="popups_background_dark">@color/gray1</color>
     <color name="cardview_background_dark">@color/gray1</color>

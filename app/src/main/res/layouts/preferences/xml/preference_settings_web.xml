@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="setting_geo_location"
+        android:title="@string/geo_location_text"
+        app:icon="@drawable/ic_baseline_public_24"/>
+    <CheckBoxPreference
+        android:key="setting_javascript"
+        android:title="@string/javascript_text"
+        app:icon="@drawable/ic_baseline_scatter_plot_24"/>
+    <CheckBoxPreference
+        android:key="setting_popups"
+        android:title="@string/popups_text"
+        app:icon="@drawable/ic_baseline_filter_none_24"/>
+    <CheckBoxPreference
+        android:key="setting_save_forms"
+        android:title="@string/save_forms_text"
+        app:icon="@drawable/ic_baseline_format_list_bulleted_24"/>
+    <CheckBoxPreference
+        android:key="setting_zoom"
+        android:title="@string/zoom_support_text"
+        app:icon="@drawable/ic_baseline_zoom_in_24"/>
+    <CheckBoxPreference
+        android:key="setting_zoom_buttons"
+        android:title="@string/zoom_buttons_text"
+        android:enabled="false"
+        app:icon="@drawable/ic_baseline_more_horiz_24"/>
+    <CheckBoxPreference
+        android:key="setting_local_storage"
+        android:title="@string/web_storage_text"
+        app:icon="@drawable/ic_baseline_storage_24"/>
+    <CheckBoxPreference
+        android:key="setting_app_cache"
+        android:title="@string/app_cache_text"
+        app:icon="@drawable/ic_baseline_app_settings_alt_24"/>
+</PreferenceScreen>

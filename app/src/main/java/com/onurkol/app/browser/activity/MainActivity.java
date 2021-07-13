@@ -3,9 +3,11 @@ package com.onurkol.app.browser.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -13,7 +15,6 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -69,19 +70,22 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout browserSwipeRefresh;
     ProgressBar toolbarProgressBar;
     ImageView incognitoIcon;
-    ImageButton browserTabListButton, browserMenuButton, noTabMenuButton, noTabNewTabButton, noTabNewIncognitoButton;
+    ImageButton browserTabListButton, browserMenuButton, noTabMenuButton, noTabNewTabButton, noTabNewIncognitoButton,
+            findCloseButton, findNextButton, findBackButton;
     LinearLayout browserFragmentView;
     EditText browserSearch;
+    SearchView findPageView;
     // Static Element Copy
     static WeakReference<ImageButton> browserTabListButtonStatic;
     static WeakReference<ImageView> incognitoIconStatic;
     static WeakReference<EditText> browserSearchStatic;
     static WeakReference<SwipeRefreshLayout> browserSwipeRefreshStatic;
     // Intents
-    Intent tabListIntent,welcomeIntent;
+    Intent tabListIntent,installerIntent;
     // Variables
-    public static boolean isCreated=false,isThemeChanged;
+    public static boolean isCreated=false,isCreatedView=false;
     boolean backPressHomeLayout=false;
+    String findQueryString="";
 
     // Update Manager
     private AppUpdateManager mAppUpdateManager;
@@ -113,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
         noTabNewTabButton=findViewById(R.id.noTabNewTabButton);
         browserSearch=findViewById(R.id.browserSearch);
         noTabNewIncognitoButton=findViewById(R.id.noTabNewIncognitoTabButton);
+        findCloseButton=findViewById(R.id.findCloseButton);
+        findNextButton=findViewById(R.id.findNextButton);
+        findBackButton=findViewById(R.id.findBackButton);
+        findPageView=findViewById(R.id.browserFindView);
         // Get Static Copy
         browserTabListButtonStatic=new WeakReference<>(browserTabListButton);
         incognitoIconStatic=new WeakReference<>(incognitoIcon);
@@ -121,12 +129,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Get Intents
         tabListIntent=new Intent(this, TabListViewActivity.class);
-        welcomeIntent=new Intent(this, InstallerActivity.class);
+        installerIntent=new Intent(this, InstallerActivity.class);
 
         // Hide Toolbar Progressbar (Default)
         toolbarProgressBar.setVisibility(View.GONE);
         // Hide Incognito Icon for toolbar_main.
         incognitoIcon.setVisibility(View.GONE);
+
+        // Find Page
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        findPageView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Set Listeners
         browserTabListButton.setOnClickListener(showTabsClickListener);
@@ -135,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
         noTabNewTabButton.setOnClickListener(createNewTabNoTabLayout);
         browserSearch.setOnKeyListener(searchWebUrlListener);
         noTabNewIncognitoButton.setOnClickListener(createNewIncognitoTabLayout);
+        findCloseButton.setOnClickListener(closeFindListener);
+        findPageView.setOnQueryTextListener(findQueryTextListener);
+        findNextButton.setOnClickListener(findNextButtonListener);
+        findBackButton.setOnClickListener(findBackButtonListener);
 
         // Swipe Refresh
         browserSwipeRefresh.getViewTreeObserver().addOnScrollChangedListener(swipeRefreshOnScrollChanged);
@@ -145,22 +161,12 @@ public class MainActivity extends AppCompatActivity {
         // Check Installer Activity
         if(dataManager.startInstallerActivity){
             // Start Welcome Activity
-            startActivity(welcomeIntent);
+            startActivity(installerIntent);
             // Finish Current Activity
             finish();
         }
         else {
-            // Continue
-            if(!isCreated) {
-                // Check Saved Tabs
-                startTabsSync();
-            }
-
-            // <BUG> for Night Theme
-            int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
-                isThemeChanged=true;
-            }
+            // Continue or onCreateView()...
         }
         // Set isCreated variable
         isCreated=true;
@@ -183,7 +189,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
         // Init Browser Data ( Applying View Settings )
-        dataManager.initBrowserPreferenceSettings();
+        if(!dataManager.startInstallerActivity){
+            dataManager.initBrowserPreferenceSettings();
+            if(!isCreatedView) {
+                /**
+                 * <BUG> Application ui mode changed, recreating views and some create view bugs.
+                 * Using delay for fixed tab fragments bug.
+                 */
+                // Check Saved Tabs.
+                ProcessDelay.Delay(() -> {
+                    startTabsSync();
+                    browserTabListButtonStatic.get().setImageDrawable(tabCounter.getTabCountDrawable());
+                }, 620);
+
+                isCreatedView=true;
+            }
+        }
         return super.onCreateView(name, context, attrs);
     }
 
@@ -196,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         if(prefManager.getInt(BrowserDefaultSettings.KEY_APP_THEME)!=2){
             int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
-                isThemeChanged=true;
+                // NULL
             }
         }
     }
@@ -282,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
                     tabBuilder.removeFragment(frag);
                     // Update Data List
                     tabBuilder.getIncognitoTabFragmentList().remove(index);
+                    tabBuilder.recreateIncognitoTabIndex();
                 }
                 // Check Views
                 if ((incognitoFragmentList.size() > 0) && (tabFragmentList.size() <= 0))
@@ -358,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
             browserTabListButtonStatic.get().setImageDrawable(TabCountDrawable);
         };
         // Exec Runnable
-        ProcessDelay.Delay(checkSignalRunnable, 150);
+        ProcessDelay.Delay(checkSignalRunnable, 120);
     }
 
     @Override
@@ -368,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
         OKWebView webView;
         // Variables
         String backUrl;
+
         // Check Url Back, Layout & Tabs
         if(tabBuilder.getActiveTabFragment()!=null){
             // Check Tab WebView Layout
@@ -375,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentView=tabBuilder.getActiveTabFragment().getView();
             webView=tabBuilder.getActiveTabFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoBack()) {
+            if(webView.canGoBack() && webView.getVisibility()==View.VISIBLE) {
                 webView.goBack();
                 backUrl=webView.getUrl();
             }
@@ -385,10 +408,11 @@ public class MainActivity extends AppCompatActivity {
                 // Hide WebView & Show Page Layout
                 webView.setVisibility(View.GONE);
                 (fragmentView.findViewById(R.id.newTabHomeLayout)).setVisibility(View.VISIBLE);
-                if(backPressHomeLayout)
-                    super.onBackPressed();
+
+                if (backPressHomeLayout)
+                    moveTaskToBack(true);
                 else
-                    backPressHomeLayout=true;
+                    backPressHomeLayout = true;
                 backUrl="";
             }
         }
@@ -397,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
             webView=tabBuilder.getActiveIncognitoFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoBack()){
+            if(webView.canGoBack() && webView.getVisibility()==View.VISIBLE){
                 webView.goBack();
                 backUrl=webView.getUrl();
             }
@@ -405,10 +429,11 @@ public class MainActivity extends AppCompatActivity {
                 // Hide WebView & Show Page Layout
                 webView.setVisibility(View.GONE);
                 (fragmentView.findViewById(R.id.incognitoHomeLayout)).setVisibility(View.VISIBLE);
-                if(backPressHomeLayout)
-                    super.onBackPressed();
+
+                if (backPressHomeLayout)
+                    moveTaskToBack(true);
                 else
-                    backPressHomeLayout=true;
+                    backPressHomeLayout = true;
                 backUrl="";
             }
         }
@@ -540,6 +565,74 @@ public class MainActivity extends AppCompatActivity {
             webView.reload();
         }
     };
+    View.OnClickListener closeFindListener=view -> {
+        // Hide Find Toolbar & Show Main Toolbar
+        findViewById(R.id.includeFindToolbar).setVisibility(View.GONE);
+        findViewById(R.id.includeTabToolbar).setVisibility(View.VISIBLE);
+
+        // Get WebView
+        OKWebView webView;
+        if(tabBuilder.getActiveTabFragment()!=null)
+            webView=tabBuilder.getActiveTabFragment().getWebView();
+        else
+            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+
+        webView.clearMatches();
+    };
+    SearchView.OnQueryTextListener findQueryTextListener=new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            if(tabBuilder==null)
+                tabBuilder=TabBuilder.Build();
+            // Get WebView
+            OKWebView webView;
+            if(tabBuilder.getActiveTabFragment()!=null)
+                webView=tabBuilder.getActiveTabFragment().getWebView();
+            else if(tabBuilder.getActiveIncognitoFragment()!=null)
+                webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+            else
+                webView=null;
+
+            if(webView!=null) {
+                if (!newText.equals("")) {
+                    findQueryString = newText;
+                    webView.findAllAsync(newText);
+                }
+                else
+                    webView.clearMatches();
+            }
+            return false;
+        }
+    };
+    View.OnClickListener findNextButtonListener=view -> {
+        // Get WebView
+        OKWebView webView;
+        if(tabBuilder.getActiveTabFragment()!=null)
+            webView=tabBuilder.getActiveTabFragment().getWebView();
+        else
+            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+
+        if(!findQueryString.equals("")) {
+            webView.findNext(true);
+        }
+    };
+    View.OnClickListener findBackButtonListener=view -> {
+        OKWebView webView;
+        if(tabBuilder.getActiveTabFragment()!=null)
+            webView=tabBuilder.getActiveTabFragment().getWebView();
+        else
+            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+
+        if(!findQueryString.equals("")) {
+            webView.findNext(false);
+
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -566,14 +659,12 @@ public class MainActivity extends AppCompatActivity {
         });
         super.onStart();
     }
-
     @Override
     protected void onStop() {
         if (mAppUpdateManager != null)
             mAppUpdateManager.unregisterListener(installStateUpdatedListener);
         super.onStop();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -582,7 +673,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.update_download_failed_text), Toast.LENGTH_LONG).show();
         }
     }
-
     // Popup for Update
     private void popupSnackbarForCompleteUpdate() {
         Snackbar snackbar = Snackbar.make(
@@ -598,7 +688,6 @@ public class MainActivity extends AppCompatActivity {
         snackbar.setActionTextColor(ContextCompat.getColor(this,R.color.primary));
         snackbar.show();
     }
-
     // Update Listener
     InstallStateUpdatedListener installStateUpdatedListener = new InstallStateUpdatedListener() {
         @Override

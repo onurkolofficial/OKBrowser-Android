@@ -55,10 +55,10 @@ public class IncognitoTabFragment extends Fragment {
         return fragmentView;
     }
 
-    public void setActiveTabIndex(int tabIndex){
+    public void setTabIndex(int tabIndex){
         activeTabIndex=tabIndex;
     }
-    public int getActiveTabIndex(){
+    public int getTabIndex(){
         return activeTabIndex;
     }
 

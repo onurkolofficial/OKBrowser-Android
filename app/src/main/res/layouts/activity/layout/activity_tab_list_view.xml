@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/toolbarTheme"
+        android:background="@color/transparent"
         app:elevation="0dp">
         <!-- Toolbar Main !-->
         <include

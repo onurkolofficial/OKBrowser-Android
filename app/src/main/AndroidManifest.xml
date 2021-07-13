@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.onurkol.app.browser">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -13,21 +14,28 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.OKBrowser">
-        <activity android:name=".activity.browser.installer.InstallerActivity"
-            android:configChanges="screenSize|screenLayout|locale"/>
-        <activity android:name=".activity.browser.core.DownloadsActivity"/>
+        <activity
+            android:name=".activity.browser.installer.InstallerActivity"
+            android:configChanges="screenSize|screenLayout|locale" />
+        <activity android:name=".activity.browser.core.DownloadsActivity" />
         <activity android:name=".activity.browser.core.TabListViewActivity" />
         <activity android:name=".activity.browser.BookmarkActivity" />
         <activity android:name=".activity.browser.HistoryActivity" />
         <activity android:name=".activity.settings.WebSettingsActivity" />
         <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale">
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
     </application>
+
 </manifest>

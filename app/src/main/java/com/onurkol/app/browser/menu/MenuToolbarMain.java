@@ -2,6 +2,7 @@ package com.onurkol.app.browser.menu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,7 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.SettingsActivity;
+import com.onurkol.app.browser.activity.browser.BookmarkActivity;
+import com.onurkol.app.browser.activity.browser.HistoryActivity;
+import com.onurkol.app.browser.activity.browser.core.DownloadsActivity;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.tabs.core.ToolbarTabCounter;
@@ -25,6 +32,9 @@ public class MenuToolbarMain {
     static TabBuilder tabBuilder;
     static ToolbarTabCounter tabCounter;
 
+    // Intents
+    static Intent historyIntent,downloadsIntent,bookmarksIntent,settingsIntent;
+
     public static PopupWindow getMenu(){
         // Init Context
         ContextManager contextManager=ContextManager.getManager();
@@ -34,10 +44,18 @@ public class MenuToolbarMain {
         tabBuilder=TabBuilder.Build();
         tabCounter=new ToolbarTabCounter();
 
+        // Get Intents
+        historyIntent=new Intent(context, HistoryActivity.class);
+        downloadsIntent=new Intent(context, DownloadsActivity.class);
+        bookmarksIntent=new Intent(context, BookmarkActivity.class);
+        settingsIntent=new Intent(context, SettingsActivity.class);
+
         // Elements
         LinearLayout exitBrowserLayoutButton, newTabLayoutButton, newIncognitoTabLayoutButton,
-                closeAllTabsLayoutButton,desktopModeLayoutCheckbox;
-        ImageButton menuForwardButton, menuRefreshButton;
+                closeAllTabsLayoutButton,desktopModeLayoutCheckbox, findInPageLayoutButton,
+                bookmarksLayoutButton, settingsLayoutButton;
+        ImageButton menuForwardButton, menuRefreshButton, addBookmarkButton,downloadsButton,
+                historyButton;
         CheckBox desktopModeCheckBox;
 
         // Get Popup Window
@@ -63,6 +81,12 @@ public class MenuToolbarMain {
         menuRefreshButton=view.findViewById(R.id.menuRefreshButton);
         desktopModeLayoutCheckbox=view.findViewById(R.id.desktopModeLayoutCheckbox);
         desktopModeCheckBox=view.findViewById(R.id.desktopModeCheckBox);
+        findInPageLayoutButton=view.findViewById(R.id.findInPageLayoutButton);
+        bookmarksLayoutButton=view.findViewById(R.id.bookmarksLayoutButton);
+        settingsLayoutButton=view.findViewById(R.id.settingsLayoutButton);
+        addBookmarkButton=view.findViewById(R.id.addBookmarkButton);
+        downloadsButton=view.findViewById(R.id.downloadsButton);
+        historyButton=view.findViewById(R.id.historyButton);
 
         // Get WebView
         OKWebView getWebView;
@@ -78,13 +102,39 @@ public class MenuToolbarMain {
         closeAllTabsLayoutButton.setOnClickListener(closeAllTabsButtonListener);
         menuForwardButton.setOnClickListener(forwardButtonListener);
         menuRefreshButton.setOnClickListener(refreshButtonListener);
+        bookmarksLayoutButton.setOnClickListener(v -> {
+            context.startActivity(bookmarksIntent);
+            popupWindow.dismiss();
+        });
+        settingsLayoutButton.setOnClickListener(v -> {
+            context.startActivity(settingsIntent);
+            popupWindow.dismiss();
+        });
+        downloadsButton.setOnClickListener(v -> {
+            context.startActivity(downloadsIntent);
+            popupWindow.dismiss();
+        });
+        historyButton.setOnClickListener(v -> {
+            context.startActivity(historyIntent);
+            popupWindow.dismiss();
+        });
+        findInPageLayoutButton.setOnClickListener(findPageButtonListener);
 
         // Check Show Desktop Mode in Valid Web
-        if(getWebView.getUrl()==null || getWebView.getUrl().equals("") || getWebView.onBackView)
+        if(getWebView.getUrl()==null || getWebView.getUrl().equals("") || getWebView.onBackView) {
             desktopModeLayoutCheckbox.setVisibility(View.GONE);
-        else
+            findInPageLayoutButton.setVisibility(View.GONE);
+        }
+        else {
             desktopModeLayoutCheckbox.setVisibility(View.VISIBLE);
+            findInPageLayoutButton.setVisibility(View.VISIBLE);
+        }
 
+        // Check Refresh Button Icon
+        if(getWebView.isRefreshing || getWebView.isLoading)
+            menuRefreshButton.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_baseline_close_24));
+        else
+            menuRefreshButton.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_baseline_refresh_24));
         return popupWindow;
     }
     // Listeners
@@ -164,7 +214,7 @@ public class MenuToolbarMain {
         EditText browserSearch=activity.findViewById(R.id.browserSearch);
         // Variables
         String forwardUrl="";
-        // Get Views
+        // Elements
         View fragmentView;
         OKWebView webView;
         // Check Url Back, Layout & Tabs
@@ -174,7 +224,7 @@ public class MenuToolbarMain {
             fragmentView=tabBuilder.getActiveTabFragment().getView();
             webView=tabBuilder.getActiveTabFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoForward())
+            if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
                 webView.goForward();
             else{
                 // Show WebView & Hide Page Layout
@@ -189,7 +239,7 @@ public class MenuToolbarMain {
             fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
             webView=tabBuilder.getActiveIncognitoFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoForward())
+            if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
                 webView.goForward();
             else{
                 // Show WebView & Hide Page Layout
@@ -211,9 +261,31 @@ public class MenuToolbarMain {
             webView = tabBuilder.getActiveTabFragment().getWebView();
         else
             webView = tabBuilder.getActiveIncognitoFragment().getWebView();
-        // Refresh Current WebView
-        webView.isRefreshing=true;
-        webView.reload();
+
+        if(webView.isRefreshing || webView.isLoading){
+            webView.isRefreshing=false;
+            webView.isLoading=false;
+            webView.stopLoading();
+        }
+        else{
+            if(webView.getUrl()!=null) {
+                // Refresh Current WebView
+                webView.isRefreshing = true;
+                webView.reload();
+            }
+        }
+        // Dismiss Popup
+        popupWindow.dismiss();
+    };
+    // Browser Find Page Button
+    static View.OnClickListener findPageButtonListener=view -> {
+        // Get Context Activity
+        Activity activity=ContextManager.getManager().getContextActivity();
+
+        // Hide Main Toolbar & Show Find
+        activity.findViewById(R.id.includeTabToolbar).setVisibility(View.GONE);
+        activity.findViewById(R.id.includeFindToolbar).setVisibility(View.VISIBLE);
+
         // Dismiss Popup
         popupWindow.dismiss();
     };

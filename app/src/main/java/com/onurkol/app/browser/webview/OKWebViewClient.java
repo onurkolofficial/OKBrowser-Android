@@ -48,6 +48,7 @@ public class OKWebViewClient extends WebViewClient {
         connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
         // Get WebView
         OKWebView webView=((OKWebView)view);
+        webView.isLoading=true;
 
         if(!webView.isIncognitoWebView) {
             // New Preference Data
@@ -110,10 +111,6 @@ public class OKWebViewClient extends WebViewClient {
         NestedScrollView browserNestedScroll = activity.findViewById(R.id.browserNestedScroll);
         // Get WebView
         OKWebView webView=((OKWebView)view);
-
-        // Set Refresh Status
-        webView.isRefreshing=false;
-
         // Stop Swipe Refresh
         if(browserSwipeRefresh!=null)
             browserSwipeRefresh.setRefreshing(false);
@@ -126,15 +123,15 @@ public class OKWebViewClient extends WebViewClient {
         FrameLayout.LayoutParams heightMatch=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
 
         // Check View Layout Params
-        if(getScreenHeigth>getContentHeight) {
-            // Check WebView Layout Params
-            if(webView.getLayoutParams().height!=LinearLayout.LayoutParams.WRAP_CONTENT)
-                webView.setLayoutParams(heightWrap);
-        }
-        else
+        if(getScreenHeigth>=getContentHeight)
             webView.setLayoutParams(heightMatch);
+        else
+            webView.setLayoutParams(heightWrap);
 
         if(redirectLoad){
+            webView.isLoading=false;
+            webView.isRefreshing=false;
+
             if(tabBuilder==null)
                 tabBuilder=TabBuilder.Build();
 
@@ -150,14 +147,15 @@ public class OKWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
     }
 
-    private void updateSyncForWeb(OKWebView webView){
+    public void updateSyncForWeb(OKWebView webView){
         if(tabBuilder==null)
             tabBuilder=TabBuilder.Build();
         if(!webView.isIncognitoWebView) {
             // Update ScreenShot
             webView.getTabFragment().updateScreenShot();
             // New Preference Data
-            TabData newData = new TabData(webView.getTitle(), syncUrl);
+            String saveUrl=((webView.getVisibility()!=View.GONE) ? syncUrl : "");
+            TabData newData = new TabData(webView.getTitle(), saveUrl);
             ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
             // RE-Synchronize New Data
             tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
@@ -168,7 +166,7 @@ public class OKWebViewClient extends WebViewClient {
             // Update ScreenShot
             webView.getIncognitoTabFragment().updateScreenShot();
             // Update Data
-            IncognitoTabData data=tabBuilder.getIncognitoTabDataList().get(tabBuilder.getActiveIncognitoFragment().getActiveTabIndex());
+            IncognitoTabData data=tabBuilder.getIncognitoTabDataList().get(tabBuilder.getActiveIncognitoFragment().getTabIndex());
             data.setTitle(webView.getTitle());
             data.setUrl(syncUrl);
             data.setTabPreview(webView.getIncognitoTabFragment().getUpdatedScreenShot());

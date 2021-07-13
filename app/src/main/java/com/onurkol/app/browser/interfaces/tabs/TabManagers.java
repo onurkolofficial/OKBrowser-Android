@@ -41,6 +41,7 @@ public interface TabManagers {
     // Datas
     ArrayList<IncognitoTabFragment> getIncognitoTabFragmentList();
     ArrayList<IncognitoTabData> getIncognitoTabDataList();
+    void recreateIncognitoTabIndex();
     // Fragment Views
     void addFragmentView(int viewId, Fragment fragment);
     void removeFragment(Fragment fragment);

@@ -16,7 +16,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/toolbarTheme"
+            android:background="@color/transparent"
             app:elevation="0dp">
             <!-- Toolbar Main !-->
             <include
@@ -27,6 +27,11 @@
             <include
                 android:id="@+id/includeNoTabToolbar"
                 layout="@layout/toolbar_no_tab"
+                android:visibility="gone"/>
+            <!-- Toolbar No Tab !-->
+            <include
+                android:id="@+id/includeFindToolbar"
+                layout="@layout/toolbar_search_view"
                 android:visibility="gone"/>
         </com.google.android.material.appbar.AppBarLayout>
         <!-- Swipe Refresh !-->

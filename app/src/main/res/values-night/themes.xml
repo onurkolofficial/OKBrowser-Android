@@ -10,22 +10,13 @@
         <item name="colorSecondaryVariant">@color/secondary_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/toolbar_background_dark</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?android:attr/windowBackground</item>
         <item name="android:windowLightStatusBar">false</item>
         <!-- Dark Theme -->
-        <item name="toolbarStyle">@style/toolbarThemeStyle</item>
         <item name="cardViewStyle">@style/CardViewStyle</item>
         <item name="android:popupWindowStyle">@style/PopupMenuStyle</item>
     </style>
     <!-- Styles !-->
-    <!-- Toolbar !-->
-    <style name="toolbarThemeStyle">
-        <item name="android:background">@color/toolbar_background_dark</item>
-    </style>
-    <!-- Background Toolbar (for not Transparent) !-->
-    <style name="toolbarTheme">
-        <item name="android:background">@color/background_dark</item>
-    </style>
     <!-- New Tab Search Input !-->
     <style name="newTabSearchInput" parent="Widget.AppCompat.EditText">
         <item name="android:background">@color/item_background_dark</item>
