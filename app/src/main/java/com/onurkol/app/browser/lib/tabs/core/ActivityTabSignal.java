@@ -35,6 +35,7 @@ public class ActivityTabSignal {
 
     // Signal Data Object
     public static class TabSignalData {
+        public String tab_url="";
         public int tab_position=0;
     }
 

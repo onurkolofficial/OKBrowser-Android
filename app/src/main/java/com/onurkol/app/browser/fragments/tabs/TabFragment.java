@@ -1,11 +1,13 @@
 package com.onurkol.app.browser.fragments.tabs;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.data.tabs.TabData;
+import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.tools.KeyboardController;
 import com.onurkol.app.browser.tools.ScreenManager;
 import com.onurkol.app.browser.lib.browser.SearchEngine;
@@ -23,34 +26,49 @@ import com.onurkol.app.browser.webview.OKWebView;
 import com.onurkol.app.browser.webview.OKWebViewChromeClient;
 import com.onurkol.app.browser.webview.OKWebViewClient;
 import com.onurkol.app.browser.webview.WebViewConfig;
+import com.onurkol.app.browser.webview.listeners.VideoFullScreen;
 
 public class TabFragment extends Fragment {
     // Elements
     OKWebView okBrowserWebView;
     LinearLayout newTabHomeLayout, connectFailedLayout;
     EditText searchInput;
-    View fragmentView;
+    View fragmentView, webViewLayout;
+    ViewGroup webViewVideoLayout;
     // Types
     private Bitmap fragmentScreen;
+
+    // Variables
+    private int activeTabIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentView=inflater.inflate(R.layout.fragment_new_tab, container, false);
+        Activity activity=ContextManager.getManager().getContextActivity();
 
         // Get Elements
         okBrowserWebView=fragmentView.findViewById(R.id.okBrowserWebView);
         newTabHomeLayout=fragmentView.findViewById(R.id.newTabHomeLayout);
         searchInput=fragmentView.findViewById(R.id.newTabSearchInput);
         connectFailedLayout=fragmentView.findViewById(R.id.connectFailedLayout);
+        webViewLayout=fragmentView.findViewById(R.id.webViewLayout);
+        webViewVideoLayout=activity.findViewById(R.id.webViewVideoLayout);
+        // Loading Video View
+        View loadingView = getLayoutInflater().inflate(R.layout.layout_video_loading, null);
         // Default
         connectFailedLayout.setVisibility(View.GONE);
 
+        // WebView Clients
+        OKWebViewClient okWebViewClient=new OKWebViewClient();
+        OKWebViewChromeClient okWebViewChromeClient=new OKWebViewChromeClient(webViewLayout, webViewVideoLayout, loadingView, okBrowserWebView);
         // Set WebView Config
         WebViewConfig.getInstance().setWebViewConfig(okBrowserWebView);
         // Set WebView Clients
-        okBrowserWebView.setOKWebViewClient(new OKWebViewClient());
-        okBrowserWebView.setOKWebViewChromeClient(new OKWebViewChromeClient());
+        okBrowserWebView.setOKWebViewClient(okWebViewClient);
+        okBrowserWebView.setOKWebViewChromeClient(okWebViewChromeClient);
+        // Set WebView Listeners
+        okBrowserWebView.getOKWebViewChromeClient().setOnToggledFullscreen(VideoFullScreen.fullscreenCallback);
         // Set WebView Fragment
         okBrowserWebView.setTabFragment(this);
         // Set Variables
@@ -74,10 +92,14 @@ public class TabFragment extends Fragment {
             return false;
         });
 
-        // Set Active Tab
-        thisTabSetToActive();
-
         return fragmentView;
+    }
+
+    public void setTabIndex(int tabIndex){
+        activeTabIndex=tabIndex;
+    }
+    public int getTabIndex(){
+        return activeTabIndex;
     }
 
     public OKWebView getWebView(){
@@ -103,7 +125,7 @@ public class TabFragment extends Fragment {
     public void refreshLoadView(){
         TabBuilder tabBuilder = TabBuilder.Build();
         // Get Tab Data
-        TabData tabData=tabBuilder.getSavedTabList().get(tabBuilder.getActiveTabIndex());
+        TabData tabData=tabBuilder.getTabDataList().get(getTabIndex());
         String tabDataUrl=tabData.getUrl();
         String webViewUrl=okBrowserWebView.getUrl();
 
@@ -124,12 +146,5 @@ public class TabFragment extends Fragment {
                 okBrowserWebView.loadUrl(tabData.getUrl());
             }
         }
-    }
-
-    private void thisTabSetToActive(){
-        TabBuilder tabBuilder=TabBuilder.Build();
-        // Set Active Tab Data
-        tabBuilder.setActiveTabFragment(this);
-        tabBuilder.setActiveTabWebView(okBrowserWebView);
     }
 }

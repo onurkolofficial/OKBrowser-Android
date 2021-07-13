@@ -37,7 +37,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:text="WEB_TITLE"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
                 <!-- Close Tab Button !-->
                 <ImageButton
                     android:id="@+id/closeTabButton"

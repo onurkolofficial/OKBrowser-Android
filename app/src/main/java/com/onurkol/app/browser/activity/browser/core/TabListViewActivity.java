@@ -110,13 +110,17 @@ public class TabListViewActivity extends AppCompatActivity {
     };
 
     // Tab Signals for Listeners
-    private void sendTabSignal(int TabSignal, boolean incognitoMode){
+    private void sendTabSignal(int tabSignalCode, boolean incognitoMode){
         // Send Activity Status
         // Create Tab Signal
         ActivityTabSignal tabSignal=new ActivityTabSignal();
         ActivityTabSignal.TabSignalData signalData=new ActivityTabSignal.TabSignalData();
         // Set Status
-        tabSignal.setSignalStatus(TabSignal);
+        tabSignal.setSignalStatus(tabSignalCode);
+        // Check Data
+        if(tabSignalCode==ActivityTabSignal.TAB_ON_CREATE ||
+                tabSignalCode==ActivityTabSignal.INCOGNITO_ON_CREATE)
+            signalData.tab_url="";
         // Send Data
         tabSignal.setSignalData(signalData);
         tabSignal.setTabIsIncognito(incognitoMode);

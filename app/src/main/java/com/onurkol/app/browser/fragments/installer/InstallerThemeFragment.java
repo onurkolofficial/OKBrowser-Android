@@ -47,10 +47,11 @@ public class InstallerThemeFragment extends Fragment {
 
         // Add Data
         for(int i=0; i<xmlStringValue.size(); i++){
-            if (xmlIntegerValue.get(i)==2 && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                // This Option 2: System Theme.
-                // API 29 and and oldest versions not supported System Theme.
-                // Not add this option for API 29 and oldest.
+            // API 29 and and oldest versions not supported System Theme.
+            // Not add this option for API 29 and oldest.
+            if (xmlIntegerValue.get(i)==2){
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+                    THEME_DATA_LIST.add(new InstallerDataType(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));
             }
             else
                 THEME_DATA_LIST.add(new InstallerDataType(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));

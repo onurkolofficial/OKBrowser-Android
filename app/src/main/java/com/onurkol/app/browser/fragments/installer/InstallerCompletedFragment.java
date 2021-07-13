@@ -34,6 +34,9 @@ public class InstallerCompletedFragment extends Fragment {
         // Click Events
         installerCompleteButton.setOnClickListener(completeInstallerListener);
 
+        // Reset MainActivity
+        MainActivity.isCreated=false;
+
         return view;
     }
 
@@ -43,7 +46,7 @@ public class InstallerCompletedFragment extends Fragment {
         // Get Data Manager
         BrowserDataManager bdManager=new BrowserDataManager();
         // init
-        bdManager.initBrowserSettings();
+        bdManager.initBrowserPreferenceSettings();
         // load
         bdManager.successDataLoad();
         // Start Browser & Close Installer Activity

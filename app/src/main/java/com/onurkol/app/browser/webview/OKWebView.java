@@ -45,35 +45,35 @@ public class OKWebView extends WebView implements WebViewClientManager {
     }
 
     // WebView Clients
-    OKWebViewClient currentWebViewClient;
-    OKWebViewChromeClient currentWebViewChromeClient;
+    OKWebViewClient okWebViewClient;
+    OKWebViewChromeClient okWebViewChromeClient;
 
     // WebView Client
     @Override
     public void setOKWebViewClient(OKWebViewClient webViewClient){
-        currentWebViewClient=webViewClient;
+        okWebViewClient=webViewClient;
         // Set Client
         setWebViewClient(webViewClient);
     }
     @Override
     public OKWebViewClient getOKWebViewClient(){
-        return currentWebViewClient;
+        return okWebViewClient;
     }
 
     @Override
     public void setOKWebViewChromeClient(OKWebViewChromeClient webViewChromeClient){
-        currentWebViewChromeClient=webViewChromeClient;
+        okWebViewChromeClient=webViewChromeClient;
         // Set Client
         setWebChromeClient(webViewChromeClient);
     }
     @Override
     public OKWebViewChromeClient getOKWebViewChromeClient(){
-        return currentWebViewChromeClient;
+        return okWebViewChromeClient;
     }
 
     // Sync on Back Url
     public void syncOnBackForward(String url){
-        currentWebViewClient.onPageFinished(this,url);
+        okWebViewClient.onPageFinished(this,url);
     }
 
     // Fullscreen Video
@@ -84,8 +84,8 @@ public class OKWebView extends WebView implements WebViewClientManager {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run(){
-                    if (currentWebViewChromeClient != null)
-                        currentWebViewChromeClient.onHideCustomView();
+                    if (okWebViewChromeClient != null)
+                        okWebViewChromeClient.onHideCustomView();
                 }
             });
         }
@@ -104,4 +104,39 @@ public class OKWebView extends WebView implements WebViewClientManager {
         addedJavascriptInterface = false;
     }
 
+    @Override
+    public void loadData(String data, String mimeType, String encoding) {
+        addJavascriptInterface();
+        super.loadData(data, mimeType, encoding);
+    }
+
+    @Override
+    public void loadDataWithBaseURL(@Nullable String baseUrl, @NonNull String data, @Nullable String mimeType, @Nullable String encoding, @Nullable String historyUrl) {
+        addJavascriptInterface();
+        super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl);
+    }
+
+    @Override
+    public void loadUrl(@NonNull String url) {
+        addJavascriptInterface();
+        super.loadUrl(url);
+    }
+
+    @Override
+    public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {
+        addJavascriptInterface();
+        super.loadUrl(url, additionalHttpHeaders);
+    }
+
+    public boolean isVideoFullscreen(){
+        return okWebViewChromeClient != null && okWebViewChromeClient.isVideoFullscreen();
+    }
+
+    private void addJavascriptInterface() {
+        if (!addedJavascriptInterface){
+            // Add javascript interface to be called when the video ends (must be done before page load)
+            addJavascriptInterface(new JavascriptInterface(), "OKWebView"); // Must match Javascript interface name of VideoEnabledWebChromeClient
+            addedJavascriptInterface = true;
+        }
+    }
 }

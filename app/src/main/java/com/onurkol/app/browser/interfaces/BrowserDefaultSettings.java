@@ -32,11 +32,12 @@ public interface BrowserDefaultSettings {
             DEFAULT_SAVE_FORMS=true,
             DEFAULT_DESKTOP_MODE=false;
 
-    int DEFAULT_SEARCH_ENGINE=0; // browser/values/search_engines.xml
+    // browser/values/search_engines.xml
+    int DEFAULT_SEARCH_ENGINE=0;
 
-    int DEFAULT_APP_THEME=0; // browser/values/app_themes.xml
-                             // NOTE! 2 is System Theme. API 28 and oldest versions not supported.
-                             // So Default Value set 0.
+    // browser/values/app_themes.xml
+    int DEFAULT_APP_THEME=0;
+    int DEFAULT_APP_THEME_NEW_API=2; // API 28 and Newest version. (2 is auto)
 
     int DEFAULT_APP_LANGUAGE=0; // browser/values/app_languages.xml
 
@@ -49,5 +50,7 @@ public interface BrowserDefaultSettings {
     // Bookmark List
     List<BookmarkData> BROWSER_BOOKMARK_LIST=new ArrayList<>();
 
-    void initBrowserSettings();
+    void initBrowserDataClasses();
+    void initBrowserPreferenceSettings();
+    void applyApplicationViewSettings();
 }

@@ -24,8 +24,9 @@ public class LanguageManager {
         String languageCode=null;
         String languageCountry=null;
         if(Language==0) {
-            languageCode=Locale.getDefault().getDisplayLanguage();
-            languageCountry=Locale.getDefault().getCountry();
+            Locale systemLocale=Resources.getSystem().getConfiguration().locale;
+            languageCode=systemLocale.getLanguage();
+            languageCountry=systemLocale.getCountry();
         }
         else if(Language==1) {
             languageCode="en";

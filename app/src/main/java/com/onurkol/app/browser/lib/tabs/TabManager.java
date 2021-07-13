@@ -2,6 +2,7 @@ package com.onurkol.app.browser.lib.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.data.tabs.ClassesTabData;
 import com.onurkol.app.browser.data.tabs.IncognitoTabData;
 import com.onurkol.app.browser.data.tabs.TabData;
@@ -27,183 +29,165 @@ import java.util.ArrayList;
 public class TabManager implements TabSettings, TabManagers {
     // Variables
     AppPreferenceManager prefManager;
+    Context context;
+    FragmentManager fragmentManager;
 
     // Tab Manager Objects
-    private OKWebView manTabWebView=null, manIncognitoWebView=null;
-    private TabFragment manTabFragment=null;
-    private IncognitoTabFragment manIncognitoFragment=null;
-    private int manTabIndex, manIncognitoIndex;
+    private OKWebView activeTabWebView=null, activeIncognitoWebView=null;
+    private TabFragment activeTabFragment=null;
+    private IncognitoTabFragment activeIncognitoTabFragment=null;
+    private int activeTabPosition, activeIncognitoTabPosition;
 
     Gson gson=new Gson();
 
     public void BuildManager(){
         prefManager=AppPreferenceManager.getInstance();
-        // Load Preference Data
-        loadTabPreferenceData();
+        context=ContextManager.getManager().getContext();
+        fragmentManager=((FragmentActivity)context).getSupportFragmentManager();
+        // Init Preference Data
+        initTabPreferenceData();
     }
 
-    private void loadTabPreferenceData(){
+    private void initTabPreferenceData(){
         // Check Preference Load
         if(prefManager.getString(KEY_TAB_PREFERENCE)==null)
             prefManager.setPreference(KEY_TAB_PREFERENCE,"");
-    }
-
-    Context getContext(){
-        return ContextManager.getManager().getContext();
-    }
-
-    FragmentManager getFragmentManager(){
-        return ((FragmentActivity)getContext()).getSupportFragmentManager();
     }
 
     @Override
     public void createNewTab() {
         createNewTabHandler("");
     }
-
     @Override
     public void createNewTab(String Url) {
         createNewTabHandler(Url);
     }
-
-    private void createNewTabHandler(String Url){
+    private void createNewTabHandler(String getUrl){
         // Remove Active Incognito Tabs
         setActiveIncognitoFragment(null);
-        setActiveIncognitoWebView(null);
-
         // Fragment Bundle
         Bundle bundle = new Bundle();
         // Put Send Url
-        bundle.putString(KEY_TAB_URL_SENDER,Url);
-
+        bundle.putString(KEY_TAB_URL_SENDER,getUrl);
         // Create Tab Fragment
         TabFragment newTabFragment=new TabFragment();
         // Add View
         addFragmentView(R.id.browserFragmentView, newTabFragment);
         // Set Bundle
         newTabFragment.setArguments(bundle);
-
+        // Set Tab Index
+        newTabFragment.setTabIndex(BROWSER_TABDATA_LIST.size());
         // Default Tab Title
-        String tabTitle=getContext().getString(R.string.loading_text)+" ...";
-
+        String tabTitle=context.getString(R.string.loading_text)+" ...";
         // Tab Current Data
         TabData data=new TabData(tabTitle,"");
-        ClassesTabData classesTabData=new ClassesTabData(null);
-        // Add Tab List Data & Classes Data
-        BROWSER_TAB_LIST.add(data);
-        BROWSER_CLASSES_TAB_LIST.add(classesTabData);
-        // Add Tab Fragment Data
+        ClassesTabData classesTabData=new ClassesTabData(newTabFragment,null);
+        // Adding Tab List
         BROWSER_TAB_FRAGMENT_LIST.add(newTabFragment);
-        // Get Tab Index
-        int tabSize=BROWSER_TAB_LIST.size();
-        int newTabIndex=tabSize-1;
-        // Set Tab Index
-        setActiveTabIndex(newTabIndex);
+        BROWSER_TABDATA_LIST.add(data);
+        BROWSER_CLASSES_TABDATA_LIST.add(classesTabData);
 
-        // Tab Save to Preference
-        saveTabListPreference(BROWSER_TAB_LIST);
+        // Tab Saved to Preference
+        saveTabListPreference(BROWSER_TABDATA_LIST);
 
         // Show New Tab Fragment
-        for (int i=0; i < tabSize; i++) {
-            if(BROWSER_TAB_FRAGMENT_LIST.get(i)==newTabFragment)
+        for (int i=0; i < BROWSER_TAB_FRAGMENT_LIST.size(); i++) {
+            if(BROWSER_TAB_FRAGMENT_LIST.get(i)==newTabFragment) {
                 showFragment(newTabFragment);
+                // Set Active Fragment
+                setActiveTabFragment(newTabFragment);
+            }
             else
                 if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i)))
                     hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
         }
         // Hide All Incognito Tabs
-        hideAllIncognitos();
-    }
-
-    private void hideAllTabs(){
-        // Hide All Normal Tabs
-        for(int i=0; i<BROWSER_TAB_FRAGMENT_LIST.size(); i++){
-            if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i)))
-                hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
-        }
+        hideAllIncognitoTabs();
     }
 
     @Override
     public void changeTab(int tabIndex) {
-        // Get Selected Fragment
-        TabFragment selectFragment=BROWSER_TAB_FRAGMENT_LIST.get(tabIndex);
-        // Set Tab Index
-        setActiveTabIndex(tabIndex);
-        // Set Tab Fragment
-        setActiveTabFragment(selectFragment);
-
         // Remove Active Incognito Tabs
         setActiveIncognitoFragment(null);
-        setActiveIncognitoWebView(null);
-        // Hide All Incognito Tabs
-        hideAllIncognitos();
+        // Get Selected Fragment
+        TabFragment selectFragment=BROWSER_TAB_FRAGMENT_LIST.get(tabIndex);
+        // Set Tab Fragment
+        setActiveTabFragment(selectFragment);
 
         // Change Fragment View
         int fragList=BROWSER_TAB_FRAGMENT_LIST.size();
         for (int i=0; i < fragList; i++) {
             if(BROWSER_TAB_FRAGMENT_LIST.get(i)==selectFragment){
-                if(isHiddenFragment(selectFragment)) {
-                    showFragment(selectFragment);
-                    // Call Fragment Data Refresh
-                    selectFragment.refreshLoadView();
-                    // Resume WebView <for BUG>
-                    ((OKWebView)selectFragment.getView().findViewById(R.id.okBrowserWebView)).onResume();
-                }
+                showFragment(selectFragment);
+                // Call Fragment Data Refresh
+                selectFragment.refreshLoadView();
+                // Resume WebView
+                selectFragment.getWebView().onResume();
             }
             else {
-                if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i))) {
-                    // Hide Fragments
-                    hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
-                    // Pause WebView <for BUG>
-                    ((OKWebView)BROWSER_TAB_FRAGMENT_LIST.get(i).getView().findViewById(R.id.okBrowserWebView)).onPause();
-                }
+                // Hide Fragments
+                hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
+                // Pause WebView
+                BROWSER_TAB_FRAGMENT_LIST.get(i).getWebView().onPause();
+            }
+        }
+        // Hide All Incognito Tabs
+        hideAllIncognitoTabs();
+    }
+
+    private void hideAllTabs(){
+        // Hide All Normal Tabs
+        for(int i=0; i<BROWSER_TAB_FRAGMENT_LIST.size(); i++){
+            if(isShowingFragment(BROWSER_TAB_FRAGMENT_LIST.get(i))) {
+                hideFragment(BROWSER_TAB_FRAGMENT_LIST.get(i));
+                // Pause WebViews
+                BROWSER_TAB_FRAGMENT_LIST.get(i).getWebView().onPause();
+            }
+        }
+    }
+
+    private void hideAllIncognitoTabs(){
+        // Hide All Incognito Tabs
+        for(int i=0; i<BROWSER_INCOGNITO_FRAGMENT_LIST.size(); i++){
+            if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i))) {
+                hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
+                // Pause WebViews
+                BROWSER_INCOGNITO_FRAGMENT_LIST.get(i).getWebView().onPause();
             }
         }
     }
 
     @Override
-    public void setActiveTabFragment(TabFragment TabFragment) {
-        manTabFragment=TabFragment;
-    }
-    @Override
-    public void setActiveTabWebView(OKWebView TabWebView) {
-        manTabWebView=TabWebView;
-    }
-    @Override
-    public void setActiveTabIndex(int Index) {
-        manTabIndex=Index;
+    public void setActiveTabFragment(TabFragment tabFragment) {
+        activeTabFragment=tabFragment;
     }
 
     @Override
     public TabFragment getActiveTabFragment() {
-        return manTabFragment;
-    }
-    @Override
-    public OKWebView getActiveTabWebView() {
-        return manTabWebView;
-    }
-    @Override
-    public int getActiveTabIndex() {
-        return manTabIndex;
-    }
-
-    @Deprecated
-    @Override
-    public int getTabCount() {
-        return BROWSER_TAB_FRAGMENT_LIST.size();
+        return activeTabFragment;
     }
 
     @Override
     public ArrayList<TabFragment> getTabFragmentList() {
         return BROWSER_TAB_FRAGMENT_LIST;
     }
+
     @Override
     public ArrayList<TabData> getTabDataList() {
-        return BROWSER_TAB_LIST;
+        return BROWSER_TABDATA_LIST;
     }
+
     @Override
     public ArrayList<ClassesTabData> getClassesTabDataList() {
-        return BROWSER_CLASSES_TAB_LIST;
+        return BROWSER_CLASSES_TABDATA_LIST;
+    }
+
+    @Override
+    public void recreateTabIndex() {
+        int tabCount=BROWSER_TAB_FRAGMENT_LIST.size();
+
+        for(int i=0; i<tabCount; i++)
+            BROWSER_TAB_FRAGMENT_LIST.get(i).setTabIndex(i);
     }
 
     @Override
@@ -235,99 +219,99 @@ public class TabManager implements TabSettings, TabManagers {
         ArrayList<TabData> savedTabsList=new ArrayList<>();
         // Get Preference
         String savedTabsString=prefManager.getString(KEY_TAB_PREFERENCE);
-        if(!savedTabsString.equals("")){
+        if(!savedTabsString.equals(""))
             // Convert String to List
             savedTabsList=gson.fromJson(savedTabsString, new TypeToken<ArrayList<TabData>>(){}.getType());
-        }
         return savedTabsList;
     }
 
     @Override
-    public void syncSavedTabs(){
+    public void syncSavedTabs() {
         // Clear Tab Data
-        BROWSER_TAB_LIST.clear();
-        BROWSER_CLASSES_TAB_LIST.clear();
+        BROWSER_TABDATA_LIST.clear();
+        BROWSER_CLASSES_TABDATA_LIST.clear();
         BROWSER_TAB_FRAGMENT_LIST.clear();
         // SYNC
-        BROWSER_TAB_LIST.addAll(getSavedTabList());
+        BROWSER_TABDATA_LIST.addAll(getSavedTabList());
         // SYNC Fragments (create fragments & add views)
         int tabDataCount=getSavedTabList().size();
         for (int i=0; i<tabDataCount; i++) {
             // Create Fragments
-            TabFragment newDataFragment=new TabFragment();
+            TabFragment newTabDataFragment=new TabFragment();
+            // Set Fragment Data
+            newTabDataFragment.setTabIndex(i);
             // Add Views
-            addFragmentView(R.id.browserFragmentView, newDataFragment);
+            addFragmentView(R.id.browserFragmentView, newTabDataFragment);
             // Hide Fragments
-            if(i==0)
+            if(i==0) {
                 // Call Fragment Data Refresh
-                ProcessDelay.Delay(() -> newDataFragment.refreshLoadView(), 100);
+                ProcessDelay.Delay(() -> newTabDataFragment.refreshLoadView(), 100);
+                // Set Active Tab
+                setActiveTabFragment(newTabDataFragment);
+            }
             else
-                if(isShowingFragment(newDataFragment))
-                    hideFragment(newDataFragment);
+            if(isShowingFragment(newTabDataFragment))
+                hideFragment(newTabDataFragment);
             // Add List
-            BROWSER_TAB_FRAGMENT_LIST.add(newDataFragment);
+            BROWSER_TAB_FRAGMENT_LIST.add(newTabDataFragment);
             // Tab Classes Data
-            BROWSER_CLASSES_TAB_LIST.add(new ClassesTabData(null));
+            BROWSER_CLASSES_TABDATA_LIST.add(new ClassesTabData(newTabDataFragment,null));
         }
     }
 
     @Override
-    public void updateSyncTabData(int position, TabData updateData, ClassesTabData updateClassesData, OKWebView webView) {
-        // Remove Old Datas
-        BROWSER_TAB_LIST.remove(position);
-        BROWSER_CLASSES_TAB_LIST.remove(position);
-        // Add New Data in Index
-        BROWSER_TAB_LIST.add(position, updateData);
-        // Update Tab Classes Data
-        BROWSER_CLASSES_TAB_LIST.add(position, updateClassesData);
-        // Save New Preference
-        saveTabListPreference(BROWSER_TAB_LIST);
+    public void updateSyncTabData(int position, TabData updateData, ClassesTabData updateClassesData) {
+        if(BROWSER_TABDATA_LIST.size()>0) {
+            // Remove Old Datas
+            BROWSER_TABDATA_LIST.remove(position);
+            BROWSER_CLASSES_TABDATA_LIST.remove(position);
+            // Add New Data in Index
+            BROWSER_TABDATA_LIST.add(position, updateData);
+            // Update Tab Classes Data
+            BROWSER_CLASSES_TABDATA_LIST.add(position, updateClassesData);
+            // Save New Preference
+            saveTabListPreference(BROWSER_TABDATA_LIST);
+        }
     }
 
     @Override
     public void createNewIncognitoTab() {
-        createIncognitoTabHandler("");
+        createNewIncognitoTabHandler("");
     }
-
     @Override
     public void createNewIncognitoTab(String Url) {
-        createIncognitoTabHandler(Url);
+        createNewIncognitoTabHandler(Url);
     }
 
-    private void createIncognitoTabHandler(String Url){
-        // Remove Active Incognito Tabs
+    private void createNewIncognitoTabHandler(String getUrl){
+        // Remove Active Tabs
         setActiveTabFragment(null);
-        setActiveTabWebView(null);
-
         // Fragment Bundle
         Bundle bundle = new Bundle();
         // Put Send Url
-        bundle.putString(KEY_TAB_URL_SENDER,Url);
-
-        // Create Incognito Tab Fragment
-        IncognitoTabFragment incognitoTabFragment=new IncognitoTabFragment();
+        bundle.putString(KEY_TAB_URL_SENDER,getUrl);
+        // Create Tab Fragment
+        IncognitoTabFragment newIncognitoTabFragment=new IncognitoTabFragment();
         // Add View
-        addFragmentView(R.id.browserFragmentView, incognitoTabFragment);
+        addFragmentView(R.id.browserFragmentView, newIncognitoTabFragment);
         // Set Bundle
-        incognitoTabFragment.setArguments(bundle);
-
-        // Default Tab Title
-        String tabTitle=getContext().getString(R.string.loading_text)+" ...";
-
-        // Tab Current Data
-        IncognitoTabData data=new IncognitoTabData(tabTitle, Url, incognitoTabFragment, null);
-        // Add Tab Data & Fragment
-        BROWSER_INCOGNITO_LIST.add(data);
-        BROWSER_INCOGNITO_FRAGMENT_LIST.add(incognitoTabFragment);
-        // Get Tab Index
-        int tabSize=BROWSER_INCOGNITO_LIST.size();
-        int tabIndex=tabSize-1;
+        newIncognitoTabFragment.setArguments(bundle);
         // Set Tab Index
-        setActiveIncognitoIndex(tabIndex);
+        newIncognitoTabFragment.setActiveTabIndex(BROWSER_INCOGNITO_TABDATA_LIST.size());
+        // Default Tab Title
+        String tabTitle=context.getString(R.string.loading_text)+" ...";
+        // Tab Current Data
+        IncognitoTabData data=new IncognitoTabData(tabTitle,"", newIncognitoTabFragment, null);
+        // Adding Tab List
+        BROWSER_INCOGNITO_FRAGMENT_LIST.add(newIncognitoTabFragment);
+        BROWSER_INCOGNITO_TABDATA_LIST.add(data);
         // Show New Tab Fragment
-        for (int i=0; i < tabSize; i++) {
-            if(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)==incognitoTabFragment)
-                showFragment(incognitoTabFragment);
+        for (int i=0; i < BROWSER_INCOGNITO_FRAGMENT_LIST.size(); i++) {
+            if(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)==newIncognitoTabFragment) {
+                showFragment(newIncognitoTabFragment);
+                // Set Tab Fragment
+                setActiveIncognitoFragment(newIncognitoTabFragment);
+            }
             else
                 if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
                     hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
@@ -336,111 +320,78 @@ public class TabManager implements TabSettings, TabManagers {
         hideAllTabs();
     }
 
-    private void hideAllIncognitos(){
-        // Hide All Incognito Tabs
-        for(int i=0; i<BROWSER_INCOGNITO_FRAGMENT_LIST.size(); i++){
-            if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
-                hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
-        }
-    }
-
     @Override
     public void changeIncognitoTab(int tabIndex) {
+        // Remove Active Incognito Tabs
+        setActiveTabFragment(null);
         // Get Selected Fragment
         IncognitoTabFragment selectFragment=BROWSER_INCOGNITO_FRAGMENT_LIST.get(tabIndex);
-        // Set Tab Index
-        setActiveIncognitoIndex(tabIndex);
         // Set Tab Fragment
         setActiveIncognitoFragment(selectFragment);
 
-        // Remove Active Incognito Tabs
-        setActiveTabFragment(null);
-        setActiveTabWebView(null);
-        // Hide All Incognito Tabs
-        hideAllTabs();
-
         // Change Fragment View
         int fragList=BROWSER_INCOGNITO_FRAGMENT_LIST.size();
-
         for (int i=0; i < fragList; i++) {
             if(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)==selectFragment){
-                if(isHiddenFragment(selectFragment))
-                    // Note!
-                    // Incognito tabs not saved. So fragment webview not required refresh view.
-                    showFragment(selectFragment);
+                showFragment(selectFragment);
+                // Resume WebView
+                selectFragment.getWebView().onResume();
             }
-            else{
-                if(isShowingFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i)))
-                    // Hide Fragments
-                    hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
+            else {
+                // Hide Fragments
+                hideFragment(BROWSER_INCOGNITO_FRAGMENT_LIST.get(i));
+                // Pause WebView
+                BROWSER_INCOGNITO_FRAGMENT_LIST.get(i).getWebView().onPause();
             }
         }
+        // Hide All Incognito Tabs
+        hideAllTabs();
     }
 
     @Override
-    public void setActiveIncognitoFragment(IncognitoTabFragment IncognitoFragment) {
-        manIncognitoFragment=IncognitoFragment;
+    public void setActiveIncognitoFragment(IncognitoTabFragment incognitoFragment) {
+        activeIncognitoTabFragment=incognitoFragment;
     }
-    @Override
-    public void setActiveIncognitoWebView(OKWebView IncognitoWebView) {
-        manIncognitoWebView=IncognitoWebView;
-    }
+
     @Override
     public IncognitoTabFragment getActiveIncognitoFragment() {
-        return manIncognitoFragment;
-    }
-    @Override
-    public OKWebView getActiveIncognitoWebView() {
-        return manIncognitoWebView;
-    }
-
-    @Override
-    public void setActiveIncognitoIndex(int Index) {
-        manIncognitoIndex=Index;
-    }
-    @Override
-    public int getActiveIncognitoTabIndex() {
-        return manIncognitoIndex;
-    }
-
-    @Deprecated
-    @Override
-    public int getIncognitoTabCount() {
-        return BROWSER_INCOGNITO_FRAGMENT_LIST.size();
+        return activeIncognitoTabFragment;
     }
 
     @Override
     public ArrayList<IncognitoTabFragment> getIncognitoTabFragmentList() {
         return BROWSER_INCOGNITO_FRAGMENT_LIST;
     }
+
     @Override
     public ArrayList<IncognitoTabData> getIncognitoTabDataList() {
-        return BROWSER_INCOGNITO_LIST;
+        return BROWSER_INCOGNITO_TABDATA_LIST;
     }
+
     // Fragments
     @Override
     public void addFragmentView(int viewId, Fragment fragment) {
-        getFragmentManager().beginTransaction().add(viewId, fragment).commit();
+        fragmentManager.beginTransaction().add(viewId, fragment).commit();
     }
     @Override
     public void removeFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().remove(fragment).commit();
+        fragmentManager.beginTransaction().remove(fragment).commit();
     }
     @Override
     public void showFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().show(fragment).commit();
+        fragmentManager.beginTransaction().show(fragment).commit();
     }
     @Override
     public void hideFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().hide(fragment).commit();
+        fragmentManager.beginTransaction().hide(fragment).commit();
     }
     @Override
     public void attachFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().attach(fragment).commit();
+        fragmentManager.beginTransaction().attach(fragment).commit();
     }
     @Override
     public void detachFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().detach(fragment).commit();
+        fragmentManager.beginTransaction().detach(fragment).commit();
     }
 
     @Override

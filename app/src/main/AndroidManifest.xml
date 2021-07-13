@@ -22,7 +22,7 @@
         <activity android:name=".activity.settings.WebSettingsActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity android:name=".activity.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|locale">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

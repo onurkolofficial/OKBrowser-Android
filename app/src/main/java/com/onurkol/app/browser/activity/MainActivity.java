@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,6 +42,8 @@ import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
 import com.onurkol.app.browser.fragments.tabs.TabFragment;
 import com.onurkol.app.browser.fragments.tabs.list.IncognitoTabListFragment;
 import com.onurkol.app.browser.fragments.tabs.list.TabListFragment;
+import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
+import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.browser.SearchEngine;
 import com.onurkol.app.browser.lib.tabs.TabBuilder;
@@ -76,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
     // Intents
     Intent tabListIntent,welcomeIntent;
     // Variables
-    boolean backPressHomeLayout=false, onResumeCalled=false;
+    public static boolean isCreated=false,isThemeChanged;
+    boolean backPressHomeLayout=false;
 
     // Update Manager
     private AppUpdateManager mAppUpdateManager;
@@ -90,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
         dataManager=new BrowserDataManager();
         tabBuilder=TabBuilder.Build();
         tabCounter=new ToolbarTabCounter();
-
-        // Load Application/Browser Data
-        dataManager.initBrowserSettings();
+        // Init Browser Data
+        dataManager.initBrowserDataClasses();
 
         // Create View
         super.onCreate(savedInstanceState);
@@ -136,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         browserSwipeRefresh.getViewTreeObserver().addOnScrollChangedListener(swipeRefreshOnScrollChanged);
         browserSwipeRefresh.setOnRefreshListener(swipeRefreshListener);
 
+        // <BUG> Night mode changed to inflating new tab page, but tab count is 0.
+
         // Check Installer Activity
         if(dataManager.startInstallerActivity){
             // Start Welcome Activity
@@ -145,23 +151,58 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // Continue
-            // Check Saved Tabs
-            if (tabBuilder.getSavedTabList().size() <= 0)
-                // Create New Tab.
-                tabBuilder.createNewTab();
-            else
-                // Synchronize Tabs
-                tabBuilder.syncSavedTabs();
-            // Update Tab Counts
-            browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+            if(!isCreated) {
+                // Check Saved Tabs
+                startTabsSync();
+            }
+
+            // <BUG> for Night Theme
+            int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
+                isThemeChanged=true;
+            }
+        }
+        // Set isCreated variable
+        isCreated=true;
+    }
+
+    private void startTabsSync(){
+        // Check Saved Tabs
+        if (tabBuilder.getSavedTabList().size() <= 0) {
+            // Create New Tab.
+            tabBuilder.createNewTab();
+        }
+        else
+            // Synchronize Tabs
+            tabBuilder.syncSavedTabs();
+        // Update Tab Counts
+        browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        dataManager.initBrowserPreferenceSettings();
+        return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Get Preference Manager
+        AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
+
+        if(prefManager.getInt(BrowserDefaultSettings.KEY_APP_THEME)!=2){
+            int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
+                isThemeChanged=true;
+            }
         }
     }
 
     @Override
     protected void onResume() {
-        // <BUG> Init Data onResume for Set Language Setting
-        // Load Application/Browser Data
-        dataManager.initBrowserSettings();
         // Re-Building ContextManager
         ContextManager.Build(this);
         View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
@@ -227,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
                     tabBuilder.removeFragment(frag);
                     // Update Data List
                     tabBuilder.getTabFragmentList().remove(index);
+                    tabBuilder.recreateTabIndex();
                 }
                 // Reset Index
                 TabListFragment.changedIndexList.clear();
@@ -294,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 // Get Count Drawable
                 TabCountDrawable=new ToolbarTabCounter().getTabCountDrawable();
                 // Get Tab Web Url
-                browserSearchStatic.get().setText(tabBuilder.getTabDataList().get(signal.getSignalData().tab_position).getUrl());
+                browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             }
             else{
                 // Check Incognito Icon
@@ -308,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 // Get Count Drawable
                 TabCountDrawable=new ToolbarTabCounter().getIncognitoTabCountDrawable();
                 // Get Tab Web Url
-                browserSearchStatic.get().setText(tabBuilder.getIncognitoTabDataList().get(signal.getSignalData().tab_position).getUrl());
+                browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             }
             // Stop SwipeRefresh Status
             browserSwipeRefreshStatic.get().setRefreshing(false);
@@ -316,12 +358,7 @@ public class MainActivity extends AppCompatActivity {
             browserTabListButtonStatic.get().setImageDrawable(TabCountDrawable);
         };
         // Exec Runnable
-        ProcessDelay.Delay(checkSignalRunnable, 50);
-    }
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+        ProcessDelay.Delay(checkSignalRunnable, 150);
     }
 
     @Override
@@ -329,15 +366,18 @@ public class MainActivity extends AppCompatActivity {
         // Elements
         View fragmentView;
         OKWebView webView;
+        // Variables
+        String backUrl;
         // Check Url Back, Layout & Tabs
         if(tabBuilder.getActiveTabFragment()!=null){
             // Check Tab WebView Layout
             // Get WebView & Fragment View
             fragmentView=tabBuilder.getActiveTabFragment().getView();
-            webView=tabBuilder.getActiveTabWebView();
+            webView=tabBuilder.getActiveTabFragment().getWebView();
             // Check Exists WebView History
             if(webView.canGoBack()) {
                 webView.goBack();
+                backUrl=webView.getUrl();
             }
             else{
                 // Sync Tab Data
@@ -349,15 +389,18 @@ public class MainActivity extends AppCompatActivity {
                     super.onBackPressed();
                 else
                     backPressHomeLayout=true;
+                backUrl="";
             }
         }
         else{
             // Check Incognito WebView Layout
             fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
-            webView=tabBuilder.getActiveIncognitoWebView();
+            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoBack())
+            if(webView.canGoBack()){
                 webView.goBack();
+                backUrl=webView.getUrl();
+            }
             else{
                 // Hide WebView & Show Page Layout
                 webView.setVisibility(View.GONE);
@@ -366,8 +409,11 @@ public class MainActivity extends AppCompatActivity {
                     super.onBackPressed();
                 else
                     backPressHomeLayout=true;
+                backUrl="";
             }
         }
+        // Show Url
+        browserSearch.setText(backUrl);
     }
 
     // Event Listeners
@@ -431,7 +477,6 @@ public class MainActivity extends AppCompatActivity {
             webView=fragmentView.findViewById(R.id.okBrowserIncognitoWebView);
             webLayout=fragmentView.findViewById(R.id.incognitoHomeLayout);
         }
-
         // Check Url
         if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
             // Hide Tab Page Layout
@@ -459,6 +504,8 @@ public class MainActivity extends AppCompatActivity {
             ((EditText)view).setText("");
             // Hide Keyboard
             KeyboardController.hideKeyboard(view);
+            // Clear Focus
+            view.clearFocus();
         }
         return false;
     };
@@ -567,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(this, getString(R.string.update_install_completed), Toast.LENGTH_SHORT).show();
             }
             else {
-                Log.e("MainAct/389", "InstallStateUpdatedListener: state: " + state.installStatus());
+                //Log.e("MainAct/389", "InstallStateUpdatedListener: state: " + state.installStatus());
             }
         }
     };

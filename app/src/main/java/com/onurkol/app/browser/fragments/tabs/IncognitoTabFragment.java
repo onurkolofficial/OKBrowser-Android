@@ -28,6 +28,9 @@ public class IncognitoTabFragment extends Fragment {
     // Types
     private Bitmap fragmentScreen;
 
+    // Variables
+    private int activeTabIndex;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -49,11 +52,14 @@ public class IncognitoTabFragment extends Fragment {
         okBrowserIncognitoWebView.setIncognitoTabFragment(this);
         // Set Variables
         okBrowserIncognitoWebView.isIncognitoWebView=true;
-
-        // Set Active Tab
-        thisTabSetToActive();
-
         return fragmentView;
+    }
+
+    public void setActiveTabIndex(int tabIndex){
+        activeTabIndex=tabIndex;
+    }
+    public int getActiveTabIndex(){
+        return activeTabIndex;
     }
 
     public OKWebView getWebView(){
@@ -74,12 +80,5 @@ public class IncognitoTabFragment extends Fragment {
     }
     public Bitmap getUpdatedScreenShot(){
         return fragmentScreen;
-    }
-
-    private void thisTabSetToActive(){
-        TabBuilder tabBuilder=TabBuilder.Build();
-        // Set Active Tab Data
-        tabBuilder.setActiveIncognitoFragment(this);
-        tabBuilder.setActiveIncognitoWebView(okBrowserIncognitoWebView);
     }
 }

@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.fragments.tabs.list.IncognitoTabListFragment;
-import com.onurkol.app.browser.fragments.tabs.list.TabListFragment;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.tabs.core.ToolbarTabCounter;
@@ -162,7 +160,6 @@ public class MenuToolbarMain {
     static View.OnClickListener forwardButtonListener=view -> {
         // Get Context Activity
         Activity activity=ContextManager.getManager().getContextActivity();
-
         // Get Elements
         EditText browserSearch=activity.findViewById(R.id.browserSearch);
         // Variables
@@ -170,37 +167,38 @@ public class MenuToolbarMain {
         // Get Views
         View fragmentView;
         OKWebView webView;
-        if(tabBuilder.getActiveTabFragment()!=null) {
-            fragmentView = tabBuilder.getActiveTabFragment().getView();
-            webView = tabBuilder.getActiveTabFragment().getWebView();
-        }
-        else {
-            fragmentView = tabBuilder.getActiveIncognitoFragment().getView();
-            webView = tabBuilder.getActiveIncognitoFragment().getWebView();
-        }
-
-        // Check Back View or Url
-        if(webView.onBackView)
-            webView.onBackView=false;
-        else
+        // Check Url Back, Layout & Tabs
+        if(tabBuilder.getActiveTabFragment()!=null){
+            // Check Tab WebView Layout
+            // Get WebView & Fragment View
+            fragmentView=tabBuilder.getActiveTabFragment().getView();
+            webView=tabBuilder.getActiveTabFragment().getWebView();
+            // Check Exists WebView History
             if(webView.canGoForward())
                 webView.goForward();
-
-        forwardUrl=webView.getUrl();
-
-        // Show WebView & Hide Page Layout
-        if(webView.canGoForward()) {
-            webView.setVisibility(View.VISIBLE);
-            if (webView.isIncognitoWebView)
-                (fragmentView.findViewById(R.id.incognitoHomeLayout)).setVisibility(View.GONE);
-            else {
-                // Sync Tab Data
-                webView.syncOnBackForward(forwardUrl);
-                // Hide Layout
+            else{
+                // Show WebView & Hide Page Layout
+                webView.setVisibility(View.VISIBLE);
                 (fragmentView.findViewById(R.id.newTabHomeLayout)).setVisibility(View.GONE);
             }
+            // Sync Tab Data
+            webView.syncOnBackForward(webView.getUrl());
         }
-        // Update Toolbar
+        else{
+            // Check Incognito WebView Layout
+            fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
+            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+            // Check Exists WebView History
+            if(webView.canGoForward())
+                webView.goForward();
+            else{
+                // Show WebView & Hide Page Layout
+                webView.setVisibility(View.VISIBLE);
+                (fragmentView.findViewById(R.id.incognitoHomeLayout)).setVisibility(View.GONE);
+            }
+        }
+        forwardUrl=webView.getUrl();
+        // Show Url
         browserSearch.setText(forwardUrl);
         // Dismiss Popup
         popupWindow.dismiss();

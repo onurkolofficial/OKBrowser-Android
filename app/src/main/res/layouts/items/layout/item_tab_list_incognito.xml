@@ -46,7 +46,7 @@
                     android:paddingEnd="5dp"
                     android:text="WEB_TITLE"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
                 <!-- Close Tab Button !-->
                 <ImageButton
                     android:id="@+id/closeIncognitoTabButton"

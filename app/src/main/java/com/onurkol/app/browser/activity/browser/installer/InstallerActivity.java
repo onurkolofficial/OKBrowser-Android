@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
@@ -14,6 +15,7 @@ import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.lib.ContextManager;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 public class InstallerActivity extends AppCompatActivity {
     // Elements
@@ -21,7 +23,7 @@ public class InstallerActivity extends AppCompatActivity {
     // Static Elements
     public static WeakReference<ViewPager2> installerPagerStatic;
     // Classes
-    static WeakReference<BrowserDataManager> dataManagerStatic;
+    BrowserDataManager dataManager;
     // Intents
     static Intent mainIntent;
 
@@ -31,18 +33,14 @@ public class InstallerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_installer);
         // Building ContextManager
         ContextManager.Build(this);
-        // Get Classes
-        dataManagerStatic=new WeakReference<>(new BrowserDataManager());
 
-        // Init Settings
-        dataManagerStatic.get().initBrowserSettings();
+        // Get Classes
+        dataManager=new BrowserDataManager();
 
         // Get Elements
         installerPager=findViewById(R.id.installerPager);
         // Set Static Elements
         installerPagerStatic=new WeakReference<>(installerPager);
-
-
 
         // Get Intents
         mainIntent=new Intent(this, MainActivity.class);
@@ -50,6 +48,12 @@ public class InstallerActivity extends AppCompatActivity {
         // Set Pager Adapter
         installerPager.setAdapter(new InstallerPagerAdapter(this));
         installerPager.setUserInputEnabled(false);
+    }
+
+    @Override
+    protected void onStart() {
+        dataManager.initBrowserPreferenceSettings();
+        super.onStart();
     }
 
     @Override

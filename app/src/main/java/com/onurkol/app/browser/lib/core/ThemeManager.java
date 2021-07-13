@@ -1,6 +1,7 @@
 package com.onurkol.app.browser.lib.core;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatViewInflater;
 
 public class ThemeManager {
     private static ThemeManager instance=null;

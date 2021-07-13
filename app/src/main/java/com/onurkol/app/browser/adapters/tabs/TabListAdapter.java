@@ -88,16 +88,16 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
             // Set Page Title
             holder.tabUrlText.setText(context.getString(R.string.new_tab_text));
             // Get View
-            fragmentView=tabBuilder.getTabFragmentList().get(position).getView();
+            fragmentView=cData.getTabFragment().getView();
             // Tab Preview
             holder.tabPreviewImage.setImageBitmap(ScreenManager.getScreenshot(fragmentView));
         }
         else {
             // Set Page Title
-            holder.tabUrlText.setText(CharLimiter.Limit(data.getTitle(), 30));
+            holder.tabUrlText.setText(CharLimiter.Limit(data.getTitle(), 27));
             // Tab Preview
             if(cData.getTabPreview()!=null)
-                holder.tabPreviewImage.setImageBitmap(cData.getTabPreview());
+                holder.tabPreviewImage.setImageBitmap(ScreenManager.getScreenshot(cData.getTabFragment().getView()));
         }
 
         // Button Click Events
@@ -140,17 +140,18 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
     }
 
     // Tab Signals for Listeners
-    public static void sendTabSignal(int TabPosition, int SignalMode, boolean incognito){
+    public static void sendTabSignal(int tabPosition, int signalCode, boolean incognito){
         // Send Activity Status
         // Create Tab Signal
         ActivityTabSignal tabSignal=new ActivityTabSignal();
         ActivityTabSignal.TabSignalData signalData=new ActivityTabSignal.TabSignalData();
         // Set Status
-        tabSignal.setSignalStatus(SignalMode);
+        tabSignal.setSignalStatus(signalCode);
         // Set Incognito Mode
         tabSignal.setTabIsIncognito(incognito);
         // Set Data
-        signalData.tab_position=TabPosition;
+        signalData.tab_position=tabPosition;
+        signalData.tab_url=tabDataList.get(tabPosition).getUrl();
         // Send Data
         tabSignal.setSignalData(signalData);
         // Send Signal

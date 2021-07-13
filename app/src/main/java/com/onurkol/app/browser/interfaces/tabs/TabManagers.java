@@ -18,23 +18,18 @@ public interface TabManagers {
     void changeTab(int tabIndex);
     // Data
     void setActiveTabFragment(TabFragment TabFragment);
-    void setActiveTabWebView(OKWebView TabWebView);
-    void setActiveTabIndex(int Index);
     TabFragment getActiveTabFragment();
-    OKWebView getActiveTabWebView();
-    int getActiveTabIndex();
-    @Deprecated // Because tab count update issue.
-    int getTabCount();
     // Datas
     ArrayList<TabFragment> getTabFragmentList();
     ArrayList<TabData> getTabDataList();
     ArrayList<ClassesTabData> getClassesTabDataList();
+    void recreateTabIndex();
     // Saved Tabs
     //void saveTabPreference(TabData tabData);
     void saveTabListPreference(ArrayList<TabData> tabDataList);
     ArrayList<TabData> getSavedTabList();
     void syncSavedTabs();
-    void updateSyncTabData(int position, TabData updateData, ClassesTabData updateClassesData, OKWebView webView);
+    void updateSyncTabData(int position, TabData updateData, ClassesTabData updateClassesData);
 
     // Incognito Tabs
     void createNewIncognitoTab();
@@ -42,17 +37,10 @@ public interface TabManagers {
     void changeIncognitoTab(int tabIndex);
     // Data
     void setActiveIncognitoFragment(IncognitoTabFragment IncognitoFragment);
-    void setActiveIncognitoWebView(OKWebView IncognitoWebView);
     IncognitoTabFragment getActiveIncognitoFragment();
-    OKWebView getActiveIncognitoWebView();
-    void setActiveIncognitoIndex(int Index);
-    int getActiveIncognitoTabIndex();
-    @Deprecated
-    int getIncognitoTabCount();
     // Datas
     ArrayList<IncognitoTabFragment> getIncognitoTabFragmentList();
     ArrayList<IncognitoTabData> getIncognitoTabDataList();
-
     // Fragment Views
     void addFragmentView(int viewId, Fragment fragment);
     void removeFragment(Fragment fragment);

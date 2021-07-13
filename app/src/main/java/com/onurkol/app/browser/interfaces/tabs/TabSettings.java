@@ -17,11 +17,11 @@ public interface TabSettings {
     String NEW_TAB_URL="";
 
     // Tab Data List
-    ArrayList<TabData> BROWSER_TAB_LIST=new ArrayList<>();
-    ArrayList<ClassesTabData> BROWSER_CLASSES_TAB_LIST=new ArrayList<>();
-    ArrayList<IncognitoTabData> BROWSER_INCOGNITO_LIST=new ArrayList<>();
-    // Tab Fragment List
+    ArrayList<TabData> BROWSER_TABDATA_LIST=new ArrayList<>();
+    ArrayList<ClassesTabData> BROWSER_CLASSES_TABDATA_LIST=new ArrayList<>();
     ArrayList<TabFragment> BROWSER_TAB_FRAGMENT_LIST=new ArrayList<>();
+    // Incognito Tab Data List
+    ArrayList<IncognitoTabData> BROWSER_INCOGNITO_TABDATA_LIST=new ArrayList<>();
     ArrayList<IncognitoTabFragment> BROWSER_INCOGNITO_FRAGMENT_LIST=new ArrayList<>();
 
 }

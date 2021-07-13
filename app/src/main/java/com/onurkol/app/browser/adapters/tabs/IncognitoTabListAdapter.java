@@ -90,7 +90,7 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
         }
         else {
             // Set Page Title
-            holder.incognitoTabUrlText.setText(CharLimiter.Limit(data.getTitle(), 28));
+            holder.incognitoTabUrlText.setText(CharLimiter.Limit(data.getTitle(), 24));
             // Tab Preview
             if(data.getTabPreview()!=null)
                 holder.incognitoTabPreviewImage.setImageBitmap(data.getTabPreview());

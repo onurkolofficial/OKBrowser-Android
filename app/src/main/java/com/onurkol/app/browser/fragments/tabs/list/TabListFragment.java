@@ -36,7 +36,7 @@ public class TabListFragment extends Fragment implements TabSettings {
         tabGridList.setOnTouchListener(clickToCloseListener);
 
         // Set Adapter
-        tabGridList.setAdapter(new TabListAdapter(getActivity(), tabGridList, BROWSER_TAB_LIST, BROWSER_CLASSES_TAB_LIST));
+        tabGridList.setAdapter(new TabListAdapter(getActivity(), tabGridList, BROWSER_TABDATA_LIST, BROWSER_CLASSES_TABDATA_LIST));
 
         return view;
     }

@@ -1,6 +1,7 @@
 package com.onurkol.app.browser.data;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
@@ -19,16 +20,22 @@ public class BrowserDataManager implements BrowserDefaultSettings {
     public boolean startInstallerActivity=false;
 
     @Override
-    public void initBrowserSettings() {
+    public void initBrowserDataClasses() {
         context=ContextManager.getManager().getContext();
         prefManager=AppPreferenceManager.getInstance();
         searchEngine=SearchEngine.getInstance();
 
-        // Load Default Data
-        loadBrowserPreferenceData();
         // Check & Load Preference Data
         if(!prefManager.getBoolean(KEY_LOAD_PREFERENCE))
             startInstallerActivity=true;
+    }
+
+    @Override
+    public void initBrowserPreferenceSettings() {
+        if(context==null)
+            initBrowserDataClasses();
+        // Load Default Data
+        loadBrowserPreferenceData();
 
         // Set Default Search Engine
         searchEngine.setSearchEngine(DEFAULT_SEARCH_ENGINE);
@@ -74,8 +81,13 @@ public class BrowserDataManager implements BrowserDefaultSettings {
         if(prefManager.getInt(KEY_APP_LANGUAGE)==AppPreferenceManager.INTEGER_NULL)
             prefManager.setPreference(KEY_APP_LANGUAGE, DEFAULT_APP_LANGUAGE);
         // Theme Settings
+        int default_theme;
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+            default_theme=DEFAULT_APP_THEME_NEW_API;
+        else
+            default_theme=DEFAULT_APP_THEME;
         if(prefManager.getInt(KEY_APP_THEME)==AppPreferenceManager.INTEGER_NULL)
-            prefManager.setPreference(KEY_APP_THEME, DEFAULT_APP_THEME);
+            prefManager.setPreference(KEY_APP_THEME, default_theme);
     }
 
     public void successDataLoad(){
@@ -85,6 +97,7 @@ public class BrowserDataManager implements BrowserDefaultSettings {
             prefManager.setPreference(KEY_LOAD_PREFERENCE,true);
     }
 
+    @Override
     public void applyApplicationViewSettings(){
         // Get Variables
         int getLanguage=prefManager.getInt(KEY_APP_LANGUAGE);
