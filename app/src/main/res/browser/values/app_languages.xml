@@ -14,8 +14,8 @@
     </integer-array>
 
     <!-- for Settings Preferences !-->
-    <integer-array name="languages_preference_icons">
-        <item>@drawable/ic_baseline_translate_24</item>
+    <integer-array name="app_languages_preference_icons">
+        <item>@drawable/ic_baseline_sync_24</item>
         <item>@drawable/ic_baseline_translate_24</item>
         <item>@drawable/ic_baseline_translate_24</item>
     </integer-array>

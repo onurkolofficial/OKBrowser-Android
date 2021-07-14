@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
@@ -29,7 +30,7 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataInteger>
     private static ArrayList<InstallerDataInteger> dataTypeList;
     private final ListView dataListView;
 
-    // TEST
+    // Change Settings and disabled all checkbox.
     ArrayList<CheckBox> checkBoxes=new ArrayList<>();
 
     // Variables
@@ -64,6 +65,8 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataInteger>
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        // Get Classes
+        BrowserDataManager dataManager=new BrowserDataManager();
 
         // Add Checkboxes List
         checkBoxes.add(holder.dataItemCheckbox);
@@ -104,20 +107,12 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataInteger>
             }
             // Select Current Checkbox
             ((CheckBox)view.findViewById(R.id.dataItemCheckbox)).setChecked(true);
+
             // Check Data, Save Preference
             if(PREF_DATA_KEY!=null)
                 prefManager.setPreference(PREF_DATA_KEY,getXmlDataInteger);
-
             // Update Theme & Language
-            if(PREF_DATA_KEY.equals(BrowserDefaultSettings.KEY_APP_THEME))
-                // Update Theme
-                ThemeManager.getInstance().setAppTheme(getXmlDataInteger);
-            else if(PREF_DATA_KEY.equals(BrowserDefaultSettings.KEY_APP_LANGUAGE)) {
-                // Update Language
-                LanguageManager.getInstance().setAppLanguage(getXmlDataInteger);
-                // Refresh
-                ContextManager.getManager().getContextActivity().recreate();
-            }
+            dataManager.setApplicationSettings(PREF_DATA_KEY,getXmlDataInteger);
         });
         return convertView;
     }

@@ -29,7 +29,11 @@ public class AppTheme {
     }
 
     public ArrayList<Integer> getThemeValueList() {
-        int[] list=context.getResources().getIntArray(R.array.app_themes_value);
+        return returnIntegerListHandler(R.array.app_themes_value);
+    }
+
+    private ArrayList<Integer> returnIntegerListHandler(int arrayName){
+        int[] list=context.getResources().getIntArray(arrayName);
         // Return
         ArrayList<Integer> intValue=new ArrayList<>();
         for (int index : list)

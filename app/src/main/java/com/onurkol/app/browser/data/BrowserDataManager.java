@@ -38,7 +38,7 @@ public class BrowserDataManager implements BrowserDefaultSettings {
         loadBrowserPreferenceData();
 
         // Set Default Search Engine
-        searchEngine.setSearchEngine(DEFAULT_SEARCH_ENGINE);
+        searchEngine.setSearchEngine(prefManager.getInt(KEY_SEARCH_ENGINE));
 
         // Building Tabs
         tabBuilder=TabBuilder.Build();
@@ -77,6 +77,9 @@ public class BrowserDataManager implements BrowserDefaultSettings {
         // Desktop Mode
         if(!prefManager.getBoolean(KEY_DESKTOP_MODE))
             prefManager.setPreference(KEY_DESKTOP_MODE,DEFAULT_DESKTOP_MODE);
+        // Search Engine
+        if(prefManager.getInt(KEY_SEARCH_ENGINE)==AppPreferenceManager.INTEGER_NULL)
+            prefManager.setPreference(KEY_SEARCH_ENGINE,DEFAULT_SEARCH_ENGINE);
         // Language Settings
         if(prefManager.getInt(KEY_APP_LANGUAGE)==AppPreferenceManager.INTEGER_NULL)
             prefManager.setPreference(KEY_APP_LANGUAGE, DEFAULT_APP_LANGUAGE);
@@ -106,5 +109,18 @@ public class BrowserDataManager implements BrowserDefaultSettings {
         // Apply Language & Theme
         LanguageManager.getInstance().setAppLanguage(getLanguage);
         ThemeManager.getInstance().setAppTheme(getTheme);
+    }
+
+    public void setApplicationSettings(String preferenceKey, int preferenceValue){
+        // Update Theme & Language
+        if(preferenceKey.equals(BrowserDefaultSettings.KEY_APP_THEME))
+            // Update Theme
+            ThemeManager.getInstance().setAppTheme(preferenceValue);
+        else if(preferenceKey.equals(BrowserDefaultSettings.KEY_APP_LANGUAGE)) {
+            // Update Language
+            LanguageManager.getInstance().setAppLanguage(preferenceValue);
+            // Refresh
+            ContextManager.getManager().getContextActivity().recreate();
+        }
     }
 }

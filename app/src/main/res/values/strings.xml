@@ -71,4 +71,5 @@
     <string name="developer_options_summary">Show developer options.</string>
     <string name="delete_all_history_text">Delete All History</string>
     <string name="close_text">Close</string>
+    <string name="settings_notice_text">It is recommended to restart the application after changing the settings.</string>
 </resources>

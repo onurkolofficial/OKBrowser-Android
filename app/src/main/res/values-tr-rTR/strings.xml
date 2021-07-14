@@ -71,4 +71,5 @@
     <string name="developer_options_summary">Geliştirici seçeneklerini göster.</string>
     <string name="delete_all_history_text">Tüm Geçmişi Sil</string>
     <string name="close_text">Kapat</string>
+    <string name="settings_notice_text">Ayarları değiştirdikten sonra uygulamayı yeniden başlatmanız önerilir.</string>
 </resources>

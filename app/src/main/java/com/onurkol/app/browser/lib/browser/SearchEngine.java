@@ -5,13 +5,14 @@ import android.content.Context;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.lib.ContextManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SearchEngine {
     private static SearchEngine instance=null;
     private String searchEngineName, searchEngineQuery;
-    private int searchEngineIndex;
+    private int searchEngineValue;
     Context context;
 
     private SearchEngine(){
@@ -25,21 +26,31 @@ public class SearchEngine {
     }
 
     public void setSearchEngine(int Index){
-        searchEngineIndex=Index;
+        searchEngineValue=Index;
         searchEngineName=getSearchEngineNameList().get(Index);
         searchEngineQuery=getSearchEngineQueryList().get(Index);
     }
 
-    public List<String> getSearchEngineNameList() {
-        return Arrays.asList(context.getResources().getStringArray(R.array.search_engine_names));
+    public ArrayList<String> getSearchEngineNameList() {
+        return new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.search_engine_names)));
     }
 
-    public List<String> getSearchEngineQueryList() {
-        return Arrays.asList(context.getResources().getStringArray(R.array.search_engine_queries));
+    public ArrayList<String> getSearchEngineQueryList() {
+        return new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.search_engine_queries)));
     }
 
-    public List<int[]> getListSearchEngineIndex() {
-        return Arrays.asList(context.getResources().getIntArray(R.array.search_engine_index));
+    public ArrayList<Integer> getSearchEngineValueList() {
+        return returnIntegerListHandler(R.array.search_engine_values);
+    }
+
+    private ArrayList<Integer> returnIntegerListHandler(int arrayName){
+        int[] list=context.getResources().getIntArray(arrayName);
+        // Return
+        ArrayList<Integer> intValue=new ArrayList<>();
+        for (int index : list)
+            intValue.add(index);
+
+        return intValue;
     }
 
     public String getSearchEngineName() {
@@ -50,7 +61,8 @@ public class SearchEngine {
         return searchEngineQuery;
     }
 
-    public int getSearchEngineIndex() {
-        return searchEngineIndex;
+    public int getSearchEngineValue() {
+        return searchEngineValue;
     }
+
 }

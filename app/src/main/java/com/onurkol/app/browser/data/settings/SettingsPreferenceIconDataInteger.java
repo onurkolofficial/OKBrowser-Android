@@ -1,21 +1,26 @@
 package com.onurkol.app.browser.data.settings;
 
-public class SettingsPreferenceDataInteger {
+import android.graphics.drawable.Drawable;
+
+public class SettingsPreferenceIconDataInteger {
     private String stringData;
     private Integer integerData;
+    private Drawable dataIcon;
     private boolean isPreferenceData;
     private String preferenceKey;
 
-    public SettingsPreferenceDataInteger(String getStringData, Integer getIntegerData){
+    public SettingsPreferenceIconDataInteger(String getStringData, Integer getIntegerData, Drawable getDataIcon){
         stringData=getStringData;
         integerData=getIntegerData;
+        dataIcon=getDataIcon;
         isPreferenceData=false;
         preferenceKey=null;
     }
 
-    public SettingsPreferenceDataInteger(String getStringData, Integer getIntegerData, boolean getIsPreferenceData, String getPreferenceKey){
+    public SettingsPreferenceIconDataInteger(String getStringData, Integer getIntegerData, Drawable getDataIcon, boolean getIsPreferenceData, String getPreferenceKey){
         stringData=getStringData;
         integerData=getIntegerData;
+        dataIcon=getDataIcon;
         isPreferenceData=getIsPreferenceData;
         preferenceKey=getPreferenceKey;
     }
@@ -25,6 +30,9 @@ public class SettingsPreferenceDataInteger {
     }
     public Integer getIntegerData(){
         return integerData;
+    }
+    public Drawable getDataIcon(){
+        return dataIcon;
     }
     public boolean getIsPreferenceData(){
         return isPreferenceData;

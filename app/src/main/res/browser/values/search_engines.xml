@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer-array name="search_engine_index">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </integer-array>
+    <!-- Names !-->
     <string-array name="search_engine_names">
         <item>Google</item>
         <item>Yandex</item>
@@ -16,6 +9,7 @@
         <item>DuckDuckGo</item>
         <item>Ecosia</item>
     </string-array>
+    <!-- Queries !-->
     <string-array name="search_engine_queries">
         <item>https://www.google.com/search?q=</item>
         <item>https://www.yandex.com/search/?text=</item>
@@ -24,6 +18,15 @@
         <item>https://duckduckgo.com/?q=</item>
         <item>https://www.ecosia.org/search?q=</item>
     </string-array>
+    <!-- Values !-->
+    <integer-array name="search_engine_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </integer-array>
     <!-- for Settings Preferences !-->
     <integer-array name="search_engines_preference_icons">
         <item>@drawable/ic_baseline_search_24</item>

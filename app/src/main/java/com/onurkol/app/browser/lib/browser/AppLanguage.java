@@ -28,12 +28,16 @@ public class AppLanguage {
     }
 
     public ArrayList<Integer> getLanguageValueList() {
-        int[] list=context.getResources().getIntArray(R.array.app_languages_value);
+        return returnIntegerListHandler(R.array.app_languages_value);
+    }
+
+    private ArrayList<Integer> returnIntegerListHandler(int arrayName){
+        int[] list=context.getResources().getIntArray(arrayName);
         // Return
         ArrayList<Integer> intValue=new ArrayList<>();
         for (int index : list)
             intValue.add(index);
 
         return intValue;
-    }
+    };
 }
