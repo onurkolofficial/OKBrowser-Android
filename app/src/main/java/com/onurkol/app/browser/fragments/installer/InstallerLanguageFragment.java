@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.installer.InstallerDataItemAdapter;
-import com.onurkol.app.browser.data.installer.InstallerDataType;
+import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.browser.AppLanguage;
 
@@ -25,7 +25,7 @@ public class InstallerLanguageFragment extends Fragment {
     Button languageNextButton;
     ListView languageItemList;
 
-    ArrayList<InstallerDataType> LANGUAGE_DATA_LIST=new ArrayList<>();
+    ArrayList<InstallerDataInteger> LANGUAGE_DATA_LIST=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class InstallerLanguageFragment extends Fragment {
 
         // Add Data
         for(int i=0; i<xmlStringValue.size(); i++)
-            LANGUAGE_DATA_LIST.add(new InstallerDataType(xmlStringValue.get(i),xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_LANGUAGE));
+            LANGUAGE_DATA_LIST.add(new InstallerDataInteger(xmlStringValue.get(i),xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_LANGUAGE));
 
         // Set Listeners
         languageNextButton.setOnClickListener(installerNextPageListener);

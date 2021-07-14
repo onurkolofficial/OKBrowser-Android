@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.data.installer.InstallerDataType;
+import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
@@ -23,10 +23,10 @@ import com.onurkol.app.browser.lib.core.ThemeManager;
 
 import java.util.ArrayList;
 
-public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataType> {
+public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataInteger> {
     private final LayoutInflater inflater;
     private ViewHolder holder;
-    private static ArrayList<InstallerDataType> dataTypeList;
+    private static ArrayList<InstallerDataInteger> dataTypeList;
     private final ListView dataListView;
 
     // TEST
@@ -38,7 +38,7 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataType> {
     // Classes
     AppPreferenceManager prefManager;
 
-    public InstallerDataItemAdapter(Context context, ListView getDataListView, ArrayList<InstallerDataType> getDataList){
+    public InstallerDataItemAdapter(Context context, ListView getDataListView, ArrayList<InstallerDataInteger> getDataList){
         super(context, 0, getDataList);
         dataTypeList=getDataList;
         dataListView=getDataListView;
@@ -55,7 +55,7 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataType> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_installer_data_list, null);
+            convertView = inflater.inflate(R.layout.item_checkbox_data, null);
             holder = new ViewHolder();
             holder.dataItemNameView = convertView.findViewById(R.id.dataItemNameView);
             holder.dataItemSelectLayoutButton = convertView.findViewById(R.id.dataItemSelectLayoutButton);
@@ -69,7 +69,7 @@ public class InstallerDataItemAdapter extends ArrayAdapter<InstallerDataType> {
         checkBoxes.add(holder.dataItemCheckbox);
 
         // Get Data
-        InstallerDataType dataType=dataTypeList.get(position);
+        InstallerDataInteger dataType=dataTypeList.get(position);
 
         String getXmlDataString=dataType.getStringData();
         int getXmlDataInteger=dataType.getIntegerData();

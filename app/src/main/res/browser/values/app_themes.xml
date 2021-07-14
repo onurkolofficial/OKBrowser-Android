@@ -12,4 +12,10 @@
         <item>0</item>
         <item>1</item>
     </integer-array>
+    <!-- for Settings Preferences !-->
+    <integer-array name="themes_preference_icons">
+        <item>@drawable/ic_baseline_view_carousel_24</item>
+        <item>@drawable/ic_baseline_view_carousel_24</item>
+        <item>@drawable/ic_baseline_view_carousel_24</item>
+    </integer-array>
 </resources>

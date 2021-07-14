@@ -13,7 +13,7 @@
         android:paddingEnd="2dp"
         android:clickable="true"
         android:focusable="true">
-        <!-- Data Item Title Title !-->
+        <!-- Data Item Title !-->
         <TextView
             android:id="@+id/dataItemNameView"
             android:layout_width="match_parent"

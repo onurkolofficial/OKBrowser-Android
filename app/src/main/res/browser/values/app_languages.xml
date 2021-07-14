@@ -12,4 +12,11 @@
         <item>1</item>
         <item>2</item>
     </integer-array>
+
+    <!-- for Settings Preferences !-->
+    <integer-array name="languages_preference_icons">
+        <item>@drawable/ic_baseline_translate_24</item>
+        <item>@drawable/ic_baseline_translate_24</item>
+        <item>@drawable/ic_baseline_translate_24</item>
+    </integer-array>
 </resources>

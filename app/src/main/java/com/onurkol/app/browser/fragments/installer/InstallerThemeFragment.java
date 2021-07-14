@@ -14,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.installer.InstallerDataItemAdapter;
-import com.onurkol.app.browser.data.installer.InstallerDataType;
+import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.browser.AppTheme;
 
@@ -26,7 +26,7 @@ public class InstallerThemeFragment extends Fragment {
     ListView themeItemList;
     Button themeNextButton;
 
-    ArrayList<InstallerDataType> THEME_DATA_LIST=new ArrayList<>();
+    ArrayList<InstallerDataInteger> THEME_DATA_LIST=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +51,10 @@ public class InstallerThemeFragment extends Fragment {
             // Not add this option for API 29 and oldest.
             if (xmlIntegerValue.get(i)==2){
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
-                    THEME_DATA_LIST.add(new InstallerDataType(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));
+                    THEME_DATA_LIST.add(new InstallerDataInteger(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));
             }
             else
-                THEME_DATA_LIST.add(new InstallerDataType(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));
+                THEME_DATA_LIST.add(new InstallerDataInteger(xmlStringValue.get(i), xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_THEME));
         }
 
         // Set Listeners
