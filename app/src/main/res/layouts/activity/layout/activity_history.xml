@@ -33,4 +33,9 @@
             android:textColor="@color/primary"/>
     </LinearLayout>
     <!-- Content !-->
+    <ListView
+        android:id="@+id/historyListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"/>
 </LinearLayout>

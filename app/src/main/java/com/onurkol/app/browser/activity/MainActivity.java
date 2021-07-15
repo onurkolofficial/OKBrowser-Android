@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     // Intents
     Intent tabListIntent,installerIntent;
     // Variables
-    public static boolean isCreated=false,isCreatedView=false;
+    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
     boolean backPressHomeLayout=false;
     String findQueryString="";
 
@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Building ContextManager
-        ContextManager.Build(this);
+        // .BuildBase only MainActivity.
+        ContextManager.BuildBase(this);
         // Get Classes
         dataManager=new BrowserDataManager();
         tabBuilder=TabBuilder.Build();
@@ -191,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         // Init Browser Data ( Applying View Settings )
         if(!dataManager.startInstallerActivity){
             dataManager.initBrowserPreferenceSettings();
+
             if(!isCreatedView) {
                 /**
                  * <BUG> Application ui mode changed, recreating views and some create view bugs.
@@ -211,13 +213,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        isConfigChanged=true;
         // Get Preference Manager
         AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
 
         if(prefManager.getInt(BrowserDefaultSettings.KEY_APP_THEME)!=2){
             int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
-                // NULL
+                checkDataView(isConfigChanged);
             }
         }
     }
@@ -239,6 +242,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<IncognitoTabFragment> incognitoFragmentList=tabBuilder.getIncognitoTabFragmentList();
         ArrayList<IncognitoTabData> incognitoDataList=tabBuilder.getIncognitoTabDataList();
         List<Integer> changeIncognitoList=IncognitoTabListFragment.changedIndexList;
+
+        // <BUG> Check Views for Theme Changed
+        checkDataView(isConfigChanged);
 
         // * Check Closed Tabs.
         // * 1- If all tabs closed, show the 'No Tab Toolbar'.
@@ -281,15 +287,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 // Remove Closed Tabs View (Check Closed *Tabs)
                 int changedListSize = changeList.size();
-                for (int i = 0; i < changedListSize; i++) {
-                    int index = changeList.get(i);
-                    // Get Fragments
-                    TabFragment frag = tabFragmentList.get(index);
-                    // Remove View
-                    tabBuilder.removeFragment(frag);
-                    // Update Data List
-                    tabBuilder.getTabFragmentList().remove(index);
-                    tabBuilder.recreateTabIndex();
+                if(changedListSize>0) {
+                    for (int i = 0; i < changedListSize; i++) {
+                        int index = changeList.get(i);
+                        // Get Fragments
+                        TabFragment frag = tabFragmentList.get(index);
+                        // Remove View
+                        tabBuilder.removeFragment(frag);
+                        // Update Data List
+                        tabBuilder.getTabFragmentList().remove(index);
+                        tabBuilder.recreateTabIndex();
+                    }
                 }
                 // Reset Index
                 TabListFragment.changedIndexList.clear();
@@ -336,6 +344,20 @@ public class MainActivity extends AppCompatActivity {
                 browserTabListButton.setImageDrawable(tabCounter.getIncognitoTabCountDrawable());
         }
         super.onResume();
+    }
+
+    private void checkDataView(boolean isCheck){
+        if(isCheck) {
+            if (tabBuilder.getTabDataList().size()>0 || tabBuilder.getIncognitoTabDataList().size()>0) {
+                ((View) findViewById(R.id.includeTabToolbar)).setVisibility(View.VISIBLE);
+                ((View) findViewById(R.id.includeNoTabToolbar)).setVisibility(View.GONE);
+                browserFragmentView.setVisibility(View.VISIBLE);
+            } else {
+                ((View) findViewById(R.id.includeTabToolbar)).setVisibility(View.GONE);
+                ((View) findViewById(R.id.includeNoTabToolbar)).setVisibility(View.VISIBLE);
+                browserFragmentView.setVisibility(View.GONE);
+            }
+        }
     }
 
     public static void sendTabSignal(ActivityTabSignal signal){

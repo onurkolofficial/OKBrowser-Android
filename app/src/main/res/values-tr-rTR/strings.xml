@@ -72,4 +72,6 @@
     <string name="delete_all_history_text">Tüm Geçmişi Sil</string>
     <string name="close_text">Kapat</string>
     <string name="settings_notice_text">Ayarları değiştirdikten sonra uygulamayı yeniden başlatmanız önerilir.</string>
+    <string name="settings_web_notice_text">Bu ayarlar sonraki sekmelerde uygulanır.</string>
+    <string name="delete_text">Sil</string>
 </resources>

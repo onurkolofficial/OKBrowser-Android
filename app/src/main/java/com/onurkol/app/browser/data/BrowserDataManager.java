@@ -50,33 +50,36 @@ public class BrowserDataManager implements BrowserDefaultSettings {
     }
 
     private void loadBrowserPreferenceData(){
-        // Javascript Mode
-        if(!prefManager.getBoolean(KEY_JAVASCRIPT_MODE))
-            prefManager.setPreference(KEY_JAVASCRIPT_MODE,DEFAULT_JAVASCRIPT_MODE);
-        // Geo Location
-        if(!prefManager.getBoolean(KEY_GEO_LOCATION))
-            prefManager.setPreference(KEY_GEO_LOCATION,DEFAULT_GEO_LOCATION);
-        // Popups
-        if(!prefManager.getBoolean(KEY_POPUPS))
-            prefManager.setPreference(KEY_POPUPS,DEFAULT_POPUPS);
-        // DOM Storage
-        if(!prefManager.getBoolean(KEY_DOM_STORAGE))
-            prefManager.setPreference(KEY_DOM_STORAGE,DEFAULT_DOM_STORAGE);
-        // Zoom
-        if(!prefManager.getBoolean(KEY_ZOOM))
-            prefManager.setPreference(KEY_ZOOM,DEFAULT_ZOOM);
-        // Zoom Buttons
-        if(!prefManager.getBoolean(KEY_ZOOM_BUTTONS))
-            prefManager.setPreference(KEY_ZOOM_BUTTONS,DEFAULT_ZOOM_BUTTONS);
-        // App Cache
-        if(!prefManager.getBoolean(KEY_APP_CACHE))
-            prefManager.setPreference(KEY_APP_CACHE,DEFAULT_APP_CACHE);
-        // Save Forms
-        if(!prefManager.getBoolean(KEY_SAVE_FORMS))
-            prefManager.setPreference(KEY_SAVE_FORMS,DEFAULT_SAVE_FORMS);
-        // Desktop Mode
-        if(!prefManager.getBoolean(KEY_DESKTOP_MODE))
-            prefManager.setPreference(KEY_DESKTOP_MODE,DEFAULT_DESKTOP_MODE);
+        if(!prefManager.getBoolean(KEY_LOAD_PREFERENCE)) {
+            // for Booleans
+            // Javascript Mode
+            if (!prefManager.getBoolean(KEY_JAVASCRIPT_MODE))
+                prefManager.setPreference(KEY_JAVASCRIPT_MODE, DEFAULT_JAVASCRIPT_MODE);
+            // Geo Location
+            if (!prefManager.getBoolean(KEY_GEO_LOCATION))
+                prefManager.setPreference(KEY_GEO_LOCATION, DEFAULT_GEO_LOCATION);
+            // Popups
+            if (!prefManager.getBoolean(KEY_POPUPS))
+                prefManager.setPreference(KEY_POPUPS, DEFAULT_POPUPS);
+            // DOM Storage
+            if (!prefManager.getBoolean(KEY_DOM_STORAGE))
+                prefManager.setPreference(KEY_DOM_STORAGE, DEFAULT_DOM_STORAGE);
+            // Zoom
+            if (!prefManager.getBoolean(KEY_ZOOM))
+                prefManager.setPreference(KEY_ZOOM, DEFAULT_ZOOM);
+            // Zoom Buttons
+            if (!prefManager.getBoolean(KEY_ZOOM_BUTTONS))
+                prefManager.setPreference(KEY_ZOOM_BUTTONS, DEFAULT_ZOOM_BUTTONS);
+            // App Cache
+            if (!prefManager.getBoolean(KEY_APP_CACHE))
+                prefManager.setPreference(KEY_APP_CACHE, DEFAULT_APP_CACHE);
+            // Save Forms
+            if (!prefManager.getBoolean(KEY_SAVE_FORMS))
+                prefManager.setPreference(KEY_SAVE_FORMS, DEFAULT_SAVE_FORMS);
+            // Desktop Mode
+            if (!prefManager.getBoolean(KEY_DESKTOP_MODE))
+                prefManager.setPreference(KEY_DESKTOP_MODE, DEFAULT_DESKTOP_MODE);
+        }
         // Search Engine
         if(prefManager.getInt(KEY_SEARCH_ENGINE)==AppPreferenceManager.INTEGER_NULL)
             prefManager.setPreference(KEY_SEARCH_ENGINE,DEFAULT_SEARCH_ENGINE);
@@ -121,6 +124,9 @@ public class BrowserDataManager implements BrowserDefaultSettings {
             LanguageManager.getInstance().setAppLanguage(preferenceValue);
             // Refresh
             ContextManager.getManager().getContextActivity().recreate();
+        }
+        else if(preferenceKey.equals(BrowserDefaultSettings.KEY_SEARCH_ENGINE)){
+            SearchEngine.getInstance().setSearchEngine(preferenceValue);
         }
     }
 }

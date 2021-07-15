@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.adapters.tabs.IncognitoTabListAdapter;
-import com.onurkol.app.browser.interfaces.tabs.TabSettings;
+import com.onurkol.app.browser.interfaces.browser.tabs.TabSettings;
 
 import java.util.ArrayList;
 import java.util.List;

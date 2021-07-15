@@ -1,7 +1,7 @@
 package com.onurkol.app.browser.interfaces;
 
 import com.onurkol.app.browser.data.browser.BookmarkData;
-import com.onurkol.app.browser.data.browser.HistoryData;
+import com.onurkol.app.browser.data.browser.history.HistoryData;
 
 import java.util.ArrayList;
 import java.util.List;

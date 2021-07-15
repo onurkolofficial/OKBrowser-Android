@@ -72,4 +72,6 @@
     <string name="delete_all_history_text">Delete All History</string>
     <string name="close_text">Close</string>
     <string name="settings_notice_text">It is recommended to restart the application after changing the settings.</string>
+    <string name="settings_web_notice_text">These settings are applied in the next tabs.</string>
+    <string name="delete_text">Delete</string>
 </resources>

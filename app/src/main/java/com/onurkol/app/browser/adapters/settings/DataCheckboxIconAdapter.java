@@ -128,7 +128,8 @@ public class DataCheckboxIconAdapter extends ArrayAdapter<SettingsPreferenceIcon
             // Set on Config Changes (not Theme)
             SettingsActivity.isConfigChanged = true;
 
-            if(!PREF_DATA_KEY.equals(BrowserDefaultSettings.KEY_APP_THEME)) {
+            if(!PREF_DATA_KEY.equals(BrowserDefaultSettings.KEY_APP_THEME) &&
+                    !PREF_DATA_KEY.equals(BrowserDefaultSettings.KEY_SEARCH_ENGINE)) {
                 SettingsActivity.changedConfigName = PREF_DATA_KEY;
                 SettingsActivity.changedConfigValue = getXmlDataInteger;
             }

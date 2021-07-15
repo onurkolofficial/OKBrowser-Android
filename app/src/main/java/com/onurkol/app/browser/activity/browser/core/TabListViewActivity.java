@@ -38,6 +38,7 @@ public class TabListViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_list_view);
         // Building ContextManager

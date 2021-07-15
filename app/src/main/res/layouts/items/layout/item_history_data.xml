@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Page Title !-->
+            <TextView
+                android:id="@+id/historyTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="PAGE_TITLE"/>
+            <!-- Page Url !-->
+            <TextView
+                android:id="@+id/historyUrlText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:text="PAGE_URL"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <!-- Delete Button !-->
+        <ImageButton
+            android:id="@+id/deleteHistoryButton"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/actionBarItemBackground"
+            android:tooltipText="@string/delete_text"
+            app:srcCompat="@drawable/ic_baseline_delete_24" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

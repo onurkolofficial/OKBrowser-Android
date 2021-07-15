@@ -1,4 +1,4 @@
-package com.onurkol.app.browser.interfaces.tabs;
+package com.onurkol.app.browser.interfaces.browser.tabs;
 
 import androidx.fragment.app.Fragment;
 
@@ -7,7 +7,6 @@ import com.onurkol.app.browser.data.tabs.IncognitoTabData;
 import com.onurkol.app.browser.data.tabs.TabData;
 import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
 import com.onurkol.app.browser.fragments.tabs.TabFragment;
-import com.onurkol.app.browser.webview.OKWebView;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ public interface TabManagers {
     ArrayList<IncognitoTabFragment> getIncognitoTabFragmentList();
     ArrayList<IncognitoTabData> getIncognitoTabDataList();
     void recreateIncognitoTabIndex();
-    // Fragment Views
+    // Fragments Views
     void addFragmentView(int viewId, Fragment fragment);
     void removeFragment(Fragment fragment);
     void showFragment(Fragment fragment);

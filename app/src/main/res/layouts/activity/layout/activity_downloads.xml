@@ -17,4 +17,8 @@
             layout="@layout/toolbar_settings" />
     </com.google.android.material.appbar.AppBarLayout>
     <!-- Content !-->
+    <ListView
+        android:id="@+id/downloadsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

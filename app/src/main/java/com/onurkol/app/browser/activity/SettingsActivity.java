@@ -61,7 +61,6 @@ public class SettingsActivity extends AppCompatActivity {
             if(!isTaskRoot() && !isConfigChanged)
                 dataManager.initBrowserPreferenceSettings();
 
-
         // Get Elements
         backButton=findViewById(R.id.backSettingsButton);
         settingName=findViewById(R.id.settingName);
@@ -84,6 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         ContextManager.Build(this);
 
         if(isConfigChanged) {
+            MainActivity.isConfigChanged=true;
             if(changedConfigName!=null && changedConfigValue!=null)
                 dataManager.setApplicationSettings(changedConfigName, changedConfigValue);
             // Reset Values

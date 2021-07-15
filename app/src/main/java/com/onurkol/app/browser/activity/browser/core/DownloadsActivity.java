@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
@@ -18,6 +19,7 @@ public class DownloadsActivity extends AppCompatActivity {
     // Elements
     ImageButton backButton;
     TextView settingName;
+    ListView downloadsListView;
     // Classes
     BrowserDataManager dataManager;
     AppPreferenceManager prefManager;
@@ -31,9 +33,6 @@ public class DownloadsActivity extends AppCompatActivity {
         // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_downloads);
-        // Get Elements
-        backButton=findViewById(R.id.backSettingsButton);
-        settingName=findViewById(R.id.settingName);
         // Get Classes
         dataManager=new BrowserDataManager();
         prefManager=AppPreferenceManager.getInstance();
@@ -50,6 +49,10 @@ public class DownloadsActivity extends AppCompatActivity {
             // Finish Current Activity
             finish();
         }
+        // Get Elements
+        backButton=findViewById(R.id.backSettingsButton);
+        settingName=findViewById(R.id.settingName);
+        downloadsListView=findViewById(R.id.downloadsListView);
 
         // Set Toolbar Title
         settingName.setText(getString(R.string.downloads_text));

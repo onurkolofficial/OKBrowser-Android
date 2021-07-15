@@ -1,7 +1,9 @@
 package com.onurkol.app.browser.lib.tabs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -15,8 +17,8 @@ import com.onurkol.app.browser.data.tabs.IncognitoTabData;
 import com.onurkol.app.browser.data.tabs.TabData;
 import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
 import com.onurkol.app.browser.fragments.tabs.TabFragment;
-import com.onurkol.app.browser.interfaces.tabs.TabManagers;
-import com.onurkol.app.browser.interfaces.tabs.TabSettings;
+import com.onurkol.app.browser.interfaces.browser.tabs.TabManagers;
+import com.onurkol.app.browser.interfaces.browser.tabs.TabSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.tools.ProcessDelay;
@@ -28,6 +30,7 @@ public class TabManager implements TabSettings, TabManagers {
     // Variables
     AppPreferenceManager prefManager;
     Context context;
+    Activity activity;
     FragmentManager fragmentManager;
 
     // Tab Manager Objects
@@ -39,8 +42,12 @@ public class TabManager implements TabSettings, TabManagers {
 
     public void BuildManager(){
         prefManager=AppPreferenceManager.getInstance();
-        context=ContextManager.getManager().getContext();
-        fragmentManager=((FragmentActivity)context).getSupportFragmentManager();
+        context=ContextManager.getManager().getBaseContext();
+        activity=ContextManager.getManager().getBaseContextActivity();
+        if(ContextManager.getManager().getBaseContext()!=null)
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
+        else
+            fragmentManager=((FragmentActivity)ContextManager.getManager().getContext()).getSupportFragmentManager();
         // Init Preference Data
         initTabPreferenceData();
     }
@@ -70,6 +77,9 @@ public class TabManager implements TabSettings, TabManagers {
         TabFragment newTabFragment=new TabFragment();
         // Add View
         addFragmentView(R.id.browserFragmentView, newTabFragment);
+        // Check View
+        if(activity.findViewById(R.id.browserFragmentView)!=null)
+            activity.findViewById(R.id.browserFragmentView).setVisibility(View.VISIBLE);
         // Set Bundle
         newTabFragment.setArguments(bundle);
         // Set Tab Index
@@ -238,9 +248,8 @@ public class TabManager implements TabSettings, TabManagers {
             // Set Fragment Data
             newTabDataFragment.setTabIndex(i);
 
-            if(fragmentManager.isDestroyed()){
-                fragmentManager=((FragmentActivity)ContextManager.getManager().getContextActivity()).getSupportFragmentManager();
-            }
+            if(fragmentManager.isDestroyed())
+                fragmentManager=ContextManager.getManager().getBaseFragmentManager();
 
             // Add Views
             addFragmentView(R.id.browserFragmentView, newTabDataFragment);
@@ -296,6 +305,9 @@ public class TabManager implements TabSettings, TabManagers {
         IncognitoTabFragment newIncognitoTabFragment=new IncognitoTabFragment();
         // Add View
         addFragmentView(R.id.browserFragmentView, newIncognitoTabFragment);
+        // Check View
+        if(activity.findViewById(R.id.browserFragmentView)!=null)
+            activity.findViewById(R.id.browserFragmentView).setVisibility(View.VISIBLE);
         // Set Bundle
         newIncognitoTabFragment.setArguments(bundle);
         // Set Tab Index
@@ -381,26 +393,38 @@ public class TabManager implements TabSettings, TabManagers {
     // Fragments
     @Override
     public void addFragmentView(int viewId, Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().add(viewId, fragment).commit();
     }
     @Override
     public void removeFragment(Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
     }
     @Override
     public void showFragment(Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().show(fragment).commit();
     }
     @Override
     public void hideFragment(Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().hide(fragment).commit();
     }
     @Override
     public void attachFragment(Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().attach(fragment).commit();
     }
     @Override
     public void detachFragment(Fragment fragment) {
+        if(fragmentManager.isDestroyed())
+            fragmentManager=ContextManager.getManager().getBaseFragmentManager();
         fragmentManager.beginTransaction().detach(fragment).commit();
     }
 

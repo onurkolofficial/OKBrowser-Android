@@ -1,4 +1,4 @@
-package com.onurkol.app.browser.interfaces.tabs;
+package com.onurkol.app.browser.interfaces.browser.tabs;
 
 import com.onurkol.app.browser.data.tabs.ClassesTabData;
 import com.onurkol.app.browser.data.tabs.IncognitoTabData;

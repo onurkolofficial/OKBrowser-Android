@@ -62,7 +62,7 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_tab_list, null);
+            convertView = inflater.inflate(R.layout.item_tab_data, null);
             holder = new ViewHolder();
             holder.tabUrlText = convertView.findViewById(R.id.tabUrlText);
             holder.tabCloseButton = convertView.findViewById(R.id.closeTabButton);
@@ -119,9 +119,11 @@ public class TabListAdapter extends ArrayAdapter<TabData> {
                 tabBuilder.getTabDataList().clear();
                 tabBuilder.getClassesTabDataList().clear();
                 // Check Incognito Tab Counts
-                if(tabBuilder.getIncognitoTabDataList().size()<=0)
+                if(tabBuilder.getIncognitoTabDataList().size()<=0) {
+                    tabBuilder.getTabFragmentList().clear();
                     // Close This Activity
                     contextActivity.finish();
+                }
                 else
                     // Change Tab Pager (Show Incognito Tabs)
                     ((ViewPager2)contextActivity.findViewById(R.id.tabListPager)).setCurrentItem(1);

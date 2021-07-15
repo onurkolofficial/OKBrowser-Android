@@ -59,7 +59,7 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_tab_list_incognito, null);
+            convertView = inflater.inflate(R.layout.item_tab_incognito_data, null);
             holder = new ViewHolder();
             holder.incognitoTabUrlText = convertView.findViewById(R.id.incognitoTabUrlText);
             holder.incognitoTabCloseButton = convertView.findViewById(R.id.closeIncognitoTabButton);
@@ -80,7 +80,7 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
         IncognitoTabData data=tabDataList.get(position);
 
         // Check Url
-        if(data.getUrl().equals("")) {
+        if(data.getUrl()==null || data.getUrl().equals("")) {
             // Set Page Title
             holder.incognitoTabUrlText.setText(context.getString(R.string.incognito_tab_title));
             // Get View
@@ -113,9 +113,11 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
                 // Clear Data List
                 tabBuilder.getIncognitoTabDataList().clear();
                 // Check Normal Tab Counts
-                if(tabBuilder.getTabDataList().size()<=0)
+                if(tabBuilder.getTabDataList().size()<=0) {
+                    tabBuilder.getIncognitoTabFragmentList().clear();
                     // Close This Activity
                     contextActivity.finish();
+                }
                 else
                     // Change Tab Pager (Show Normal Tabs)
                     ((ViewPager2)contextActivity.findViewById(R.id.tabListPager)).setCurrentItem(0);
