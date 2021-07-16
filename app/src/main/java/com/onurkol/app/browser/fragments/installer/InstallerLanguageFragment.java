@@ -15,7 +15,7 @@ import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.installer.InstallerDataItemAdapter;
 import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
-import com.onurkol.app.browser.lib.browser.AppLanguage;
+import com.onurkol.app.browser.lib.settings.AppLanguage;
 
 import java.util.ArrayList;
 

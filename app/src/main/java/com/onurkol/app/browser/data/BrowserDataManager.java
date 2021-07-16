@@ -8,8 +8,8 @@ import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.core.LanguageManager;
 import com.onurkol.app.browser.lib.core.ThemeManager;
-import com.onurkol.app.browser.lib.browser.SearchEngine;
-import com.onurkol.app.browser.lib.tabs.TabBuilder;
+import com.onurkol.app.browser.lib.settings.SearchEngine;
+import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 
 public class BrowserDataManager implements BrowserDefaultSettings {
     Context context;
@@ -108,7 +108,6 @@ public class BrowserDataManager implements BrowserDefaultSettings {
         // Get Variables
         int getLanguage=prefManager.getInt(KEY_APP_LANGUAGE);
         int getTheme=prefManager.getInt(KEY_APP_THEME);
-
         // Apply Language & Theme
         LanguageManager.getInstance().setAppLanguage(getLanguage);
         ThemeManager.getInstance().setAppTheme(getTheme);

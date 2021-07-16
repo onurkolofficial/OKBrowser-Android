@@ -4,18 +4,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.NestedScrollingChild;
-import androidx.core.view.NestedScrollingChildHelper;
-import androidx.core.view.ViewCompat;
 
-import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
-import com.onurkol.app.browser.fragments.tabs.TabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.IncognitoTabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.TabFragment;
 import com.onurkol.app.browser.interfaces.webview.WebViewClientManager;
 
 import java.util.Map;

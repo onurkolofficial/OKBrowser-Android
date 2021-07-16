@@ -74,4 +74,13 @@
     <string name="settings_notice_text">It is recommended to restart the application after changing the settings.</string>
     <string name="settings_web_notice_text">These settings are applied in the next tabs.</string>
     <string name="delete_text">Delete</string>
+    <string name="no_history_text">No History!</string>
+    <string name="no_bookmark_text">No Bookmark!</string>
+    <string name="no_download_text">No Download!</string>
+    <string name="today_text">Today</string>
+    <string name="yesterday_text">Yesterday</string>
+    <string name="days_ago_text">Days Ago</string>
+    <string name="question_delete_all_histories_text">Are you sure you want to delete all history?</string>
+    <string name="yes_text">Yes</string>
+    <string name="no_text">No</string>
 </resources>

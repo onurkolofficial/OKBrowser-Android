@@ -13,11 +13,12 @@ public class ContextManager {
 
     private ContextManager(Context context){
         if(base)
-            baseContext=context;
+            baseContext = context;
         mContext=context;
     }
 
     public static synchronized void Build(Context context){
+        base=false;
         instance=new ContextManager(context);
     }
 

@@ -1,11 +1,5 @@
 package com.onurkol.app.browser.interfaces;
 
-import com.onurkol.app.browser.data.browser.BookmarkData;
-import com.onurkol.app.browser.data.browser.history.HistoryData;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public interface BrowserDefaultSettings {
     // Setting Preference Keys
     String KEY_LOAD_PREFERENCE="DATA_LOAD_PREFERENCE",
@@ -43,15 +37,6 @@ public interface BrowserDefaultSettings {
     int DEFAULT_APP_LANGUAGE=0; // browser/values/app_languages.xml
 
     String DESKTOP_USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36";
-
-    // History List
-    List<HistoryData> BROWSER_HISTORY_LIST=new ArrayList<>();
-
-    // Bookmark List
-    List<BookmarkData> BROWSER_BOOKMARK_LIST=new ArrayList<>();
-
-    // Download List
-    List<BookmarkData> BROWSER_DOWNLOADS_LIST=new ArrayList<>();
 
     void initBrowserDataClasses();
     void initBrowserPreferenceSettings();

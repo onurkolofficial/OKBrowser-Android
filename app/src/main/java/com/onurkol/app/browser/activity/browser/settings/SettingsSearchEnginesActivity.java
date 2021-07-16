@@ -14,8 +14,7 @@ import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.data.settings.SettingsPreferenceIconDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
-import com.onurkol.app.browser.lib.browser.AppLanguage;
-import com.onurkol.app.browser.lib.browser.SearchEngine;
+import com.onurkol.app.browser.lib.settings.SearchEngine;
 
 import java.util.ArrayList;
 

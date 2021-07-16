@@ -74,4 +74,13 @@
     <string name="settings_notice_text">Ayarları değiştirdikten sonra uygulamayı yeniden başlatmanız önerilir.</string>
     <string name="settings_web_notice_text">Bu ayarlar sonraki sekmelerde uygulanır.</string>
     <string name="delete_text">Sil</string>
+    <string name="no_history_text">Geçmiş Yok!</string>
+    <string name="no_bookmark_text">Yer İşareti Yok!</string>
+    <string name="no_download_text">İndirme Yok!</string>
+    <string name="today_text">Bugün</string>
+    <string name="yesterday_text">Dün</string>
+    <string name="days_ago_text">Gün Önce</string>
+    <string name="question_delete_all_histories_text">Tüm geçmişi silmek istediğinizden emin misiniz?</string>
+    <string name="yes_text">Evet</string>
+    <string name="no_text">Hayır</string>
 </resources>

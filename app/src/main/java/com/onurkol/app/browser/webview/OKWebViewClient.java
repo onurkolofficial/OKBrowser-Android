@@ -2,7 +2,6 @@ package com.onurkol.app.browser.webview;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -16,11 +15,14 @@ import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.data.tabs.ClassesTabData;
-import com.onurkol.app.browser.data.tabs.IncognitoTabData;
-import com.onurkol.app.browser.data.tabs.TabData;
+import com.onurkol.app.browser.data.browser.HistoryData;
+import com.onurkol.app.browser.data.browser.tabs.ClassesTabData;
+import com.onurkol.app.browser.data.browser.tabs.IncognitoTabData;
+import com.onurkol.app.browser.data.browser.tabs.TabData;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.tabs.TabBuilder;
+import com.onurkol.app.browser.lib.browser.HistoryManager;
+import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
+import com.onurkol.app.browser.tools.DateManager;
 import com.onurkol.app.browser.tools.ScreenManager;
 
 public class OKWebViewClient extends WebViewClient {
@@ -66,7 +68,6 @@ public class OKWebViewClient extends WebViewClient {
         // Set Url
         browserSearch.setText(url);
         syncUrl=url;
-
         super.onPageStarted(view, url, favicon);
     }
 
@@ -81,6 +82,8 @@ public class OKWebViewClient extends WebViewClient {
         if(url.contains("watch?")) {
             browserSearch.setText(url);
             syncUrl=url;
+            // Check WebView Height (some bugs)
+            checkWebViewHeight((OKWebView)view);
             // Update for Resource page
             updateSyncForWeb((OKWebView)view);
         }
@@ -115,18 +118,8 @@ public class OKWebViewClient extends WebViewClient {
         if(browserSwipeRefresh!=null)
             browserSwipeRefresh.setRefreshing(false);
 
-        // Fixed Nested Scroll Height:
-        int getScreenHeigth=ScreenManager.getScreenHeight();
-        int getContentHeight = webView.getContentHeight();
-        // Params
-        FrameLayout.LayoutParams heightWrap=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.WRAP_CONTENT);
-        FrameLayout.LayoutParams heightMatch=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
-
-        // Check View Layout Params
-        if(getScreenHeigth>=getContentHeight)
-            webView.setLayoutParams(heightMatch);
-        else
-            webView.setLayoutParams(heightWrap);
+        // Check WebView Height (some bugs)
+        checkWebViewHeight(webView);
 
         if(redirectLoad){
             webView.isLoading=false;
@@ -147,6 +140,21 @@ public class OKWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
     }
 
+    private void checkWebViewHeight(OKWebView webView){
+        // Fixed Nested Scroll Height:
+        int getScreenHeigth=ScreenManager.getScreenHeight();
+        int getContentHeight=webView.getContentHeight();
+        // Params
+        FrameLayout.LayoutParams heightWrap=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,getContentHeight);
+        FrameLayout.LayoutParams heightMatch=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+
+        // Check View Layout Params
+        if(getScreenHeigth>=getContentHeight)
+            webView.setLayoutParams(heightMatch);
+        else
+            webView.setLayoutParams(heightWrap);
+    }
+
     public void updateSyncForWeb(OKWebView webView){
         if(tabBuilder==null)
             tabBuilder=TabBuilder.Build();
@@ -160,7 +168,10 @@ public class OKWebViewClient extends WebViewClient {
             // RE-Synchronize New Data
             tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
             // Add History Data
-            // ...
+            if(!webView.isIncognitoWebView) {
+                HistoryData historyData = new HistoryData(webView.getTitle(), webView.getUrl(), DateManager.getDate());
+                HistoryManager.getInstance().newHistory(historyData);
+            }
         }
         else{
             // Update ScreenShot

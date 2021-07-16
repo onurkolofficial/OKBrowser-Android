@@ -17,12 +17,10 @@ import android.widget.ImageButton;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
-import com.onurkol.app.browser.adapters.tabs.TabListsPageAdapter;
+import com.onurkol.app.browser.adapters.browser.tabs.TabListsPageAdapter;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.tabs.TabBuilder;
-import com.onurkol.app.browser.lib.tabs.core.ActivityTabSignal;
-
-import java.lang.ref.WeakReference;
+import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
+import com.onurkol.app.browser.lib.browser.tabs.core.ActivityTabSignal;
 
 public class TabListViewActivity extends AppCompatActivity {
     // Elements
@@ -80,7 +78,7 @@ public class TabListViewActivity extends AppCompatActivity {
         tabListPager.registerOnPageChangeCallback(pageChangeCb);
 
         // Check Start Page
-        TabBuilder tabBuilder= TabBuilder.Build();
+        TabBuilder tabBuilder=TabBuilder.Build();
 
         if(tabBuilder.getTabDataList().size()<=0)
             // Show Incognito Tabs

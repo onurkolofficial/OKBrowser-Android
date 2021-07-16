@@ -17,8 +17,42 @@
             layout="@layout/toolbar_settings" />
     </com.google.android.material.appbar.AppBarLayout>
     <!-- Content !-->
-    <ListView
-        android:id="@+id/downloadsListView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="visible">
+        <!-- No Download Layout !-->
+        <LinearLayout
+            android:id="@+id/noDownloadLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <!-- Image Layout !-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!-- Image !-->
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="0.2"
+                    app:srcCompat="@drawable/ic_baseline_get_app_24"/>
+            </LinearLayout>
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:text="@string/no_download_text" />
+        </LinearLayout>
+        <!-- List View !-->
+        <ListView
+            android:id="@+id/downloadsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
 </LinearLayout>

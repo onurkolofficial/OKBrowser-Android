@@ -21,8 +21,8 @@ import com.onurkol.app.browser.activity.browser.BookmarkActivity;
 import com.onurkol.app.browser.activity.browser.HistoryActivity;
 import com.onurkol.app.browser.activity.browser.core.DownloadsActivity;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.tabs.TabBuilder;
-import com.onurkol.app.browser.lib.tabs.core.ToolbarTabCounter;
+import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
+import com.onurkol.app.browser.lib.browser.tabs.core.ToolbarTabCounter;
 import com.onurkol.app.browser.webview.OKWebView;
 
 public class MenuToolbarMain {

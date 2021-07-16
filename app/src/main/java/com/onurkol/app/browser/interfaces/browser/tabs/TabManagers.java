@@ -2,11 +2,11 @@ package com.onurkol.app.browser.interfaces.browser.tabs;
 
 import androidx.fragment.app.Fragment;
 
-import com.onurkol.app.browser.data.tabs.ClassesTabData;
-import com.onurkol.app.browser.data.tabs.IncognitoTabData;
-import com.onurkol.app.browser.data.tabs.TabData;
-import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
-import com.onurkol.app.browser.fragments.tabs.TabFragment;
+import com.onurkol.app.browser.data.browser.tabs.ClassesTabData;
+import com.onurkol.app.browser.data.browser.tabs.IncognitoTabData;
+import com.onurkol.app.browser.data.browser.tabs.TabData;
+import com.onurkol.app.browser.fragments.browser.tabs.IncognitoTabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.TabFragment;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,6 @@ public interface TabManagers {
     ArrayList<ClassesTabData> getClassesTabDataList();
     void recreateTabIndex();
     // Saved Tabs
-    //void saveTabPreference(TabData tabData);
     void saveTabListPreference(ArrayList<TabData> tabDataList);
     ArrayList<TabData> getSavedTabList();
     void syncSavedTabs();

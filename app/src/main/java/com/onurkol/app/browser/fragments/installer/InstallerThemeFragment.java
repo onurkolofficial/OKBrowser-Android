@@ -16,7 +16,7 @@ import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.installer.InstallerDataItemAdapter;
 import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
-import com.onurkol.app.browser.lib.browser.AppTheme;
+import com.onurkol.app.browser.lib.settings.AppTheme;
 
 import java.util.ArrayList;
 

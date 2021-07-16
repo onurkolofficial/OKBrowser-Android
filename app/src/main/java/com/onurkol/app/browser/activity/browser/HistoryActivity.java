@@ -1,26 +1,26 @@
 package com.onurkol.app.browser.activity.browser;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
-import com.onurkol.app.browser.adapters.browser.history.HistoryDateListAdapter;
+import com.onurkol.app.browser.adapters.browser.HistoryListAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
-import com.onurkol.app.browser.data.browser.history.HistoryData;
-import com.onurkol.app.browser.data.browser.history.HistoryDate_Data;
-import com.onurkol.app.browser.interfaces.browser.HistorySettings;
+import com.onurkol.app.browser.interfaces.browser.history.HistorySettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.lib.browser.HistoryManager;
 
 public class HistoryActivity extends AppCompatActivity implements HistorySettings {
 
@@ -29,12 +29,14 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
     TextView settingName;
     Button deleteAllHistory;
     ListView historyListView;
+    LinearLayout noHistoryLayout;
     // Classes
     BrowserDataManager dataManager;
     AppPreferenceManager prefManager;
     // Intents
     Intent installerIntent;
-
+    // Variables
+    public static boolean isCreated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
@@ -48,7 +50,7 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
         // Get Intents
         installerIntent=new Intent(this, InstallerActivity.class);
         // Check Get Shortcut
-        if(isTaskRoot())
+        if(isTaskRoot() && !isCreated)
             dataManager.initBrowserPreferenceSettings();
 
         // Check Installer Activity
@@ -63,37 +65,58 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
         settingName=findViewById(R.id.settingName);
         deleteAllHistory=findViewById(R.id.deleteAllHistory);
         historyListView=findViewById(R.id.historyListRecyclerView);
+        noHistoryLayout=findViewById(R.id.noHistoryLayout);
 
         // Set Toolbar Title
         settingName.setText(getString(R.string.history_text));
 
         // Button Click Events
         backButton.setOnClickListener(view -> finish());
+        deleteAllHistory.setOnClickListener(view -> {
+            // Dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
+            builder.setMessage(getString(R.string.question_delete_all_histories_text))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(getString(R.string.yes_text),(dialog, which) -> {
+                        // Clear Arrays
+                        BROWSER_HISTORY_LIST.clear();
+                        // Save Preferences
+                        HistoryManager.getInstance().saveHistoryListPreference(BROWSER_HISTORY_LIST);
+                        // Remove Views
+                        historyListView.invalidateViews();
+                        // Show No History Layout
+                        noHistoryLayout.setVisibility(View.VISIBLE);
+                        historyListView.setVisibility(View.GONE);
+                    })
+                    .setNegativeButton(getString(R.string.no_text), null)
+                    .show();
+        });
 
-        // Set Adapter
-        historyListView.setNestedScrollingEnabled(false);
-        ArrayAdapter<HistoryDate_Data> hladapt=new HistoryDateListAdapter(this, BROWSER_HISTORY_DATE_LIST, BROWSER_HISTORY_LIST);
-        historyListView.setAdapter(hladapt);
+        // Check is Created (for Theme bug)
+        if(!isCreated) {
+            // Set Adapter
+            historyListView.setAdapter(new HistoryListAdapter(this, historyListView, BROWSER_HISTORY_LIST));
 
-        // Test Data
-        // Dates
-        BROWSER_HISTORY_DATE_LIST.add(new HistoryDate_Data("123"));
-        BROWSER_HISTORY_DATE_LIST.add(new HistoryDate_Data("125"));
-        BROWSER_HISTORY_DATE_LIST.add(new HistoryDate_Data("127"));
+            // Get Saved Data
+            HistoryManager.getInstance().syncSavedHistoryData();
 
-        // Data
-        BROWSER_HISTORY_LIST.add(new HistoryData("title","url","123"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title1","url1","123"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title2","url1","123"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title2","url1","123"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title3","url2","125"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title3","url2","125"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title4","url2","125"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title5","url2","127"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title5","url2","127"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title5","url2","127"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title5","url2","127"));
-        BROWSER_HISTORY_LIST.add(new HistoryData("title5","url2","127"));
+            if(BROWSER_HISTORY_LIST.size()<=0){
+                // Show No History Layout
+                noHistoryLayout.setVisibility(View.VISIBLE);
+                historyListView.setVisibility(View.GONE);
+            }
+            else{
+                // Hide No History Layout
+                noHistoryLayout.setVisibility(View.GONE);
+                historyListView.setVisibility(View.VISIBLE);
+            }
+        }
+        isCreated = true;
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isCreated=false;
     }
 }

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.SearchManager;
@@ -15,6 +16,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -37,19 +39,20 @@ import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.core.TabListViewActivity;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.data.BrowserDataManager;
-import com.onurkol.app.browser.data.tabs.IncognitoTabData;
-import com.onurkol.app.browser.data.tabs.TabData;
-import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
-import com.onurkol.app.browser.fragments.tabs.TabFragment;
-import com.onurkol.app.browser.fragments.tabs.list.IncognitoTabListFragment;
-import com.onurkol.app.browser.fragments.tabs.list.TabListFragment;
+import com.onurkol.app.browser.data.browser.tabs.IncognitoTabData;
+import com.onurkol.app.browser.data.browser.tabs.TabData;
+import com.onurkol.app.browser.fragments.browser.tabs.IncognitoTabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.TabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.list.IncognitoTabListFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.list.TabListFragment;
+import com.onurkol.app.browser.interfaces.BrowserActionKeys;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.SearchEngine;
-import com.onurkol.app.browser.lib.tabs.TabBuilder;
-import com.onurkol.app.browser.lib.tabs.core.ActivityTabSignal;
-import com.onurkol.app.browser.lib.tabs.core.ToolbarTabCounter;
+import com.onurkol.app.browser.lib.settings.SearchEngine;
+import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
+import com.onurkol.app.browser.lib.browser.tabs.core.ActivityTabSignal;
+import com.onurkol.app.browser.lib.browser.tabs.core.ToolbarTabCounter;
 import com.onurkol.app.browser.menu.MenuToolbarMain;
 import com.onurkol.app.browser.menu.MenuToolbarNoTab;
 import com.onurkol.app.browser.tools.KeyboardController;
@@ -61,7 +64,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BrowserActionKeys {
     // Classes
     BrowserDataManager dataManager;
     TabBuilder tabBuilder;
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     static WeakReference<SwipeRefreshLayout> browserSwipeRefreshStatic;
     // Intents
     Intent tabListIntent,installerIntent;
+    public static Intent updatedIntent=null;
     // Variables
     public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
     boolean backPressHomeLayout=false;
@@ -167,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         else {
-            // Continue or onCreateView()...
+            // Continue or onCreateView()
+            checkIntentData(getIntent());
         }
         // Set isCreated variable
         isCreated=true;
@@ -225,10 +230,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void checkIntentData(Intent intent){
+        Log.e("MainActivity","234: Called Action: "+intent.getStringExtra(ACTION_NAME));
+
+
+        /*
+        if(intent.getStringExtra(KEY_ACTION_TAB_ON_START)!=null){
+            String intentUrl=intent.getStringExtra(KEY_ACTION_TAB_ON_START);
+            // Get Elements
+            OKWebView webView=tabBuilder.getActiveTabFragment().getWebView();
+            View fragmentView=tabBuilder.getActiveTabFragment().getView();
+            // Set Visibilities
+            fragmentView.findViewById(R.id.newTabHomeLayout).setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            // Load Url
+            webView.loadUrl(intentUrl);
+        }
+        else if(intent.getStringExtra(KEY_ACTION_INCOGNITO_ON_START)!=null){
+            String intentUrl=intent.getStringExtra(KEY_ACTION_INCOGNITO_ON_START);
+            // Get Elements
+            OKWebView webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+            View fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
+            // Set Visibilities
+            fragmentView.findViewById(R.id.incognitoHomeLayout).setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            // Load Url
+            webView.loadUrl(intentUrl);
+        }
+        else if(intent.getStringExtra(KEY_ACTION_TAB_ON_CREATE)!=null){
+            Log.e("MainActivity","259: Called Create New Tab Action? ");
+            String intentUrl=intent.getStringExtra(KEY_ACTION_TAB_ON_CREATE);
+            tabBuilder.createNewTab(intentUrl);
+        }
+         */
+    }
+
     @Override
     protected void onResume() {
         // Re-Building ContextManager
-        ContextManager.Build(this);
+        ContextManager.BuildBase(this);
         View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
         View toolbarMain=findViewById(R.id.includeTabToolbar);
 
@@ -245,6 +285,11 @@ public class MainActivity extends AppCompatActivity {
 
         // <BUG> Check Views for Theme Changed
         checkDataView(isConfigChanged);
+
+        // Check Action Keys
+        // Check Get Intents
+        if(updatedIntent!=null)
+            checkIntentData(updatedIntent);
 
         // * Check Closed Tabs.
         // * 1- If all tabs closed, show the 'No Tab Toolbar'.
@@ -368,9 +413,9 @@ public class MainActivity extends AppCompatActivity {
             Drawable TabCountDrawable;
             // Check Signal Status
             // Check Incognito Tab Type
-            if(!signal.getTabIsIncognito()) {
+            if (!signal.getTabIsIncognito()) {
                 // Check Incognito Icon
-                if(incognitoIconStatic.get().getVisibility()==View.VISIBLE)
+                if (incognitoIconStatic.get().getVisibility() == View.VISIBLE)
                     incognitoIconStatic.get().setVisibility(View.GONE);
                 // Check Tab Events
                 if (signal.getSignalStatus() == ActivityTabSignal.TAB_ON_CHANGE)
@@ -378,21 +423,20 @@ public class MainActivity extends AppCompatActivity {
                 else if (signal.getSignalStatus() == ActivityTabSignal.TAB_ON_CREATE)
                     tabBuilder.createNewTab();
                 // Get Count Drawable
-                TabCountDrawable=new ToolbarTabCounter().getTabCountDrawable();
+                TabCountDrawable = new ToolbarTabCounter().getTabCountDrawable();
                 // Get Tab Web Url
                 browserSearchStatic.get().setText(signal.getSignalData().tab_url);
-            }
-            else{
+            } else {
                 // Check Incognito Icon
-                if(incognitoIconStatic.get().getVisibility()==View.GONE)
+                if (incognitoIconStatic.get().getVisibility() == View.GONE)
                     incognitoIconStatic.get().setVisibility(View.VISIBLE);
                 // Check Tab Events
-                if(signal.getSignalStatus()==ActivityTabSignal.INCOGNITO_ON_CHANGE)
+                if (signal.getSignalStatus() == ActivityTabSignal.INCOGNITO_ON_CHANGE)
                     tabBuilder.changeIncognitoTab(signal.getSignalData().tab_position);
                 else if (signal.getSignalStatus() == ActivityTabSignal.INCOGNITO_ON_CREATE)
                     tabBuilder.createNewIncognitoTab();
                 // Get Count Drawable
-                TabCountDrawable=new ToolbarTabCounter().getIncognitoTabCountDrawable();
+                TabCountDrawable = new ToolbarTabCounter().getIncognitoTabCountDrawable();
                 // Get Tab Web Url
                 browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             }

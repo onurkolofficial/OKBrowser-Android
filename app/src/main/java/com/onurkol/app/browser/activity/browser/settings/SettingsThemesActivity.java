@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,12 +12,11 @@ import android.widget.TextView;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.adapters.settings.DataCheckboxIconAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
-import com.onurkol.app.browser.data.installer.InstallerDataInteger;
 import com.onurkol.app.browser.data.settings.SettingsPreferenceIconDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.AppTheme;
+import com.onurkol.app.browser.lib.settings.AppTheme;
 
 import java.util.ArrayList;
 

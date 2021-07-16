@@ -1,10 +1,10 @@
 package com.onurkol.app.browser.interfaces.browser.tabs;
 
-import com.onurkol.app.browser.data.tabs.ClassesTabData;
-import com.onurkol.app.browser.data.tabs.IncognitoTabData;
-import com.onurkol.app.browser.data.tabs.TabData;
-import com.onurkol.app.browser.fragments.tabs.IncognitoTabFragment;
-import com.onurkol.app.browser.fragments.tabs.TabFragment;
+import com.onurkol.app.browser.data.browser.tabs.ClassesTabData;
+import com.onurkol.app.browser.data.browser.tabs.IncognitoTabData;
+import com.onurkol.app.browser.data.browser.tabs.TabData;
+import com.onurkol.app.browser.fragments.browser.tabs.IncognitoTabFragment;
+import com.onurkol.app.browser.fragments.browser.tabs.TabFragment;
 
 import java.util.ArrayList;
 
