@@ -2,29 +2,43 @@ package com.onurkol.app.browser.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsAboutActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsLanguageActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsSearchEnginesActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsThemesActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsWebActivity;
+import com.onurkol.app.browser.data.BrowserDataManager;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-
     // Preferences
     Preference settingsWebPref,settingsAboutPref,settingsSearchEnginesPref,settingsThemePref,
             settingsLanguagePref;
     // Intents
     Intent settingsWebIntent,settingsAboutIntent,settingsSearchEnginesIntent,settingsThemesIntent,
             settingsLanguagesIntent;
+    // Classes
+    BrowserDataManager dataManager;
+    // Variables
+    public static boolean isPreferenceFragmentCreated=false;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        // Get Classes
+        dataManager=new BrowserDataManager();
+        // Init Fragment Data
+        if(getActivity().isTaskRoot())
+            dataManager.initBrowserPreferenceSettings();
+
         // Set Resource
         setPreferencesFromResource(R.xml.preference_settings,rootKey);
 
@@ -63,5 +77,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             startActivity(settingsLanguagesIntent);
             return false;
         });
+
+        isPreferenceFragmentCreated=true;
     }
 }

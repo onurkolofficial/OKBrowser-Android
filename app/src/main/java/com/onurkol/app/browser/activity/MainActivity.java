@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         dataManager=new BrowserDataManager();
         tabBuilder=TabBuilder.Build();
         tabCounter=new ToolbarTabCounter();
-        // Init Browser Data
-        dataManager.initBrowserDataClasses();
 
         // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Init Browser Data
+        dataManager.initBrowserDataClasses();
 
         // Get Elements
         browserSwipeRefresh=findViewById(R.id.browserSwipeRefresh);
@@ -197,20 +197,18 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         // Init Browser Data ( Applying View Settings )
         if(!dataManager.startInstallerActivity){
             dataManager.initBrowserPreferenceSettings();
-
             if(!isCreatedView) {
                 /**
                  * <BUG> Application ui mode changed, recreating views and some create view bugs.
                  * Using delay for fixed tab fragments bug.
-                 */
+                 **/
                 // Check Saved Tabs.
                 ProcessDelay.Delay(() -> {
                     startTabsSync();
-                    browserTabListButtonStatic.get().setImageDrawable(tabCounter.getTabCountDrawable());
-                }, 620);
-
-                isCreatedView=true;
+                    browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+                }, 200);
             }
+            isCreatedView=true;
         }
         return super.onCreateView(name, context, attrs);
     }
@@ -225,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         if(prefManager.getInt(BrowserDefaultSettings.KEY_APP_THEME)!=2){
             int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
-                checkDataView(isConfigChanged);
+                //checkDataView(isConfigChanged);
             }
         }
     }
@@ -284,12 +282,15 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         List<Integer> changeIncognitoList=IncognitoTabListFragment.changedIndexList;
 
         // <BUG> Check Views for Theme Changed
-        checkDataView(isConfigChanged);
+        if(isConfigChanged)
+            checkDataView(true);
 
         // Check Action Keys
         // Check Get Intents
-        if(updatedIntent!=null)
+        if(updatedIntent!=null) {
             checkIntentData(updatedIntent);
+            updatedIntent=null;
+        }
 
         // * Check Closed Tabs.
         // * 1- If all tabs closed, show the 'No Tab Toolbar'.
@@ -425,7 +426,6 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 // Get Count Drawable
                 TabCountDrawable = new ToolbarTabCounter().getTabCountDrawable();
                 // Get Tab Web Url
-                browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             } else {
                 // Check Incognito Icon
                 if (incognitoIconStatic.get().getVisibility() == View.GONE)
@@ -438,15 +438,15 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 // Get Count Drawable
                 TabCountDrawable = new ToolbarTabCounter().getIncognitoTabCountDrawable();
                 // Get Tab Web Url
-                browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             }
+            browserSearchStatic.get().setText(signal.getSignalData().tab_url);
             // Stop SwipeRefresh Status
             browserSwipeRefreshStatic.get().setRefreshing(false);
             // Update Tab Counts for Delay
             browserTabListButtonStatic.get().setImageDrawable(TabCountDrawable);
         };
         // Exec Runnable
-        ProcessDelay.Delay(checkSignalRunnable, 120);
+        ProcessDelay.Delay(checkSignalRunnable, 100);
     }
 
     @Override

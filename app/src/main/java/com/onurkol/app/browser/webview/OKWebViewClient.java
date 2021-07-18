@@ -135,6 +135,11 @@ public class OKWebViewClient extends WebViewClient {
             }
             // Update Web Page
             updateSyncForWeb(webView);
+            // Add History Data
+            if(!webView.isIncognitoWebView) {
+                HistoryData historyData = new HistoryData(webView.getTitle(), webView.getUrl(), DateManager.getDate());
+                HistoryManager.getInstance().newHistory(historyData);
+            }
         }
         redirectLoad=true;
         super.onPageFinished(view, url);
@@ -167,11 +172,6 @@ public class OKWebViewClient extends WebViewClient {
             ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
             // RE-Synchronize New Data
             tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
-            // Add History Data
-            if(!webView.isIncognitoWebView) {
-                HistoryData historyData = new HistoryData(webView.getTitle(), webView.getUrl(), DateManager.getDate());
-                HistoryManager.getInstance().newHistory(historyData);
-            }
         }
         else{
             // Update ScreenShot

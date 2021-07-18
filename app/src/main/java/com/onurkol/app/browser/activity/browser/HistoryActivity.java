@@ -1,11 +1,15 @@
 package com.onurkol.app.browser.activity.browser;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.browser.HistoryListAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
@@ -21,6 +26,7 @@ import com.onurkol.app.browser.interfaces.browser.history.HistorySettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.browser.HistoryManager;
+import com.onurkol.app.browser.tools.ProcessDelay;
 
 public class HistoryActivity extends AppCompatActivity implements HistorySettings {
 
@@ -36,17 +42,17 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false;
+    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
         ContextManager.Build(this);
-        // Create View
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
         // Get Classes
         dataManager=new BrowserDataManager();
         prefManager=AppPreferenceManager.getInstance();
+        // Create View
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_history);
         // Get Intents
         installerIntent=new Intent(this, InstallerActivity.class);
         // Check Get Shortcut
@@ -60,6 +66,9 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
             // Finish Current Activity
             finish();
         }
+        else
+            if(!isTaskRoot() && !isConfigChanged)
+                dataManager.initBrowserPreferenceSettings();
         // Get Elements
         backButton=findViewById(R.id.backSettingsButton);
         settingName=findViewById(R.id.settingName);
@@ -112,6 +121,22 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
             }
         }
         isCreated = true;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        if(!dataManager.startInstallerActivity){
+            dataManager.initBrowserPreferenceSettings();
+            /*
+            if(!isCreatedView) {
+                //...
+            }
+             */
+            isCreatedView=true;
+        }
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override

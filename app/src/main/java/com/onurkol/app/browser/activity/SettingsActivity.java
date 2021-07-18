@@ -1,12 +1,16 @@
 package com.onurkol.app.browser.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -28,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
+    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false,isCreatedFragment=false;
     public static String changedConfigName;
     public static Integer changedConfigValue;
 
@@ -36,16 +40,14 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
         ContextManager.Build(this);
-        // Create View
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
         // Get Classes
         dataManager=new BrowserDataManager();
         prefManager=AppPreferenceManager.getInstance();
+        // Create View
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
         // Get Intents
         installerIntent=new Intent(this, InstallerActivity.class);
-
         // Check Get Shortcut
         if(isTaskRoot() && !isCreated)
             dataManager.initBrowserPreferenceSettings();
@@ -72,9 +74,28 @@ public class SettingsActivity extends AppCompatActivity {
         backButton.setOnClickListener(view -> finish());
 
         // Get Fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.settingsFragmentContent,new SettingsFragment()).commit();
+        if(!isCreatedFragment) {
+            getSupportFragmentManager().beginTransaction().add(R.id.settingsFragmentContent, new SettingsFragment()).commit();
+            isCreatedFragment=true;
+        }
 
         isCreated=true;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        if(!dataManager.startInstallerActivity){
+            dataManager.initBrowserPreferenceSettings();
+            /*
+            if(!isCreatedView) {
+                //...
+            }
+             */
+            isCreatedView=true;
+        }
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override
@@ -93,5 +114,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isCreated=false;
     }
 }

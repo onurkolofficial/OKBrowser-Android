@@ -81,16 +81,17 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
 
         // Check Show Date
         if(position==0 || isNewDate) {
-            Log.e("HitoryListAdapter","84: Data: "+data.getDate()+" Update: "+isNewDate);
-            // Check Today-Yesterday-Days Ago
-            String dateText;
-            String dataDate=data.getDate(),
-                    currentDate=DateManager.getDate();
-            if(currentDate.equals(dataDate))
-                dateText=getContext.getString(R.string.today_text)+" - "+dataDate;
+            if(position!=0 && getHistoryList.get(position-1).getDate().equals(getHistoryList.get(position).getDate())){
+                holder.historyDateText.setVisibility(View.GONE);
+            }
             else {
-                dateText=dataDate;
-                /*
+                // Check Today-Yesterday-Days Ago
+                String dateText;
+                String dataDate = data.getDate(),
+                        currentDate = DateManager.getDate();
+                if (currentDate.equals(dataDate))
+                    dateText = getContext.getString(R.string.today_text);
+                else {
                 // Check Yesterday
                 int currentDateDays=Integer.parseInt(currentDate.split("/")[0].trim());
                 int dataDateDays=Integer.parseInt(dataDate.split("/")[0].trim());
@@ -102,11 +103,10 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
                     dateText = getContext.getString(R.string.yesterday_text);
                 else
                     dateText = daysAgo+" "+getContext.getString(R.string.days_ago_text);
-
-                 */
+                }
+                holder.historyDateText.setText(dateText);
+                holder.historyDateText.setVisibility(View.VISIBLE);
             }
-            holder.historyDateText.setText(dateText);
-            holder.historyDateText.setVisibility(View.VISIBLE);
         }
         else
             holder.historyDateText.setVisibility(View.GONE);
@@ -166,8 +166,10 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
                 MainActivity.updatedIntent=mainActivityIntent;
             // Close Current Activity
             ((Activity)getContext).finish();
-             */
+
+         */
         });
+
 
         // Check isNewDate
         if(position!=(getHistoryList.size()-1)){
