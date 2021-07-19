@@ -175,7 +175,7 @@ public class MenuToolbarMain {
                 // Get Data
                 BookmarkData data=bookmarkManager.getSavedBookmarkData().get(i);
                 // Check Data
-                if(getWebView.getUrl().equals(data.getUrl())){
+                if(getWebView.getUrl()!=null && getWebView.getUrl().equals(data.getUrl())){
                     addBookmarkButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24));
                     addBookmarkButton.setColorFilter(ContextCompat.getColor(context,R.color.primary));
                     break;
