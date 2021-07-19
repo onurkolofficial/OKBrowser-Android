@@ -152,7 +152,7 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
 
             // Check Activity
             if(isCreateNewActivity)
-                ((Activity)getContext).startActivity(mainActivityIntent);
+                getContext.startActivity(mainActivityIntent);
             else
                 MainActivity.updatedIntent=mainActivityIntent;
             // Close Current Activity

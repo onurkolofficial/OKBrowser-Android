@@ -84,4 +84,12 @@
     <string name="yes_text">Evet</string>
     <string name="no_text">Hayır</string>
     <string name="bookmark_added_text">Yerişareti Eklendi!</string>
+    <string name="open_image_text">Resmi aç</string>
+    <string name="open_image_new_tab_text">Resmi yeni sekmede aç</string>
+    <string name="open_image_incognito_text">Resmi gizli sekmede aç</string>
+    <string name="download_image_text">Resmi indir</string>
+    <string name="open_new_tab_text">Yeni sekmede aç</string>
+    <string name="open_incognito_tab_text">Gizli sekmede aç</string>
+    <string name="copy_link_text">Bağlantıyı kopyala</string>
+    <string name="copy_link_text_text">Bağlanıtı metnini kopyala</string>
 </resources>

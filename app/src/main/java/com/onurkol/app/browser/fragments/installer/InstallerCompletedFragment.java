@@ -1,6 +1,6 @@
 package com.onurkol.app.browser.fragments.installer;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +15,10 @@ import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.data.BrowserDataManager;
+import com.onurkol.app.browser.interfaces.BrowserActionKeys;
 import com.onurkol.app.browser.lib.ContextManager;
 
-public class InstallerCompletedFragment extends Fragment {
+public class InstallerCompletedFragment extends Fragment implements BrowserActionKeys {
     // Elements
     ViewPager2 installerPager;
     Button installerCompleteButton;
@@ -43,14 +44,22 @@ public class InstallerCompletedFragment extends Fragment {
     // Listeners
     View.OnClickListener completeInstallerListener=view -> {
         // Completed Installer Activity
+        Context context=ContextManager.getManager().getContext();
         // Get Data Manager
         BrowserDataManager bdManager=new BrowserDataManager();
         // init
         bdManager.initBrowserPreferenceSettings();
         // load
         bdManager.successDataLoad();
+        // Intent
+        Intent mainActivityIntent=new Intent(context, MainActivity.class);
+        // Set Intent Data
+        // Create new Bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(ACTION_NAME, KEY_ACTION_BROWSER_START_INSTALLER);
+        mainActivityIntent.putExtras(bundle);
         // Start Browser & Close Installer Activity
-        ContextManager.getManager().getContext().startActivity(new Intent(ContextManager.getManager().getContext(), MainActivity.class));
+        context.startActivity(mainActivityIntent);
         ContextManager.getManager().getContextActivity().finish();
     };
 }

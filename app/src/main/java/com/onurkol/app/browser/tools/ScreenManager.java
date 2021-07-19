@@ -29,7 +29,8 @@ public class ScreenManager {
         Bitmap bitmap = Bitmap.createBitmap(width, (height-220), Bitmap.Config.ARGB_8888);
         // Get ScreenShot
         Canvas c = new Canvas(bitmap);
-        view.draw(c);
+        if(view!=null)
+            view.draw(c);
         return bitmap;
     }
 }

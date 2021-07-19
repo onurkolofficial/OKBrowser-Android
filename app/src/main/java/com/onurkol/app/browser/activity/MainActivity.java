@@ -180,10 +180,9 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
 
     private void startTabsSync(){
         // Check Saved Tabs
-        if (tabBuilder.getSavedTabList().size() <= 0) {
+        if (tabBuilder.getSavedTabList().size() <= 0)
             // Create New Tab.
             tabBuilder.createNewTab();
-        }
         else
             // Synchronize Tabs
             tabBuilder.syncSavedTabs();
@@ -240,7 +239,8 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 webView.setVisibility(View.VISIBLE);
                 // Load Url
                 webView.loadUrl(intentUrl);
-            } else if (intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_INCOGNITO_ON_START)) {
+            }
+            else if(intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_INCOGNITO_ON_START)) {
                 String intentUrl = intent.getStringExtra(ACTION_VALUE);
                 // Get Elements
                 OKWebView webView = tabBuilder.getActiveIncognitoFragment().getWebView();
@@ -250,9 +250,22 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 webView.setVisibility(View.VISIBLE);
                 // Load Url
                 webView.loadUrl(intentUrl);
-            } else if (intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_TAB_ON_CREATE)) {
+            }
+            else if(intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_TAB_ON_CREATE)) {
                 String intentUrl = intent.getStringExtra(ACTION_VALUE);
                 ProcessDelay.Delay(() -> activityNewTabHandler(intentUrl),320);
+            }
+            else if(intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_BROWSER_START_INSTALLER)){
+                // Reset Intent
+                getIntent().removeExtra(ACTION_NAME);
+                // Reset Tabs
+                tabBuilder.getTabFragmentList().clear();
+                tabBuilder.getTabDataList().clear();
+                tabBuilder.getSavedTabList().clear();
+                // Clear Preferences
+                tabBuilder.saveTabListPreference(new ArrayList<>());
+                // Re-sync tabs
+                startTabsSync();
             }
         }
     }

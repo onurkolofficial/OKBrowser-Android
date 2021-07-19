@@ -3,16 +3,25 @@ package com.onurkol.app.browser.fragments.browser.tabs;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.menu.webview.MenuWebViewContext;
+import com.onurkol.app.browser.tools.JavascriptManager;
 import com.onurkol.app.browser.tools.ScreenManager;
 import com.onurkol.app.browser.webview.OKWebView;
 import com.onurkol.app.browser.webview.OKWebViewChromeClient;
@@ -61,6 +70,8 @@ public class IncognitoTabFragment extends Fragment {
         // Set WebView Config
         WebViewConfig.getInstance().setWebViewConfig(okBrowserIncognitoWebView);
 
+        // Register Context Menu
+        this.registerForContextMenu(okBrowserIncognitoWebView);
 
         return fragmentView;
     }
@@ -90,5 +101,54 @@ public class IncognitoTabFragment extends Fragment {
     }
     public Bitmap getUpdatedScreenShot(){
         return fragmentScreen;
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        // Get Hit Result
+        WebView.HitTestResult result = okBrowserIncognitoWebView.getHitTestResult();
+        View rootView=okBrowserIncognitoWebView.getRootView();
+
+        // Get Classes
+        JavascriptManager jsManager=JavascriptManager.getManager();
+
+        // Init Javascript Manager
+        jsManager.setWebView(okBrowserIncognitoWebView);
+
+        // Get Menu Type
+        int type=result.getType();
+        float defBlurValue=0.5F;
+        if(type == WebView.HitTestResult.IMAGE_TYPE){
+            // Open Image Menu
+            MenuWebViewContext.getImageContextMenu(result.getExtra())
+                    .showAtLocation(okBrowserIncognitoWebView, Gravity.CENTER, 0,0);
+            // Set Background Blur
+            rootView.setAlpha(defBlurValue);
+        }
+        else if(type == WebView.HitTestResult.SRC_ANCHOR_TYPE){
+            // Open Anchor Menu
+            jsManager.getUrlAndTitleWithJavascript(MenuWebViewContext.KEY_MENU_ANCHOR,result.getExtra());
+            // Set Background Blur
+            rootView.setAlpha(defBlurValue);
+        }
+        else if(type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+            // Open Image & Anchor Menu
+            // Get Anchor URL
+            Handler handler=new Handler();
+            Message message=handler.obtainMessage();
+
+            okBrowserIncognitoWebView.requestFocusNodeHref(message);
+            String getMessageURL=message.getData().getString("url");
+
+            // Check and Get Title, Url and Image URL
+            if(URLUtil.isValidUrl(result.getExtra()))
+                jsManager.getUrlAndTitleWithJavascript(MenuWebViewContext.KEY_MENU_IMAGE_ANCHOR, result.getExtra());
+            else
+                jsManager.getUrlAndTitleWithJavascript(MenuWebViewContext.KEY_MENU_ANCHOR, getMessageURL);
+            // Set Background Blur
+            rootView.setAlpha(defBlurValue);
+
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
     }
 }

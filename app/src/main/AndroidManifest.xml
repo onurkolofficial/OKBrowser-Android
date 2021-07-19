@@ -21,7 +21,7 @@
         <activity android:name=".activity.browser.settings.SettingsAboutActivity" />
         <activity
             android:name=".activity.browser.installer.InstallerActivity"
-            android:configChanges="screenSize|screenLayout|locale" />
+            android:configChanges="screenSize|screenLayout|locale"/>
         <activity android:name=".activity.browser.core.DownloadsActivity" />
         <activity android:name=".activity.browser.core.TabListViewActivity" />
         <activity android:name=".activity.browser.BookmarkActivity" />

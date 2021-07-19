@@ -30,5 +30,9 @@
     <style name="PopupMenuStyle">
         <item name="android:popupBackground">@color/popups_background_light</item>
     </style>
-
+    <!-- Borderless Button !-->
+    <style name="BorderlessButtonTheme" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/black4</item>
+        <item name="iconTint">@color/black4</item>
+    </style>
 </resources>

@@ -250,8 +250,8 @@ public class TabManager implements TabSettings, TabManagers {
                 setActiveTabFragment(newTabDataFragment);
             }
             else
-            if(isShowingFragment(newTabDataFragment))
-                hideFragment(newTabDataFragment);
+                if(isShowingFragment(newTabDataFragment))
+                    hideFragment(newTabDataFragment);
             // Add List
             BROWSER_TAB_FRAGMENT_LIST.add(newTabDataFragment);
             // Tab Classes Data

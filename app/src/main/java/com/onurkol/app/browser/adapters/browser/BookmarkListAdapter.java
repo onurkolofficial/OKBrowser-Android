@@ -1,6 +1,9 @@
 package com.onurkol.app.browser.adapters.browser;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.data.browser.BookmarkData;
 import com.onurkol.app.browser.interfaces.BrowserActionKeys;
 import com.onurkol.app.browser.interfaces.browser.bookmarks.BookmarkSettings;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.HistoryManager;
+import com.onurkol.app.browser.lib.browser.BookmarkManager;
 import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 import com.onurkol.app.browser.tools.CharLimiter;
 
@@ -33,7 +37,7 @@ public class BookmarkListAdapter extends ArrayAdapter<BookmarkData> implements B
     // Classes
     ContextManager contextManager;
     TabBuilder tabBuilder;
-    HistoryManager historyManager;
+    BookmarkManager bookmarkManager;
     Context getContext;
 
     public BookmarkListAdapter(Context context, ListView historyListView, ArrayList<BookmarkData> bookmarkList) {
@@ -44,7 +48,7 @@ public class BookmarkListAdapter extends ArrayAdapter<BookmarkData> implements B
         inflater=LayoutInflater.from(context);
         contextManager=ContextManager.getManager();
         tabBuilder=TabBuilder.Build();
-        historyManager=HistoryManager.getInstance();
+        bookmarkManager=BookmarkManager.getInstance();
     }
 
     @Override
@@ -77,7 +81,67 @@ public class BookmarkListAdapter extends ArrayAdapter<BookmarkData> implements B
         holder.bookmarkTitleText.setText(historyTitle);
         holder.bookmarkUrlText.setText(historyUrl);
 
+        // Button Click Events
+        holder.openBookmarkLayoutButton.setOnClickListener(view -> {
+            // Get Intent
+            Intent mainActivityIntent;
+            boolean isCreateNewActivity;
 
+            // Check Context
+            if(contextManager.getContextActivity().isTaskRoot()) {
+                isCreateNewActivity=true;
+                mainActivityIntent = new Intent(getContext, MainActivity.class);
+            }
+            else {
+                isCreateNewActivity=false;
+                if(contextManager.getContextActivity().getParentActivityIntent()!=null)
+                    mainActivityIntent = contextManager.getContextActivity().getParentActivityIntent();
+                else
+                    mainActivityIntent = new Intent(getContext, MainActivity.class);
+            }
+            // Variables
+            String action_name;
+            // Create new Bundle
+            Bundle bundle = new Bundle();
+            // Check Action
+            if(contextManager.getContextActivity().isTaskRoot()){
+                action_name=KEY_ACTION_TAB_ON_CREATE;
+            }
+            else{
+                if(tabBuilder.getTabFragmentList().size()<=0 && tabBuilder.getIncognitoTabFragmentList().size()<=0){
+                    action_name=KEY_ACTION_TAB_ON_CREATE;
+                }
+                else{
+                    if(tabBuilder.getActiveTabFragment()!=null){
+                        action_name=KEY_ACTION_TAB_ON_START;
+                    }
+                    else{
+                        action_name=KEY_ACTION_INCOGNITO_ON_START;
+                    }
+                }
+            }
+            bundle.putString(ACTION_NAME, action_name);
+            bundle.putString(ACTION_VALUE, data.getUrl());
+            // Set extras
+            mainActivityIntent.putExtras(bundle);
+
+            // Check Activity
+            if(isCreateNewActivity)
+                getContext.startActivity(mainActivityIntent);
+            else
+                MainActivity.updatedIntent=mainActivityIntent;
+            // Close Current Activity
+            ((Activity)getContext).finish();
+        });
+
+        holder.deleteBookmarkButton.setOnClickListener(view -> {
+            // Remove Item (Current)
+            BROWSER_BOOKMARK_LIST.remove(position);
+            // Save Current List
+            bookmarkManager.saveBookmarkListPreference(BROWSER_BOOKMARK_LIST);
+            // Refresh List View
+            getListView.invalidateViews();
+        });
 
         return convertView;
     }
