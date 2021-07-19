@@ -1,9 +1,13 @@
 package com.onurkol.app.browser.activity.browser.core;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -30,23 +34,20 @@ public class DownloadsActivity extends AppCompatActivity implements DownloadSett
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false;
+    public static boolean isCreated=false,isCreatedView=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
         ContextManager.Build(this);
-        // Create View
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_downloads);
         // Get Classes
         dataManager=new BrowserDataManager();
         prefManager=AppPreferenceManager.getInstance();
+        // Create View
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_downloads);
         // Get Intents
         installerIntent=new Intent(this, InstallerActivity.class);
-        // Check Get Shortcut
-        if(isTaskRoot())
-            dataManager.initBrowserPreferenceSettings();
 
         // Check Installer Activity
         if(dataManager.startInstallerActivity){
@@ -85,6 +86,22 @@ public class DownloadsActivity extends AppCompatActivity implements DownloadSett
         }
 
         isCreated = true;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        if(!dataManager.startInstallerActivity){
+            dataManager.initBrowserPreferenceSettings();
+            /*
+            if(!isCreatedView) {
+                //...
+            }
+             */
+            isCreatedView=true;
+        }
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override

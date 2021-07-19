@@ -83,4 +83,5 @@
     <string name="question_delete_all_histories_text">Tüm geçmişi silmek istediğinizden emin misiniz?</string>
     <string name="yes_text">Evet</string>
     <string name="no_text">Hayır</string>
+    <string name="bookmark_added_text">Yerişareti Eklendi!</string>
 </resources>

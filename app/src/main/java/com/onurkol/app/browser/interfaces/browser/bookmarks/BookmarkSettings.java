@@ -10,5 +10,5 @@ public interface BookmarkSettings {
     String KEY_BOOKMARK_PREFERENCE="BROWSER_BOOKMARK_PREFERENCE";
 
     // Bookmark List
-    List<BookmarkData> BROWSER_BOOKMARK_LIST=new ArrayList<>();
+    ArrayList<BookmarkData> BROWSER_BOOKMARK_LIST=new ArrayList<>();
 }

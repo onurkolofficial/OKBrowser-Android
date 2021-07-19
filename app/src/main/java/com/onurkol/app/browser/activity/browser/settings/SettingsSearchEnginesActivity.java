@@ -1,9 +1,14 @@
 package com.onurkol.app.browser.activity.browser.settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +19,7 @@ import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.data.settings.SettingsPreferenceIconDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
+import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.settings.SearchEngine;
 
 import java.util.ArrayList;
@@ -32,12 +38,15 @@ public class SettingsSearchEnginesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings_search_engines);
-
+        // Set Current Activity Context
+        ContextManager.Build(this);
         // Get Classes
         dataManager=new BrowserDataManager();
         prefManager=AppPreferenceManager.getInstance();
+        // Create View
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings_search_engines);
+
         // Get Elements
         backButton=findViewById(R.id.backSettingsButton);
         settingName=findViewById(R.id.settingName);
@@ -61,5 +70,13 @@ public class SettingsSearchEnginesActivity extends AppCompatActivity {
         for(int i=0; i<xmlStringValue.size(); i++){
             SEARCH_ENGINE_DATA_LIST.add(new SettingsPreferenceIconDataInteger(xmlStringValue.get(i),xmlIntegerValue.get(i),xmlDataIcons.getDrawable(i), true, BrowserDefaultSettings.KEY_SEARCH_ENGINE));
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        dataManager.initBrowserPreferenceSettings();
+        return super.onCreateView(name, context, attrs);
     }
 }

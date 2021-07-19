@@ -76,9 +76,6 @@ public class BrowserDataManager implements BrowserDefaultSettings {
             // Save Forms
             if (!prefManager.getBoolean(KEY_SAVE_FORMS))
                 prefManager.setPreference(KEY_SAVE_FORMS, DEFAULT_SAVE_FORMS);
-            // Desktop Mode
-            if (!prefManager.getBoolean(KEY_DESKTOP_MODE))
-                prefManager.setPreference(KEY_DESKTOP_MODE, DEFAULT_DESKTOP_MODE);
         }
         // Search Engine
         if(prefManager.getInt(KEY_SEARCH_ENGINE)==AppPreferenceManager.INTEGER_NULL)

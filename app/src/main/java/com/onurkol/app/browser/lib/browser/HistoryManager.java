@@ -35,14 +35,6 @@ public class HistoryManager implements HistorySettings, HistoryManagers {
     }
 
     @Override
-    public void deleteHistory(HistoryData historyData) {
-        // Update Data List
-        BROWSER_HISTORY_LIST.remove(historyData);
-        // Save Preferences
-        saveHistoryListPreference(BROWSER_HISTORY_LIST);
-    }
-
-    @Override
     public void deleteAllHistory() {
         // Clear Datas
         BROWSER_HISTORY_LIST.clear();
@@ -66,13 +58,13 @@ public class HistoryManager implements HistorySettings, HistoryManagers {
         if(prefManager==null)
             prefManager=AppPreferenceManager.getInstance();
         // New Data
-        ArrayList<HistoryData> savedTabsList=new ArrayList<>();
+        ArrayList<HistoryData> savedHistoriesList=new ArrayList<>();
         // Get Preference
-        String savedTabsString=prefManager.getString(KEY_HISTORY_PREFERENCE);
-        if(savedTabsString!=null && !savedTabsString.equals(""))
+        String savedHistoriesString=prefManager.getString(KEY_HISTORY_PREFERENCE);
+        if(savedHistoriesString!=null && !savedHistoriesString.equals(""))
             // Convert String to List
-            savedTabsList=gson.fromJson(savedTabsString, new TypeToken<ArrayList<HistoryData>>(){}.getType());
-        return savedTabsList;
+            savedHistoriesList=gson.fromJson(savedHistoriesString, new TypeToken<ArrayList<HistoryData>>(){}.getType());
+        return savedHistoriesList;
     }
 
 

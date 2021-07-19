@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         browserTabListButton.setOnClickListener(showTabsClickListener);
         browserMenuButton.setOnClickListener(showMainMenuListener);
         noTabMenuButton.setOnClickListener(showNoTabMenuListener);
-        noTabNewTabButton.setOnClickListener(createNewTabNoTabLayout);
+        noTabNewTabButton.setOnClickListener(view -> activityNewTabHandler(""));
         browserSearch.setOnKeyListener(searchWebUrlListener);
         noTabNewIncognitoButton.setOnClickListener(createNewIncognitoTabLayout);
         findCloseButton.setOnClickListener(closeFindListener);
@@ -223,44 +223,38 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         if(prefManager.getInt(BrowserDefaultSettings.KEY_APP_THEME)!=2){
             int nightModeFlags=getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if(nightModeFlags==Configuration.UI_MODE_NIGHT_YES || nightModeFlags==Configuration.UI_MODE_NIGHT_NO){
-                //checkDataView(isConfigChanged);
+                checkDataView(isConfigChanged);
             }
         }
     }
 
     private void checkIntentData(Intent intent){
-        Log.e("MainActivity","234: Called Action: "+intent.getStringExtra(ACTION_NAME));
-
-
-        /*
-        if(intent.getStringExtra(KEY_ACTION_TAB_ON_START)!=null){
-            String intentUrl=intent.getStringExtra(KEY_ACTION_TAB_ON_START);
-            // Get Elements
-            OKWebView webView=tabBuilder.getActiveTabFragment().getWebView();
-            View fragmentView=tabBuilder.getActiveTabFragment().getView();
-            // Set Visibilities
-            fragmentView.findViewById(R.id.newTabHomeLayout).setVisibility(View.GONE);
-            webView.setVisibility(View.VISIBLE);
-            // Load Url
-            webView.loadUrl(intentUrl);
+        if(intent.getStringExtra(ACTION_NAME)!=null) {
+            if(intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_TAB_ON_START)) {
+                String intentUrl = intent.getStringExtra(ACTION_VALUE);
+                // Get Elements
+                OKWebView webView = tabBuilder.getActiveTabFragment().getWebView();
+                View fragmentView = tabBuilder.getActiveTabFragment().getView();
+                // Set Visibilities
+                fragmentView.findViewById(R.id.newTabHomeLayout).setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+                // Load Url
+                webView.loadUrl(intentUrl);
+            } else if (intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_INCOGNITO_ON_START)) {
+                String intentUrl = intent.getStringExtra(ACTION_VALUE);
+                // Get Elements
+                OKWebView webView = tabBuilder.getActiveIncognitoFragment().getWebView();
+                View fragmentView = tabBuilder.getActiveIncognitoFragment().getView();
+                // Set Visibilities
+                fragmentView.findViewById(R.id.incognitoHomeLayout).setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+                // Load Url
+                webView.loadUrl(intentUrl);
+            } else if (intent.getStringExtra(ACTION_NAME).equals(KEY_ACTION_TAB_ON_CREATE)) {
+                String intentUrl = intent.getStringExtra(ACTION_VALUE);
+                ProcessDelay.Delay(() -> activityNewTabHandler(intentUrl),320);
+            }
         }
-        else if(intent.getStringExtra(KEY_ACTION_INCOGNITO_ON_START)!=null){
-            String intentUrl=intent.getStringExtra(KEY_ACTION_INCOGNITO_ON_START);
-            // Get Elements
-            OKWebView webView=tabBuilder.getActiveIncognitoFragment().getWebView();
-            View fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
-            // Set Visibilities
-            fragmentView.findViewById(R.id.incognitoHomeLayout).setVisibility(View.GONE);
-            webView.setVisibility(View.VISIBLE);
-            // Load Url
-            webView.loadUrl(intentUrl);
-        }
-        else if(intent.getStringExtra(KEY_ACTION_TAB_ON_CREATE)!=null){
-            Log.e("MainActivity","259: Called Create New Tab Action? ");
-            String intentUrl=intent.getStringExtra(KEY_ACTION_TAB_ON_CREATE);
-            tabBuilder.createNewTab(intentUrl);
-        }
-         */
     }
 
     @Override
@@ -508,14 +502,8 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
     }
 
     // Event Listeners
-    // Show Tabs
-    View.OnClickListener showTabsClickListener=view -> startActivity(tabListIntent);
-    // Open Toolbar Main Menu
-    View.OnClickListener showMainMenuListener=view -> MenuToolbarMain.getMenu().showAsDropDown(view);
-    // Open Toolbar No Tab Menu
-    View.OnClickListener showNoTabMenuListener=view -> MenuToolbarNoTab.getMenu().showAsDropDown(view);
-    // Create New Tab in No Tab Toolbar
-    View.OnClickListener createNewTabNoTabLayout=view -> {
+    // Custom Classes
+    private void activityNewTabHandler(String url){
         // Get Elements
         View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
         View toolbarMain=findViewById(R.id.includeTabToolbar);
@@ -523,14 +511,20 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         toolbarNoTab.setVisibility(View.GONE);
         toolbarMain.setVisibility(View.VISIBLE);
         // Create Tab
-        tabBuilder.createNewTab();
+        tabBuilder.createNewTab(url);
         // Hide Incognito Icon
         incognitoIcon.setVisibility(View.GONE);
         // Re-Update Icon
         browserTabListButton.setImageDrawable(new ToolbarTabCounter().getTabCountDrawable());
         // Clear Url for New Tab
-        browserSearch.setText("");
-    };
+        browserSearch.setText(url);
+    }
+    // Show Tabs
+    View.OnClickListener showTabsClickListener=view -> startActivity(tabListIntent);
+    // Open Toolbar Main Menu
+    View.OnClickListener showMainMenuListener=view -> MenuToolbarMain.getMenu().showAsDropDown(view);
+    // Open Toolbar No Tab Menu
+    View.OnClickListener showNoTabMenuListener=view -> MenuToolbarNoTab.getMenu().showAsDropDown(view);
     // Create New Incognito Tab in No Tab Toolbar
     View.OnClickListener createNewIncognitoTabLayout=view -> {
         // Get Elements

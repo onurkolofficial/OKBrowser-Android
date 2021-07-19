@@ -42,7 +42,7 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
+    public static boolean isCreated=false,isCreatedView=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
@@ -55,9 +55,6 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
         setContentView(R.layout.activity_history);
         // Get Intents
         installerIntent=new Intent(this, InstallerActivity.class);
-        // Check Get Shortcut
-        if(isTaskRoot() && !isCreated)
-            dataManager.initBrowserPreferenceSettings();
 
         // Check Installer Activity
         if(dataManager.startInstallerActivity){
@@ -66,9 +63,6 @@ public class HistoryActivity extends AppCompatActivity implements HistorySetting
             // Finish Current Activity
             finish();
         }
-        else
-            if(!isTaskRoot() && !isConfigChanged)
-                dataManager.initBrowserPreferenceSettings();
         // Get Elements
         backButton=findViewById(R.id.backSettingsButton);
         settingName=findViewById(R.id.settingName);

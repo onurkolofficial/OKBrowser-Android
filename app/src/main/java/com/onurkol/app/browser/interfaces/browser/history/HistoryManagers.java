@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public interface HistoryManagers {
     void newHistory(HistoryData historyData);
-    void deleteHistory(HistoryData historyData);
     void deleteAllHistory();
     void saveHistoryListPreference(ArrayList<HistoryData> historyData);
     ArrayList<HistoryData> getSavedHistoryData();

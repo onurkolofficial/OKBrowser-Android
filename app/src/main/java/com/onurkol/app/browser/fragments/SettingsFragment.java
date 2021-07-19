@@ -12,6 +12,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.SettingsActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsAboutActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsLanguageActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsSearchEnginesActivity;
@@ -35,10 +36,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Get Classes
         dataManager=new BrowserDataManager();
-        // Init Fragment Data
-        if(getActivity().isTaskRoot())
-            dataManager.initBrowserPreferenceSettings();
-
+        // Init
+        dataManager.initBrowserPreferenceSettings();
         // Set Resource
         setPreferencesFromResource(R.xml.preference_settings,rootKey);
 

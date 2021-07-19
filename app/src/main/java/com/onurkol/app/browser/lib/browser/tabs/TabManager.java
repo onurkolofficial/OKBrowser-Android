@@ -3,6 +3,7 @@ package com.onurkol.app.browser.lib.browser.tabs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -43,12 +44,16 @@ public class TabManager implements TabSettings, TabManagers {
 
     public void BuildManager(){
         prefManager=AppPreferenceManager.getInstance();
-        context=ContextManager.getManager().getBaseContext();
-        activity=ContextManager.getManager().getBaseContextActivity();
-        if(ContextManager.getManager().getBaseContext()!=null)
+        if(ContextManager.getManager().getBaseContext()!=null) {
+            context=ContextManager.getManager().getBaseContext();
+            activity=ContextManager.getManager().getBaseContextActivity();
             fragmentManager=ContextManager.getManager().getBaseFragmentManager();
-        else
-            fragmentManager=((FragmentActivity)ContextManager.getManager().getContext()).getSupportFragmentManager();
+        }
+        else {
+            context=ContextManager.getManager().getContext();
+            activity=ContextManager.getManager().getContextActivity();
+            fragmentManager=((FragmentActivity) ContextManager.getManager().getContext()).getSupportFragmentManager();
+        }
         // Init Preference Data
         initTabPreferenceData();
     }
@@ -232,10 +237,9 @@ public class TabManager implements TabSettings, TabManagers {
             TabFragment newTabDataFragment=new TabFragment();
             // Set Fragment Data
             newTabDataFragment.setTabIndex(i);
-
+            // Check Fragment Manager
             if(fragmentManager.isDestroyed())
                 fragmentManager=ContextManager.getManager().getBaseFragmentManager();
-
             // Add Views
             addFragmentView(R.id.browserFragmentView, newTabDataFragment);
             // Hide Fragments

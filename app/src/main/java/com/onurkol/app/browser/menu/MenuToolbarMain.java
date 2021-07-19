@@ -3,6 +3,7 @@ package com.onurkol.app.browser.menu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,25 +13,38 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.SettingsActivity;
 import com.onurkol.app.browser.activity.browser.BookmarkActivity;
 import com.onurkol.app.browser.activity.browser.HistoryActivity;
 import com.onurkol.app.browser.activity.browser.core.DownloadsActivity;
+import com.onurkol.app.browser.data.browser.BookmarkData;
+import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
+import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.lib.browser.BookmarkManager;
 import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.browser.tabs.core.ToolbarTabCounter;
 import com.onurkol.app.browser.webview.OKWebView;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class MenuToolbarMain {
     static PopupWindow popupWindow;
 
     // Classes
-    static TabBuilder tabBuilder;
-    static ToolbarTabCounter tabCounter;
+    static WeakReference<TabBuilder> tabBuilderStatic;
+    static WeakReference<ToolbarTabCounter> tabCounterStatic;
+    static WeakReference<AppPreferenceManager> prefManagerStatic;
+    static WeakReference<BookmarkManager> bookmarkManagerStatic;
+
+    static WeakReference<Context> contextStatic;
 
     // Intents
     static Intent historyIntent,downloadsIntent,bookmarksIntent,settingsIntent;
@@ -40,9 +54,18 @@ public class MenuToolbarMain {
         ContextManager contextManager=ContextManager.getManager();
         Context context=contextManager.getContext();
 
+        contextStatic=new WeakReference<>(context);
+
         // Get Classes
-        tabBuilder=TabBuilder.Build();
-        tabCounter=new ToolbarTabCounter();
+        TabBuilder tabBuilder=TabBuilder.Build();
+        ToolbarTabCounter tabCounter=new ToolbarTabCounter();
+        AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
+        BookmarkManager bookmarkManager=BookmarkManager.getInstance();
+        // Get Static Classes
+        tabBuilderStatic=new WeakReference<>(tabBuilder);
+        tabCounterStatic=new WeakReference<>(tabCounter);
+        prefManagerStatic=new WeakReference<>(prefManager);
+        bookmarkManagerStatic=new WeakReference<>(bookmarkManager);
 
         // Get Intents
         historyIntent=new Intent(context, HistoryActivity.class);
@@ -119,8 +142,10 @@ public class MenuToolbarMain {
             popupWindow.dismiss();
         });
         findInPageLayoutButton.setOnClickListener(findPageButtonListener);
+        desktopModeLayoutCheckbox.setOnClickListener(desktopModeButtonListener);
+        addBookmarkButton.setOnClickListener(addBookmarkButtonListener);
 
-        // Check Show Desktop Mode in Valid Web
+        // Check Show Some Menu Buttons
         if(getWebView.getUrl()==null || getWebView.getUrl().equals("") || getWebView.onBackView) {
             desktopModeLayoutCheckbox.setVisibility(View.GONE);
             findInPageLayoutButton.setVisibility(View.GONE);
@@ -135,6 +160,32 @@ public class MenuToolbarMain {
             menuRefreshButton.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_baseline_close_24));
         else
             menuRefreshButton.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_baseline_refresh_24));
+
+        // Check Desktop Mode Button
+        desktopModeCheckBox.setChecked(getWebView.isDesktopMode);
+
+        // Check Bookmarks
+        if(bookmarkManager.getSavedBookmarkData().size()<=0){
+            addBookmarkButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_border_24));
+        }
+        else{
+            int bookmarkCount=bookmarkManager.getSavedBookmarkData().size();
+            int i = 0;
+            while (i < bookmarkCount) {
+                // Get Data
+                BookmarkData data=bookmarkManager.getSavedBookmarkData().get(i);
+                // Check Data
+                if(getWebView.getUrl().equals(data.getUrl())){
+                    addBookmarkButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24));
+                    addBookmarkButton.setColorFilter(ContextCompat.getColor(context,R.color.primary));
+                    break;
+                } else {
+                    addBookmarkButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_border_24));
+                }
+                i++;
+            }
+        }
+
         return popupWindow;
     }
     // Listeners
@@ -153,11 +204,11 @@ public class MenuToolbarMain {
         EditText browserSearch=activity.findViewById(R.id.browserSearch);
 
         // New Tab
-        tabBuilder.createNewTab();
+        tabBuilderStatic.get().createNewTab();
         // Show Incognito Icon
         incognitoIcon.setVisibility(View.GONE);
         // Update Tab Counts
-        browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+        browserTabListButton.setImageDrawable(tabCounterStatic.get().getTabCountDrawable());
         // Clear Url for New Tab
         browserSearch.setText("");
         // Dismiss Popup
@@ -173,11 +224,11 @@ public class MenuToolbarMain {
         EditText browserSearch=activity.findViewById(R.id.browserSearch);
 
         // New Incognito Tab
-        tabBuilder.createNewIncognitoTab();
+        tabBuilderStatic.get().createNewIncognitoTab();
         // Show Incognito Icon
         incognitoIcon.setVisibility(View.VISIBLE);
         // Update Tab Counts
-        browserTabListButton.setImageDrawable(tabCounter.getIncognitoTabCountDrawable());
+        browserTabListButton.setImageDrawable(tabCounterStatic.get().getIncognitoTabCountDrawable());
         // Clear Url for New Tab
         browserSearch.setText("");
         // Dismiss Popup
@@ -188,18 +239,18 @@ public class MenuToolbarMain {
         // Get Context Activity
         Activity activity=ContextManager.getManager().getContextActivity();
         // Remove Views
-        for(int in=0; in<tabBuilder.getTabDataList().size(); in++)
-            tabBuilder.removeFragment(tabBuilder.getTabFragmentList().get(in));
-        for(int ii=0; ii<tabBuilder.getIncognitoTabDataList().size(); ii++)
-            tabBuilder.removeFragment(tabBuilder.getIncognitoTabFragmentList().get(ii));
+        for(int in=0; in<tabBuilderStatic.get().getTabDataList().size(); in++)
+            tabBuilderStatic.get().removeFragment(tabBuilderStatic.get().getTabFragmentList().get(in));
+        for(int ii=0; ii<tabBuilderStatic.get().getIncognitoTabDataList().size(); ii++)
+            tabBuilderStatic.get().removeFragment(tabBuilderStatic.get().getIncognitoTabFragmentList().get(ii));
         // Clear Data List
-        tabBuilder.getTabFragmentList().clear();
-        tabBuilder.getTabDataList().clear();
-        tabBuilder.getClassesTabDataList().clear();
-        tabBuilder.getIncognitoTabFragmentList().clear();
-        tabBuilder.getIncognitoTabDataList().clear();
+        tabBuilderStatic.get().getTabFragmentList().clear();
+        tabBuilderStatic.get().getTabDataList().clear();
+        tabBuilderStatic.get().getClassesTabDataList().clear();
+        tabBuilderStatic.get().getIncognitoTabFragmentList().clear();
+        tabBuilderStatic.get().getIncognitoTabDataList().clear();
         // SYNC for Tab List
-        tabBuilder.saveTabListPreference(tabBuilder.getTabDataList());
+        tabBuilderStatic.get().saveTabListPreference(tabBuilderStatic.get().getTabDataList());
         // Change Toolbar
         activity.findViewById(R.id.includeNoTabToolbar).setVisibility(View.VISIBLE);
         activity.findViewById(R.id.includeTabToolbar).setVisibility(View.GONE);
@@ -218,11 +269,11 @@ public class MenuToolbarMain {
         View fragmentView;
         OKWebView webView;
         // Check Url Back, Layout & Tabs
-        if(tabBuilder.getActiveTabFragment()!=null){
+        if(tabBuilderStatic.get().getActiveTabFragment()!=null){
             // Check Tab WebView Layout
             // Get WebView & Fragment View
-            fragmentView=tabBuilder.getActiveTabFragment().getView();
-            webView=tabBuilder.getActiveTabFragment().getWebView();
+            fragmentView=tabBuilderStatic.get().getActiveTabFragment().getView();
+            webView=tabBuilderStatic.get().getActiveTabFragment().getWebView();
             // Check Exists WebView History
             if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
                 webView.goForward();
@@ -236,8 +287,8 @@ public class MenuToolbarMain {
         }
         else{
             // Check Incognito WebView Layout
-            fragmentView=tabBuilder.getActiveIncognitoFragment().getView();
-            webView=tabBuilder.getActiveIncognitoFragment().getWebView();
+            fragmentView=tabBuilderStatic.get().getActiveIncognitoFragment().getView();
+            webView=tabBuilderStatic.get().getActiveIncognitoFragment().getWebView();
             // Check Exists WebView History
             if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
                 webView.goForward();
@@ -257,10 +308,10 @@ public class MenuToolbarMain {
     static View.OnClickListener refreshButtonListener=view -> {
         // Get WebView
         OKWebView webView;
-        if(tabBuilder.getActiveTabFragment()!=null)
-            webView = tabBuilder.getActiveTabFragment().getWebView();
+        if(tabBuilderStatic.get().getActiveTabFragment()!=null)
+            webView = tabBuilderStatic.get().getActiveTabFragment().getWebView();
         else
-            webView = tabBuilder.getActiveIncognitoFragment().getWebView();
+            webView = tabBuilderStatic.get().getActiveIncognitoFragment().getWebView();
 
         if(webView.isRefreshing || webView.isLoading){
             webView.isRefreshing=false;
@@ -286,6 +337,87 @@ public class MenuToolbarMain {
         activity.findViewById(R.id.includeTabToolbar).setVisibility(View.GONE);
         activity.findViewById(R.id.includeFindToolbar).setVisibility(View.VISIBLE);
 
+        // Dismiss Popup
+        popupWindow.dismiss();
+    };
+    // Browser Desktop Page Button
+    static View.OnClickListener desktopModeButtonListener=view -> {
+        // Get WebView
+        OKWebView webView;
+        if(tabBuilderStatic.get().getActiveTabFragment()!=null)
+            webView = tabBuilderStatic.get().getActiveTabFragment().getWebView();
+        else
+            webView = tabBuilderStatic.get().getActiveIncognitoFragment().getWebView();
+
+        // Get Preference Data
+        if(webView.isDesktopMode) {
+            webView.isDesktopMode=false;
+            webView.getSettings().setUserAgentString(null);
+        }
+        else {
+            webView.isDesktopMode=true;
+            webView.getSettings().setUserAgentString(BrowserDefaultSettings.DESKTOP_USER_AGENT);
+        }
+        // Reload Page
+        webView.reload();
+        // Dismiss Popup
+        popupWindow.dismiss();
+    };
+    // Add Bookmark Button
+    static View.OnClickListener addBookmarkButtonListener=view -> {
+        // Get WebView & Check Home Layout
+        boolean isHomePage;
+        OKWebView webView;
+        if(tabBuilderStatic.get().getActiveTabFragment()!=null) {
+            webView = tabBuilderStatic.get().getActiveTabFragment().getWebView();
+            View fragView=tabBuilderStatic.get().getActiveTabFragment().getView();
+            if(fragView.findViewById(R.id.newTabHomeLayout).getVisibility()==View.VISIBLE)
+                isHomePage=true;
+            else
+                isHomePage=false;
+        }
+        else {
+            webView = tabBuilderStatic.get().getActiveIncognitoFragment().getWebView();
+            View fragView=tabBuilderStatic.get().getActiveIncognitoFragment().getView();
+            if(fragView.findViewById(R.id.incognitoHomeLayout).getVisibility()==View.VISIBLE)
+                isHomePage=true;
+            else
+                isHomePage=false;
+        }
+
+        // Get Data
+        ArrayList<BookmarkData> dataList=bookmarkManagerStatic.get().getSavedBookmarkData();
+        // Check Valid Url
+        if(!isHomePage) {
+            boolean isBookmarkNotFound = true;
+            int i = 0;
+            while (i < dataList.size()) {
+                // Get Data
+                String bookmarkUrl = dataList.get(i).getUrl();
+                // Get WebView Data
+                String webUrl = webView.getUrl();
+                // Check Url
+                if (webUrl.equals(bookmarkUrl)) {
+                    // Remove Bookmark
+                    dataList.remove(i);
+                    // Save Preference Data
+                    bookmarkManagerStatic.get().saveBookmarkListPreference(dataList);
+
+                    // Set bookmark Status
+                    isBookmarkNotFound = false;
+                    break;
+                } else
+                    isBookmarkNotFound = true;
+                i++;
+            }
+            // Check Exist Bookmark
+            if (isBookmarkNotFound) {
+                // Add Bookmark
+                bookmarkManagerStatic.get().newBookmark(new BookmarkData(webView.getTitle(), webView.getUrl()));
+                // Show Message
+                Toast.makeText(contextStatic.get(), contextStatic.get().getString(R.string.bookmark_added_text), Toast.LENGTH_SHORT).show();
+            }
+        }
         // Dismiss Popup
         popupWindow.dismiss();
     };

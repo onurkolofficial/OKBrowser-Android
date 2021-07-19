@@ -18,24 +18,21 @@ public class WebViewConfig {
         // Get Classes
         AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
 
+        // Set WebView Settings
+        webView.setInitialScale(100);
+
         // Get WebSettings
         WebSettings browserWebSetting=webView.getSettings();
 
         // Get Settings
-        boolean javascriptMode=prefManager.getBoolean(BrowserDefaultSettings.KEY_APP_CACHE),
+        boolean javascriptMode=prefManager.getBoolean(BrowserDefaultSettings.KEY_JAVASCRIPT_MODE),
+                appCache=prefManager.getBoolean(BrowserDefaultSettings.KEY_APP_CACHE),
                 geoLocation=prefManager.getBoolean(BrowserDefaultSettings.KEY_GEO_LOCATION),
                 popups=prefManager.getBoolean(BrowserDefaultSettings.KEY_POPUPS),
                 domStorage=prefManager.getBoolean(BrowserDefaultSettings.KEY_DOM_STORAGE),
                 zoom=prefManager.getBoolean(BrowserDefaultSettings.KEY_ZOOM),
                 zoomButtons=prefManager.getBoolean(BrowserDefaultSettings.KEY_ZOOM_BUTTONS),
-                saveForms=prefManager.getBoolean(BrowserDefaultSettings.KEY_SAVE_FORMS),
-                desktopMode=prefManager.getBoolean(BrowserDefaultSettings.KEY_DESKTOP_MODE);
-
-        // Set User Agent for WebView.
-        if(desktopMode)
-            browserWebSetting.setUserAgentString(BrowserDefaultSettings.DESKTOP_USER_AGENT);
-        else
-            browserWebSetting.setUserAgentString(null);
+                saveForms=prefManager.getBoolean(BrowserDefaultSettings.KEY_SAVE_FORMS);
 
         // Set Javascript Mode
         browserWebSetting.setJavaScriptEnabled(javascriptMode);
@@ -43,9 +40,7 @@ public class WebViewConfig {
         browserWebSetting.setGeolocationEnabled(geoLocation);
         // Set Popups
         browserWebSetting.setJavaScriptCanOpenWindowsAutomatically(popups);
-        // Set Dom Storage
-        browserWebSetting.setDomStorageEnabled(domStorage);
-        browserWebSetting.setDatabaseEnabled(domStorage);
+
         // Set Zoom
         browserWebSetting.setSupportZoom(zoom);
         browserWebSetting.setBuiltInZoomControls(zoom);
@@ -59,6 +54,21 @@ public class WebViewConfig {
         browserWebSetting.setLoadWithOverviewMode(true);
         browserWebSetting.setUseWideViewPort(true);
         browserWebSetting.setNeedInitialFocus(true);
+
+        if(!webView.isIncognitoWebView) {
+            // Set App Cache
+            browserWebSetting.setAppCacheEnabled(appCache);
+            // Set Dom Storage
+            browserWebSetting.setDomStorageEnabled(domStorage);
+            browserWebSetting.setDatabaseEnabled(domStorage);
+        }
+        else{
+            // Set App Cache (Incognito)
+            browserWebSetting.setAppCacheEnabled(false);
+            // Set Dom Storage (Incognito)
+            browserWebSetting.setDomStorageEnabled(false);
+            browserWebSetting.setDatabaseEnabled(false);
+        }
 
         // Default Zoom Level
         webView.setInitialScale(100);

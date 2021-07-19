@@ -1,9 +1,14 @@
 package com.onurkol.app.browser.activity.browser.settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,13 +40,13 @@ public class SettingsLanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Set Current Activity Context
         ContextManager.Build(this);
+        // Get Classes
+        dataManager=new BrowserDataManager();
+        prefManager=AppPreferenceManager.getInstance();
         // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_language);
 
-        // Get Classes
-        dataManager=new BrowserDataManager();
-        prefManager=AppPreferenceManager.getInstance();
         // Get Elements
         backButton=findViewById(R.id.backSettingsButton);
         settingName=findViewById(R.id.settingName);
@@ -65,6 +70,13 @@ public class SettingsLanguageActivity extends AppCompatActivity {
         for(int i=0; i<xmlStringValue.size(); i++){
             LANGUAGE_DATA_LIST.add(new SettingsPreferenceIconDataInteger(xmlStringValue.get(i),xmlIntegerValue.get(i),xmlDataIcons.getDrawable(i), true, BrowserDefaultSettings.KEY_APP_LANGUAGE));
         }
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        // Init Browser Data ( Applying View Settings )
+        dataManager.initBrowserPreferenceSettings();
+        return super.onCreateView(name, context, attrs);
     }
 }

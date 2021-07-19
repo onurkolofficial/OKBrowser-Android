@@ -60,12 +60,9 @@ public class TabFragment extends Fragment implements BrowserActionKeys {
         View loadingView = getLayoutInflater().inflate(R.layout.layout_video_loading, null);
         // Default
         connectFailedLayout.setVisibility(View.GONE);
-
         // WebView Clients
         OKWebViewClient okWebViewClient=new OKWebViewClient();
         OKWebViewChromeClient okWebViewChromeClient=new OKWebViewChromeClient(webViewLayout, webViewVideoLayout, loadingView, okBrowserWebView);
-        // Set WebView Config
-        WebViewConfig.getInstance().setWebViewConfig(okBrowserWebView);
         // Set WebView Clients
         okBrowserWebView.setOKWebViewClient(okWebViewClient);
         okBrowserWebView.setOKWebViewChromeClient(okWebViewChromeClient);
@@ -75,6 +72,8 @@ public class TabFragment extends Fragment implements BrowserActionKeys {
         okBrowserWebView.setTabFragment(this);
         // Set Variables
         okBrowserWebView.isIncognitoWebView=false;
+        // Set WebView Config
+        WebViewConfig.getInstance().setWebViewConfig(okBrowserWebView);
 
         // Set Listeners
         searchInput.setOnKeyListener((cView, i, keyEvent) -> {
@@ -94,19 +93,16 @@ public class TabFragment extends Fragment implements BrowserActionKeys {
             return false;
         });
 
-        /*
-        // Check Fragment Data
+        // Check Tab Argument
         if(getArguments()!=null) {
-            if (getArguments().getString(TabSettings.KEY_TAB_URL_SENDER)!=null || getArguments().getString(TabSettings.KEY_TAB_URL_SENDER).equals("")) {
-                Log.e("TabFragment", "Call Bundle Extra: " + getArguments().getString(TabSettings.KEY_TAB_URL_SENDER));
+            if (!getArguments().getString(TabSettings.KEY_TAB_URL_SENDER).equals("")) {
                 // Set Visibilities
                 newTabHomeLayout.setVisibility(View.GONE);
                 okBrowserWebView.setVisibility(View.VISIBLE);
                 // Load Url
-                okBrowserWebView.loadUrl(savedInstanceState.getString(TabSettings.KEY_TAB_URL_SENDER));
+                okBrowserWebView.loadUrl(getArguments().getString(TabSettings.KEY_TAB_URL_SENDER));
             }
         }
-        */
 
         return fragmentView;
     }

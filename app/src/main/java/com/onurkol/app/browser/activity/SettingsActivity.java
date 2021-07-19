@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false,isCreatedFragment=false;
+    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
     public static String changedConfigName;
     public static Integer changedConfigValue;
 
@@ -74,10 +74,8 @@ public class SettingsActivity extends AppCompatActivity {
         backButton.setOnClickListener(view -> finish());
 
         // Get Fragment
-        if(!isCreatedFragment) {
+        if(!SettingsFragment.isPreferenceFragmentCreated)
             getSupportFragmentManager().beginTransaction().add(R.id.settingsFragmentContent, new SettingsFragment()).commit();
-            isCreatedFragment=true;
-        }
 
         isCreated=true;
     }
@@ -120,5 +118,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         isCreated=false;
+        SettingsFragment.isPreferenceFragmentCreated=false;
     }
 }

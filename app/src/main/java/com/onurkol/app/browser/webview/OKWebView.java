@@ -19,7 +19,8 @@ import java.util.Map;
 public class OKWebView extends WebView implements WebViewClientManager {
     // Variables
     public boolean isIncognitoWebView=false,
-            isRefreshing=false,isLoading=false,onBackView=false;
+            isRefreshing=false,isLoading=false,onBackView=false,
+            isDesktopMode=false;
     private boolean addedJavascriptInterface;
     // Fragments
     private TabFragment webviewTabFragment;

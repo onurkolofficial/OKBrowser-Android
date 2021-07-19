@@ -11,7 +11,6 @@ public interface BrowserDefaultSettings {
             KEY_ZOOM_BUTTONS="BROWSER_ZOOM_BUTTONS",
             KEY_APP_CACHE="BROWSER_APP_CACHE",
             KEY_SAVE_FORMS="BROWSER_SAVE_FORMS",
-            KEY_DESKTOP_MODE="BROWSER_DESKTOP_MODE",
             KEY_SEARCH_ENGINE="BROWSER_SEARCH_ENGINE",
             KEY_APP_LANGUAGE="APPLICATION_LANGUAGE",
             KEY_APP_THEME="APPLICATION_THEME";
@@ -24,8 +23,7 @@ public interface BrowserDefaultSettings {
             DEFAULT_ZOOM=true,
             DEFAULT_ZOOM_BUTTONS=false,
             DEFAULT_APP_CACHE=true,
-            DEFAULT_SAVE_FORMS=true,
-            DEFAULT_DESKTOP_MODE=false;
+            DEFAULT_SAVE_FORMS=true;
 
     // browser/values/search_engines.xml
     int DEFAULT_SEARCH_ENGINE=0;
