@@ -3,7 +3,6 @@ package com.onurkol.app.browser.fragments.settings;
 import android.os.Bundle;
 
 import androidx.preference.CheckBoxPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.R;

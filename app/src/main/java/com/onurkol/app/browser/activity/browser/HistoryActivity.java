@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
 import com.onurkol.app.browser.adapters.browser.HistoryListAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
@@ -26,7 +24,6 @@ import com.onurkol.app.browser.interfaces.browser.history.HistorySettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.browser.HistoryManager;
-import com.onurkol.app.browser.tools.ProcessDelay;
 
 public class HistoryActivity extends AppCompatActivity implements HistorySettings {
 

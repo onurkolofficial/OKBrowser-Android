@@ -16,11 +16,7 @@ import androidx.annotation.Nullable;
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.data.installer.InstallerDataInteger;
-import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
-import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.core.LanguageManager;
-import com.onurkol.app.browser.lib.core.ThemeManager;
 
 import java.util.ArrayList;
 

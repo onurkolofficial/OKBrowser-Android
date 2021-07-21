@@ -13,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
-import com.onurkol.app.browser.data.BrowserDataManager;
 
 public class InstallerWelcomeFragment extends Fragment {
     // Elements

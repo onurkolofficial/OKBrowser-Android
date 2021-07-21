@@ -3,7 +3,6 @@ package com.onurkol.app.browser.lib.browser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.onurkol.app.browser.data.browser.BookmarkData;
-import com.onurkol.app.browser.data.browser.HistoryData;
 import com.onurkol.app.browser.interfaces.browser.bookmarks.BookmarkManagers;
 import com.onurkol.app.browser.interfaces.browser.bookmarks.BookmarkSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;

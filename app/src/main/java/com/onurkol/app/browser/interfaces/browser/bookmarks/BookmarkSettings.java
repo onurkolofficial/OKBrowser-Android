@@ -3,7 +3,6 @@ package com.onurkol.app.browser.interfaces.browser.bookmarks;
 import com.onurkol.app.browser.data.browser.BookmarkData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface BookmarkSettings {
     // Preference Keys

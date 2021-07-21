@@ -6,7 +6,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
@@ -15,7 +14,6 @@ import com.onurkol.app.browser.data.BrowserDataManager;
 import com.onurkol.app.browser.lib.ContextManager;
 
 import java.lang.ref.WeakReference;
-import java.util.Locale;
 
 public class InstallerActivity extends AppCompatActivity {
     // Elements

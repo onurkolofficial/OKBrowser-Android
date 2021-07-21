@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.webkit.ValueCallback;
-import android.webkit.WebView;
 
 import com.onurkol.app.browser.menu.webview.MenuWebViewContext;
 import com.onurkol.app.browser.webview.OKWebView;

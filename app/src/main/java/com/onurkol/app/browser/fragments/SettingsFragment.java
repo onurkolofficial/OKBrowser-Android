@@ -2,17 +2,11 @@ package com.onurkol.app.browser.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.SettingsActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsAboutActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsLanguageActivity;
 import com.onurkol.app.browser.activity.browser.settings.SettingsSearchEnginesActivity;

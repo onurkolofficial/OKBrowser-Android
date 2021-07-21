@@ -3,9 +3,7 @@ package com.onurkol.app.browser.webview.listeners;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.webkit.DownloadListener;
-import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.onurkol.app.browser.R;

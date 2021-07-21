@@ -3,7 +3,6 @@ package com.onurkol.app.browser.interfaces.browser.downloads;
 import com.onurkol.app.browser.data.browser.DownloadsData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface DownloadsSettings {
     // Preference Keys

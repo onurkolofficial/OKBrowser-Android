@@ -1,8 +1,6 @@
 package com.onurkol.app.browser.webview;
 
-import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;

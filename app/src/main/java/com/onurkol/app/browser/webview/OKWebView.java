@@ -15,7 +15,6 @@ import com.onurkol.app.browser.interfaces.webview.WebViewClientManager;
 
 import java.util.Map;
 
-
 public class OKWebView extends WebView implements WebViewClientManager {
     // Variables
     public boolean isIncognitoWebView=false,

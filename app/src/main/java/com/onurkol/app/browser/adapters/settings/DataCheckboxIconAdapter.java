@@ -22,8 +22,6 @@ import com.onurkol.app.browser.data.settings.SettingsPreferenceIconDataInteger;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.core.LanguageManager;
-import com.onurkol.app.browser.lib.core.ThemeManager;
 
 import java.util.ArrayList;
 

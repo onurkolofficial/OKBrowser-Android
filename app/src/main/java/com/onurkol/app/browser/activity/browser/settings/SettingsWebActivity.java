@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.data.BrowserDataManager;
-import com.onurkol.app.browser.fragments.SettingsFragment;
 import com.onurkol.app.browser.fragments.settings.SettingsWebFragment;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.onurkol.app.browser.data.browser.DownloadsData;
 import com.onurkol.app.browser.lib.ContextManager;
