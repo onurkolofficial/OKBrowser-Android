@@ -1,14 +1,16 @@
 package com.onurkol.app.browser.webview;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.core.widget.NestedScrollView;
@@ -82,7 +84,7 @@ public class OKWebViewClient extends WebViewClient {
         if(url.contains("watch?")) {
             browserSearch.setText(url);
             // Check WebView Height (some bugs)
-            checkWebViewHeight((OKWebView)view);
+            //checkWebViewHeight((OKWebView)view);
             // Update for Resource page
             updateSyncForWeb((OKWebView)view, url);
         }
@@ -91,15 +93,7 @@ public class OKWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         view.loadUrl(url);
-        /*
-        // Youtube App
-        Uri uri = Uri.parse(url);
-        if (uri.getHost().contains("youtube.com/watch")) {
-            IntentUtils.viewYoutube(mActivity, url);
-            return true;
-        }
-         */
-        return super.shouldOverrideUrlLoading(view, url);
+        return true;
     }
 
     @Override
@@ -155,15 +149,17 @@ public class OKWebViewClient extends WebViewClient {
     }
 
     private void checkWebViewHeight(OKWebView webView){
+        // <BUG> Clicked youtube menu button, webview height set to :wrap
+
         // Fixed Nested Scroll Height:
-        int getScreenHeigth=ScreenManager.getScreenHeight();
-        int getContentHeight=webView.getContentHeight();
+        int getScreenHeigth = ScreenManager.getScreenHeight();
+        int getContentHeight = webView.getContentHeight();
         // Params
-        FrameLayout.LayoutParams heightWrap=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        FrameLayout.LayoutParams heightMatch=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams heightWrap = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams heightMatch = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         // Check View Layout Params
-        if(getScreenHeigth>=getContentHeight)
+        if (getScreenHeigth >= getContentHeight || getContentHeight==0)
             webView.setLayoutParams(heightMatch);
         else
             webView.setLayoutParams(heightWrap);
@@ -191,36 +187,6 @@ public class OKWebViewClient extends WebViewClient {
             data.setTabPreview(webView.getIncognitoTabFragment().getUpdatedScreenShot());
         }
     }
-
-    /*
-    // Start Youtube App
-    public static void viewYoutube(Context context, String url) {
-        IntentUtils.viewWithPackageName(context, url, "com.google.android.youtube");
-    }
-
-    public static void viewWithPackageName(Context context, String url, String packageName) {
-        try {
-            Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            if (isAppInstalled(context, packageName)) {
-                viewIntent.setPackage(packageName);
-            }
-            context.startActivity(viewIntent);
-        } catch (Exception e) {
-            Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            context.startActivity(viewIntent);
-        }
-    }
-
-    public static boolean isAppInstalled(Context context, String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-            return true;
-        } catch (NameNotFoundException e) {
-        }
-        return false;
-    }
-     */
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {

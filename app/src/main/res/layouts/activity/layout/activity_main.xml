@@ -54,11 +54,11 @@
                     android:orientation="vertical"/>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <!-- WebView Fullscreen Video Layout !-->
+        <LinearLayout
+            android:id="@+id/webViewVideoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <!-- WebView Fullscreen Video Layout !-->
-    <LinearLayout
-        android:id="@+id/webViewVideoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"/>
 </LinearLayout>

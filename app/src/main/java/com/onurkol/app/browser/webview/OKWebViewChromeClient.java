@@ -1,6 +1,8 @@
 package com.onurkol.app.browser.webview;
 
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,7 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
     private View mLoadingView;
     private OKWebView mWebView;
 
-    private boolean isVideoFullscreen;
+    private boolean isVideoFullscreen; // Indicates if the video is being displayed using a custom view (typically full-screen)
     private FrameLayout videoViewContainer;
     private CustomViewCallback videoViewCallback;
 
@@ -83,8 +85,7 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
     public boolean isVideoFullscreen(){
         return isVideoFullscreen;
     }
-
-    public void setOnToggledFullscreen(ToggledFullscreenCallback callback){
+    public void setOnToggledFullscreen(ToggledFullscreenCallback callback) {
         this.toggledFullscreenCallback = callback;
     }
 
@@ -139,11 +140,6 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
     }
 
     @Override
-    public void onShowCustomView(View view, int requestedOrientation, CustomViewCallback callback){
-        onShowCustomView(view, callback);
-    }
-
-    @Override
     public void onHideCustomView() {
         if(isVideoFullscreen){
             mWebViewVideoLayout.setVisibility(View.INVISIBLE);
@@ -151,9 +147,8 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
             mWebViewLayout.setVisibility(View.VISIBLE);
         }
 
-        if (videoViewCallback != null && !videoViewCallback.getClass().getName().contains(".chromium.")) {
+        if (videoViewCallback != null && !videoViewCallback.getClass().getName().contains(".chromium."))
             videoViewCallback.onCustomViewHidden();
-        }
 
         // Reset values
         isVideoFullscreen = false;
@@ -200,4 +195,5 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
         else
             return false;
     }
+
 }

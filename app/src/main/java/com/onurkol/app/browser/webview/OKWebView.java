@@ -72,17 +72,14 @@ public class OKWebView extends WebView implements WebViewClientManager {
         okWebViewClient.updateSyncForWeb(this, url);
     }
 
-    // Fullscreen Video
-    public class JavascriptInterface {
+    // WebView Javascript Interface Class
+    public class OKWebViewJavascriptInterface {
         @android.webkit.JavascriptInterface
         public void notifyVideoEnd(){
             // End Video
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run(){
-                    if (okWebViewChromeClient != null)
-                        okWebViewChromeClient.onHideCustomView();
-                }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (okWebViewChromeClient!=null)
+                    okWebViewChromeClient.onHideCustomView();
             });
         }
     }
@@ -131,7 +128,7 @@ public class OKWebView extends WebView implements WebViewClientManager {
     private void addJavascriptInterface() {
         if (!addedJavascriptInterface){
             // Add javascript interface to be called when the video ends (must be done before page load)
-            addJavascriptInterface(new JavascriptInterface(), "OKWebView"); // Must match Javascript interface name of VideoEnabledWebChromeClient
+            addJavascriptInterface(new OKWebViewJavascriptInterface(), "OKWebView"); // Must match Javascript interface name of VideoEnabledWebChromeClient
             addedJavascriptInterface = true;
         }
     }

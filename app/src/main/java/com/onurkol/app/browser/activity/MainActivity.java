@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
     public static Intent updatedIntent=null;
     // Variables
     public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
-    boolean backPressHomeLayout=false;
+    public static boolean backPressHomeLayout=false;
     String findQueryString="";
 
     // Update Manager
@@ -203,10 +203,7 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                  * Using delay for fixed tab fragments bug.
                  **/
                 // Check Saved Tabs.
-                ProcessDelay.Delay(() -> {
-                    startTabsSync();
-                    browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
-                }, 200);
+                ProcessDelay.Delay(this::startTabsSync, 200);
 
                 // Register Download Receiver
                 registerReceiver(DownloadsHelper.fileDownloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));

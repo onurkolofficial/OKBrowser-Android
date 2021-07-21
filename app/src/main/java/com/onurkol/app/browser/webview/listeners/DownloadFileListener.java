@@ -28,36 +28,34 @@ public class DownloadFileListener implements DownloadListener, DownloadsSettings
         Context context= ContextManager.getManager().getContext();
         // Get Classes
         PermissionManager permissionManager=PermissionManager.getInstance();
+        DownloadManager downloadManager=(DownloadManager)context.getSystemService(DOWNLOAD_SERVICE);
 
         if(permissionManager.getStoragePermission()){
             // Get File Info
             Uri fileUri=Uri.parse(url);
-
-            // Set Download Request
+            File file=new File(String.valueOf(fileUri));
+            // Set Download Manager Request
             DownloadManager.Request request = new DownloadManager.Request(fileUri);
-
-            // Get File Name
-            String fileName=URLUtil.guessFileName(url, contentDisposition, mimetype);
-            // Get Folder
-            String downloadFolder=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
-            // Get Download Date
-            String downloadDate=DateManager.getDate();
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
             // Get Strings
             String downloading_file_text=context.getString(R.string.downloading_file_text);
 
-            request.setDescription(downloading_file_text);
-            request.setTitle(URLUtil.guessFileName(url, contentDisposition, mimetype));
-            request.allowScanningByMediaScanner();
-            request.setDestinationInExternalPublicDir(downloadFolder, fileName);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            // Get File Name
+            String fileName=file.getName();
+            // Get Folder
+            String downloadFolder=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
+            // Get Download Date
+            String downloadDate=DateManager.getDate();
+            // Set Folder
+            request.setDestinationInExternalPublicDir(downloadFolder,fileName);
 
             // Create Data
             DownloadsHelper.downloadsData=new DownloadsData(fileName, downloadFolder, downloadDate);
-
-            DownloadManager downloadManager = (DownloadManager)context.getSystemService(DOWNLOAD_SERVICE);
+            // Enqueue
             downloadManager.enqueue(request);
-
+            // Show Message
             Toast.makeText(context, downloading_file_text, Toast.LENGTH_LONG).show();
         }
         else{

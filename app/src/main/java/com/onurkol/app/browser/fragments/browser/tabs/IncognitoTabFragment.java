@@ -54,7 +54,7 @@ public class IncognitoTabFragment extends Fragment {
         okBrowserIncognitoWebView=fragmentView.findViewById(R.id.okBrowserIncognitoWebView);
         incognitoHomeLayout=fragmentView.findViewById(R.id.incognitoHomeLayout);
         connectFailedLayout=fragmentView.findViewById(R.id.connectFailedLayout);
-        webViewLayout=fragmentView.findViewById(R.id.webViewLayout);
+        webViewLayout=fragmentView.findViewById(R.id.incognitoPageRootLayout);
         webViewVideoLayout=activity.findViewById(R.id.webViewVideoLayout);
         // Loading Video View
         View loadingView = getLayoutInflater().inflate(R.layout.layout_video_loading, null);

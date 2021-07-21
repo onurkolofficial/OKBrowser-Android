@@ -19,6 +19,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.activity.MainActivity;
 import com.onurkol.app.browser.activity.SettingsActivity;
 import com.onurkol.app.browser.activity.browser.BookmarkActivity;
 import com.onurkol.app.browser.activity.browser.HistoryActivity;
@@ -275,12 +276,17 @@ public class MenuToolbarMain {
             fragmentView=tabBuilderStatic.get().getActiveTabFragment().getView();
             webView=tabBuilderStatic.get().getActiveTabFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
+            if(webView.canGoForward()) {
+                MainActivity.backPressHomeLayout=false;
                 webView.goForward();
+            }
             else{
-                // Show WebView & Hide Page Layout
-                webView.setVisibility(View.VISIBLE);
-                (fragmentView.findViewById(R.id.newTabHomeLayout)).setVisibility(View.GONE);
+                if(webView.getUrl()!=null){
+                    MainActivity.backPressHomeLayout=false;
+                    // Show WebView & Hide Page Layout
+                    webView.setVisibility(View.VISIBLE);
+                    (fragmentView.findViewById(R.id.newTabHomeLayout)).setVisibility(View.GONE);
+                }
             }
             // Sync Tab Data
             webView.syncOnBackForward(webView.getUrl());
@@ -290,12 +296,17 @@ public class MenuToolbarMain {
             fragmentView=tabBuilderStatic.get().getActiveIncognitoFragment().getView();
             webView=tabBuilderStatic.get().getActiveIncognitoFragment().getWebView();
             // Check Exists WebView History
-            if(webView.canGoForward() && webView.getVisibility()==View.VISIBLE)
+            if(webView.canGoForward()) {
+                MainActivity.backPressHomeLayout=false;
                 webView.goForward();
+            }
             else{
-                // Show WebView & Hide Page Layout
-                webView.setVisibility(View.VISIBLE);
-                (fragmentView.findViewById(R.id.incognitoHomeLayout)).setVisibility(View.GONE);
+                if(webView.getUrl()!=null) {
+                    MainActivity.backPressHomeLayout=false;
+                    // Show WebView & Hide Page Layout
+                    webView.setVisibility(View.VISIBLE);
+                    (fragmentView.findViewById(R.id.incognitoHomeLayout)).setVisibility(View.GONE);
+                }
             }
         }
         forwardUrl=webView.getUrl();

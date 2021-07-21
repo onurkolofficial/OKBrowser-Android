@@ -65,7 +65,7 @@ public class TabFragment extends Fragment implements BrowserActionKeys {
         newTabHomeLayout=fragmentView.findViewById(R.id.newTabHomeLayout);
         searchInput=fragmentView.findViewById(R.id.newTabSearchInput);
         connectFailedLayout=fragmentView.findViewById(R.id.connectFailedLayout);
-        webViewLayout=fragmentView.findViewById(R.id.webViewLayout);
+        webViewLayout=fragmentView.findViewById(R.id.tabPageRootLayout);
         webViewVideoLayout=activity.findViewById(R.id.webViewVideoLayout);
         // Loading Video View
         View loadingView = getLayoutInflater().inflate(R.layout.layout_video_loading, null);
