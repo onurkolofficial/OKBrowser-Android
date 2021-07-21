@@ -38,6 +38,7 @@ import com.onurkol.app.browser.webview.OKWebView;
 import com.onurkol.app.browser.webview.OKWebViewChromeClient;
 import com.onurkol.app.browser.webview.OKWebViewClient;
 import com.onurkol.app.browser.webview.WebViewConfig;
+import com.onurkol.app.browser.webview.listeners.DownloadFileListener;
 import com.onurkol.app.browser.webview.listeners.VideoFullScreen;
 
 public class TabFragment extends Fragment implements BrowserActionKeys {
@@ -78,6 +79,7 @@ public class TabFragment extends Fragment implements BrowserActionKeys {
         okBrowserWebView.setOKWebViewChromeClient(okWebViewChromeClient);
         // Set WebView Listeners
         okBrowserWebView.getOKWebViewChromeClient().setOnToggledFullscreen(VideoFullScreen.fullscreenCallback);
+        okBrowserWebView.setDownloadListener(new DownloadFileListener());
         // Set WebView Fragment
         okBrowserWebView.setTabFragment(this);
         // Set Variables

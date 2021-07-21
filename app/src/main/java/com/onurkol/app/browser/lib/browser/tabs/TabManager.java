@@ -123,7 +123,7 @@ public class TabManager implements TabSettings, TabManagers {
         // Remove Active Incognito Tabs
         setActiveIncognitoFragment(null);
         // Get Selected Fragment
-        TabFragment selectFragment=BROWSER_TAB_FRAGMENT_LIST.get(tabIndex);
+        TabFragment selectFragment=getTabFragmentList().get(tabIndex);
         // Set Tab Fragment
         setActiveTabFragment(selectFragment);
 
@@ -328,7 +328,7 @@ public class TabManager implements TabSettings, TabManagers {
         // Remove Active Incognito Tabs
         setActiveTabFragment(null);
         // Get Selected Fragment
-        IncognitoTabFragment selectFragment=BROWSER_INCOGNITO_FRAGMENT_LIST.get(tabIndex);
+        IncognitoTabFragment selectFragment=getIncognitoTabFragmentList().get(tabIndex);
         // Set Tab Fragment
         setActiveIncognitoFragment(selectFragment);
 

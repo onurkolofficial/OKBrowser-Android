@@ -16,7 +16,6 @@ public class BookmarkManager implements BookmarkSettings, BookmarkManagers {
 
     // Classes
     AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
-
     Gson gson=new Gson();
 
     public static synchronized BookmarkManager getInstance(){

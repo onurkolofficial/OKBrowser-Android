@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
+import com.onurkol.app.browser.adapters.browser.DownloadListAdapter;
 import com.onurkol.app.browser.data.BrowserDataManager;
-import com.onurkol.app.browser.interfaces.browser.downloads.DownloadSettings;
+import com.onurkol.app.browser.interfaces.browser.downloads.DownloadsSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.lib.browser.downloads.DownloadsManager;
 
-public class DownloadsActivity extends AppCompatActivity implements DownloadSettings {
+public class DownloadsActivity extends AppCompatActivity implements DownloadsSettings {
 
     // Elements
     ImageButton backButton;
@@ -71,7 +73,10 @@ public class DownloadsActivity extends AppCompatActivity implements DownloadSett
         // Check is Created (for Theme bug)
         if(!isCreated) {
             // Set Adapter
+            downloadsListView.setAdapter(new DownloadListAdapter(this, downloadsListView, BROWSER_DOWNLOAD_LIST));
 
+            // Get Saved Data
+            DownloadsManager.getInstance().syncSavedDownloadsData();
 
             if(BROWSER_DOWNLOAD_LIST.size()<=0){
                 // Show No Downloads Layout
@@ -84,7 +89,6 @@ public class DownloadsActivity extends AppCompatActivity implements DownloadSett
                 downloadsListView.setVisibility(View.VISIBLE);
             }
         }
-
         isCreated = true;
     }
 

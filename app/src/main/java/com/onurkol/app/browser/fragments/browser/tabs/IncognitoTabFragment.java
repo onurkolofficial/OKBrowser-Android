@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.interfaces.browser.tabs.TabSettings;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.menu.webview.MenuWebViewContext;
 import com.onurkol.app.browser.tools.JavascriptManager;
@@ -27,6 +28,8 @@ import com.onurkol.app.browser.webview.OKWebView;
 import com.onurkol.app.browser.webview.OKWebViewChromeClient;
 import com.onurkol.app.browser.webview.OKWebViewClient;
 import com.onurkol.app.browser.webview.WebViewConfig;
+import com.onurkol.app.browser.webview.listeners.DownloadFileListener;
+import com.onurkol.app.browser.webview.listeners.VideoFullScreen;
 
 public class IncognitoTabFragment extends Fragment {
     // Elements
@@ -63,6 +66,9 @@ public class IncognitoTabFragment extends Fragment {
         // Set WebView Clients
         okBrowserIncognitoWebView.setOKWebViewClient(okWebViewClient);
         okBrowserIncognitoWebView.setOKWebViewChromeClient(okWebViewChromeClient);
+        // Set WebView Listeners
+        okBrowserIncognitoWebView.getOKWebViewChromeClient().setOnToggledFullscreen(VideoFullScreen.fullscreenCallback);
+        okBrowserIncognitoWebView.setDownloadListener(new DownloadFileListener());
         // Set WebView Fragment
         okBrowserIncognitoWebView.setIncognitoTabFragment(this);
         // Set Variables
@@ -73,6 +79,16 @@ public class IncognitoTabFragment extends Fragment {
         // Register Context Menu
         this.registerForContextMenu(okBrowserIncognitoWebView);
 
+        // Check Tab Argument
+        if(getArguments()!=null) {
+            if (!getArguments().getString(TabSettings.KEY_TAB_URL_SENDER).equals("")) {
+                // Set Visibilities
+                incognitoHomeLayout.setVisibility(View.GONE);
+                okBrowserIncognitoWebView.setVisibility(View.VISIBLE);
+                // Load Url
+                okBrowserIncognitoWebView.loadUrl(getArguments().getString(TabSettings.KEY_TAB_URL_SENDER));
+            }
+        }
         return fragmentView;
     }
 

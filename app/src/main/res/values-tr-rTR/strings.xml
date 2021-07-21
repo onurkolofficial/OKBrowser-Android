@@ -92,4 +92,7 @@
     <string name="open_incognito_tab_text">Gizli sekmede aç</string>
     <string name="copy_link_text">Bağlantıyı kopyala</string>
     <string name="copy_link_text_text">Bağlanıtı metnini kopyala</string>
+    <string name="downloading_image_text">Resim İndiriliyor!</string>
+    <string name="open_file_text">Dosya Aç</string>
+    <string name="downloading_file_text">Dosya İndiriliyor!</string>
 </resources>

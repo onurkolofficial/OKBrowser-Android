@@ -25,71 +25,110 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <!-- Open Image Button !-->
-        <Button
-            android:id="@+id/imageOpenButton"
-            style="@style/BorderlessButtonTheme"
+        <!-- Open Image Layout Button !-->
+        <LinearLayout
+            android:id="@+id/imageOpenLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/open_image_text"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:icon="@drawable/ic_outline_image_24"
-            app:iconGravity="start"
-            app:iconPadding="10dp" />
-        <!-- Open Image With New Tab Button !-->
-        <Button
-            android:id="@+id/imageOpenNewTabButton"
-            style="@style/BorderlessButtonTheme"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:clickable="true"
+            android:focusable="true">
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/open_image_text"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_outline_image_24" />
+        </LinearLayout>
+        <!-- Open Image With New Tab Layout Button !-->
+        <LinearLayout
+            android:id="@+id/imageOpenNewTabLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/open_image_new_tab_text"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:icon="@drawable/ic_baseline_add_24"
-            app:iconGravity="start"
-            app:iconPadding="10dp" />
-        <!-- Open Image With Incognito Tab Button !-->
-        <Button
-            android:id="@+id/imageOpenIncognitoButton"
-            style="@style/BorderlessButtonTheme"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:clickable="true"
+            android:focusable="true">
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/open_image_new_tab_text"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_add_24" />
+        </LinearLayout>
+        <!-- Open Image With Incognito Tab Layout Button !-->
+        <LinearLayout
+            android:id="@+id/imageOpenIncognitoLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/open_image_incognito_text"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:icon="@drawable/ic_baseline_add_box_24"
-            app:iconGravity="start"
-            app:iconPadding="10dp" />
-        <!-- Download Image Button !-->
-        <Button
-            android:id="@+id/imageDownloadButton"
-            style="@style/BorderlessButtonTheme"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:clickable="true"
+            android:focusable="true">
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/open_image_incognito_text"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_add_box_24" />
+        </LinearLayout>
+        <!-- Download Image Layout Button !-->
+        <LinearLayout
+            android:id="@+id/imageDownloadLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/download_image_text"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:icon="@drawable/ic_baseline_get_app_24"
-            app:iconGravity="start"
-            app:iconPadding="10dp" />
-        <!-- Copy Link Button !-->
-        <Button
-            android:id="@+id/anchorCopyUrlButton"
-            style="@style/BorderlessButtonTheme"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:clickable="true"
+            android:focusable="true">
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/download_image_text"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_get_app_24" />
+        </LinearLayout>
+        <!-- Copy Link Layout Button !-->
+        <LinearLayout
+            android:id="@+id/imageCopyLinkLayoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/copy_link_text"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:icon="@drawable/ic_baseline_content_copy_24"
-            app:iconGravity="start"
-            app:iconPadding="10dp" />
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:clickable="true"
+            android:focusable="true">
+            <!-- Title !-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/copy_link_text"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_content_copy_24" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

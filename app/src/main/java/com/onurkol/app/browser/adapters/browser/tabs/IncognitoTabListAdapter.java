@@ -108,6 +108,7 @@ public class IncognitoTabListAdapter extends ArrayAdapter<IncognitoTabData> {
         // Close Tab Button
         holder.incognitoTabCloseButton.setOnClickListener(view -> {
             IncognitoTabListFragment.isChanged=true;
+            // Check Tab Count
             if(((tabBuilder.getIncognitoTabDataList().size()-1)<=0)){
                 IncognitoTabListFragment.changedIndexList.add(0); // Fixed Remove View
                 // Clear Data List

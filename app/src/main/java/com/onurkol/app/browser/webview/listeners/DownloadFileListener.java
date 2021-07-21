@@ -1,0 +1,67 @@
+package com.onurkol.app.browser.webview.listeners;
+
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
+import android.widget.Toast;
+
+import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.data.browser.DownloadsData;
+import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
+import com.onurkol.app.browser.interfaces.browser.downloads.DownloadsSettings;
+import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.lib.browser.downloads.DownloadsHelper;
+import com.onurkol.app.browser.lib.core.PermissionManager;
+import com.onurkol.app.browser.tools.DateManager;
+
+import java.io.File;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
+
+public class DownloadFileListener implements DownloadListener, DownloadsSettings {
+    @Override
+    public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+        // Get Context
+        Context context= ContextManager.getManager().getContext();
+        // Get Classes
+        PermissionManager permissionManager=PermissionManager.getInstance();
+
+        if(permissionManager.getStoragePermission()){
+            // Get File Info
+            Uri fileUri=Uri.parse(url);
+
+            // Set Download Request
+            DownloadManager.Request request = new DownloadManager.Request(fileUri);
+
+            // Get File Name
+            String fileName=URLUtil.guessFileName(url, contentDisposition, mimetype);
+            // Get Folder
+            String downloadFolder=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
+            // Get Download Date
+            String downloadDate=DateManager.getDate();
+
+            // Get Strings
+            String downloading_file_text=context.getString(R.string.downloading_file_text);
+
+            request.setDescription(downloading_file_text);
+            request.setTitle(URLUtil.guessFileName(url, contentDisposition, mimetype));
+            request.allowScanningByMediaScanner();
+            request.setDestinationInExternalPublicDir(downloadFolder, fileName);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            // Create Data
+            DownloadsHelper.downloadsData=new DownloadsData(fileName, downloadFolder, downloadDate);
+
+            DownloadManager downloadManager = (DownloadManager)context.getSystemService(DOWNLOAD_SERVICE);
+            downloadManager.enqueue(request);
+
+            Toast.makeText(context, downloading_file_text, Toast.LENGTH_LONG).show();
+        }
+        else{
+            permissionManager.setStoragePermission();
+        }
+    }
+}

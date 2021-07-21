@@ -23,15 +23,16 @@ import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.browser.HistoryManager;
 import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 import com.onurkol.app.browser.tools.DateManager;
+import com.onurkol.app.browser.tools.JavascriptManager;
 import com.onurkol.app.browser.tools.ScreenManager;
 
 public class OKWebViewClient extends WebViewClient {
     Activity activity;
     // Variables
     boolean redirectLoad;
-    String syncUrl;
     // Classes
     TabBuilder tabBuilder;
+    JavascriptManager jsManager;
     // Elements
     EditText browserSearch;
     LinearLayout connectFailedLayout;
@@ -45,6 +46,7 @@ public class OKWebViewClient extends WebViewClient {
         redirectLoad=false;
         // Get Classes
         tabBuilder=TabBuilder.Build();
+        jsManager=JavascriptManager.getManager();
         // Get Elements
         browserSearch=activity.findViewById(R.id.browserSearch);
         connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
@@ -58,7 +60,6 @@ public class OKWebViewClient extends WebViewClient {
             ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
             // Synchronize New Data for Fixed re-change tab in show web page
             tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
-
         }
         // Remove Error Page
         if(connectFailedLayout.getVisibility()==View.VISIBLE) {
@@ -67,7 +68,6 @@ public class OKWebViewClient extends WebViewClient {
         }
         // Set Url
         browserSearch.setText(url);
-        syncUrl=url;
         super.onPageStarted(view, url, favicon);
     }
 
@@ -81,11 +81,10 @@ public class OKWebViewClient extends WebViewClient {
         // Set youtube video url
         if(url.contains("watch?")) {
             browserSearch.setText(url);
-            syncUrl=url;
             // Check WebView Height (some bugs)
             checkWebViewHeight((OKWebView)view);
             // Update for Resource page
-            updateSyncForWeb((OKWebView)view);
+            updateSyncForWeb((OKWebView)view, url);
         }
     }
 
@@ -107,13 +106,13 @@ public class OKWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         // Get Views
         Activity activity=ContextManager.getManager().getContextActivity();
-        View rootView=view.getRootView();
 
         // Get Elements
         SwipeRefreshLayout browserSwipeRefresh = activity.findViewById(R.id.browserSwipeRefresh);
         NestedScrollView browserNestedScroll = activity.findViewById(R.id.browserNestedScroll);
         // Get WebView
         OKWebView webView=((OKWebView)view);
+
         // Stop Swipe Refresh
         if(browserSwipeRefresh!=null)
             browserSwipeRefresh.setRefreshing(false);
@@ -134,7 +133,7 @@ public class OKWebViewClient extends WebViewClient {
                 view.scrollTo(0, 0);
             }
             // Update Web Page
-            updateSyncForWeb(webView);
+            updateSyncForWeb(webView, webView.getUrl());
             // Add History Data
             if(!webView.isIncognitoWebView) {
                 HistoryData historyData = new HistoryData(webView.getTitle(), webView.getUrl(), DateManager.getDate());
@@ -142,6 +141,16 @@ public class OKWebViewClient extends WebViewClient {
             }
         }
         redirectLoad=true;
+        // Check Javascript Manager
+        if(jsManager==null)
+            jsManager=JavascriptManager.getManager();
+        // Exec Javascript
+        jsManager.exec(webView,"var w=window;" +
+                "function wrappedOnDownFunc(e){" +
+                "  w._touchtarget = e.touches[0].target;" +
+                "}" +
+                "w.addEventListener('touchstart',wrappedOnDownFunc);");
+
         super.onPageFinished(view, url);
     }
 
@@ -150,7 +159,7 @@ public class OKWebViewClient extends WebViewClient {
         int getScreenHeigth=ScreenManager.getScreenHeight();
         int getContentHeight=webView.getContentHeight();
         // Params
-        FrameLayout.LayoutParams heightWrap=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,getContentHeight);
+        FrameLayout.LayoutParams heightWrap=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         FrameLayout.LayoutParams heightMatch=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
 
         // Check View Layout Params
@@ -160,15 +169,14 @@ public class OKWebViewClient extends WebViewClient {
             webView.setLayoutParams(heightWrap);
     }
 
-    public void updateSyncForWeb(OKWebView webView){
+    public void updateSyncForWeb(OKWebView webView, String url){
         if(tabBuilder==null)
             tabBuilder=TabBuilder.Build();
         if(!webView.isIncognitoWebView) {
             // Update ScreenShot
             webView.getTabFragment().updateScreenShot();
             // New Preference Data
-            String saveUrl=((webView.getVisibility()!=View.GONE) ? syncUrl : "");
-            TabData newData = new TabData(webView.getTitle(), saveUrl);
+            TabData newData = new TabData(webView.getTitle(), url);
             ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
             // RE-Synchronize New Data
             tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
@@ -179,7 +187,7 @@ public class OKWebViewClient extends WebViewClient {
             // Update Data
             IncognitoTabData data=tabBuilder.getIncognitoTabDataList().get(tabBuilder.getActiveIncognitoFragment().getTabIndex());
             data.setTitle(webView.getTitle());
-            data.setUrl(syncUrl);
+            data.setUrl(url);
             data.setTabPreview(webView.getIncognitoTabFragment().getUpdatedScreenShot());
         }
     }

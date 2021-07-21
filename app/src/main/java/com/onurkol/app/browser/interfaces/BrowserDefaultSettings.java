@@ -1,5 +1,7 @@
 package com.onurkol.app.browser.interfaces;
 
+import android.os.Environment;
+
 public interface BrowserDefaultSettings {
     // Setting Preference Keys
     String KEY_LOAD_PREFERENCE="DATA_LOAD_PREFERENCE",
@@ -24,6 +26,9 @@ public interface BrowserDefaultSettings {
             DEFAULT_ZOOM_BUTTONS=false,
             DEFAULT_APP_CACHE=true,
             DEFAULT_SAVE_FORMS=true;
+
+    // Download Folder
+    String BROWSER_DOWNLOAD_FOLDER=Environment.DIRECTORY_DOWNLOADS+"/OKDownloads";
 
     // browser/values/search_engines.xml
     int DEFAULT_SEARCH_ENGINE=0;

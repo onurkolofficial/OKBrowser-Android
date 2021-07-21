@@ -5,18 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.DownloadManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -49,6 +49,7 @@ import com.onurkol.app.browser.interfaces.BrowserActionKeys;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.lib.browser.downloads.DownloadsHelper;
 import com.onurkol.app.browser.lib.settings.SearchEngine;
 import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.browser.tabs.core.ActivityTabSignal;
@@ -79,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
     EditText browserSearch;
     SearchView findPageView;
     // Static Element Copy
-    static WeakReference<ImageButton> browserTabListButtonStatic;
-    static WeakReference<ImageView> incognitoIconStatic;
+    public static WeakReference<ImageButton> browserTabListButtonStatic;
+    public static WeakReference<ImageView> incognitoIconStatic;
     static WeakReference<EditText> browserSearchStatic;
     static WeakReference<SwipeRefreshLayout> browserSwipeRefreshStatic;
     // Intents
@@ -206,6 +207,10 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                     startTabsSync();
                     browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
                 }, 200);
+
+                // Register Download Receiver
+                registerReceiver(DownloadsHelper.fileDownloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
             }
             isCreatedView=true;
         }
@@ -338,33 +343,42 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                     toolbarNoTab.setVisibility(View.GONE);
                     toolbarMain.setVisibility(View.VISIBLE);
                 }
-                // Remove Closed Tabs View (Check Closed *Tabs)
+                // Remove Closed Tabs View (Check Closed *Tabs & *Incognito Tabs)
                 int changedListSize = changeList.size();
-                if(changedListSize>0) {
+                int changedIncognitoListSize = changeIncognitoList.size();
+                // Tabs
+                if(changedListSize>0 && tabFragmentList.size()>0) {
                     for (int i = 0; i < changedListSize; i++) {
                         int index = changeList.get(i);
-                        // Get Fragments
-                        TabFragment frag = tabFragmentList.get(index);
-                        // Remove View
-                        tabBuilder.removeFragment(frag);
-                        // Update Data List
-                        tabBuilder.getTabFragmentList().remove(index);
-                        tabBuilder.recreateTabIndex();
+                        if(index!=0){
+                            // Get Fragments
+                            TabFragment frag = tabFragmentList.get(index);
+                            // Remove View
+                            tabBuilder.removeFragment(frag);
+                            // Update Data List
+                            tabBuilder.getTabFragmentList().remove(index);
+                            tabBuilder.recreateTabIndex();
+                        }
                     }
+                    // Reset Index
+                    TabListFragment.changedIndexList.clear();
                 }
-                // Reset Index
-                TabListFragment.changedIndexList.clear();
-                // Remove Closed Tabs View (Check Closed *Incognito Tabs)
-                int changedIncognitoListSize = changeIncognitoList.size();
-                for (int i = 0; i < changedIncognitoListSize; i++) {
-                    int index = changeIncognitoList.get(i);
-                    // Get Fragments
-                    IncognitoTabFragment frag = incognitoFragmentList.get(index);
-                    // Remove View
-                    tabBuilder.removeFragment(frag);
-                    // Update Data List
-                    tabBuilder.getIncognitoTabFragmentList().remove(index);
-                    tabBuilder.recreateIncognitoTabIndex();
+                // Incognito
+                if(changedIncognitoListSize>0 && incognitoFragmentList.size()>0) {
+                    for (int i = 0; i < changedIncognitoListSize; i++) {
+                        int index = changeIncognitoList.get(i);
+                        if(index!=0) {
+                            // Get Fragments
+                            IncognitoTabFragment frag = incognitoFragmentList.get(index);
+                            // Remove View
+                            tabBuilder.removeFragment(frag);
+                            // Update Data List
+                            tabBuilder.getIncognitoTabFragmentList().remove(index);
+                            tabBuilder.recreateIncognitoTabIndex();
+                        }
+                    }
+                    // Reset Index
+                    IncognitoTabListFragment.changedIndexList.clear();
                 }
                 // Check Views
                 if ((incognitoFragmentList.size() > 0) && (tabFragmentList.size() <= 0))
@@ -374,8 +388,6 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                     // Hide Incognito Icon
                     incognitoIcon.setVisibility(View.GONE);
                 }
-                // Reset Index
-                IncognitoTabListFragment.changedIndexList.clear();
             }
             // Sync Tab Preferences.
             tabBuilder.saveTabListPreference(tabBuilder.getTabDataList());

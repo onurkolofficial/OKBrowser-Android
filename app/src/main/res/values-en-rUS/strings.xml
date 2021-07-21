@@ -92,4 +92,7 @@
     <string name="open_new_tab_text">Open with new tab</string>
     <string name="copy_link_text">Copy link</string>
     <string name="copy_link_text_text">Copy link text</string>
+    <string name="downloading_image_text">Downloading Image!</string>
+    <string name="open_file_text">Open File</string>
+    <string name="downloading_file_text">Downloading File!</string>
 </resources>

@@ -69,7 +69,7 @@ public class OKWebView extends WebView implements WebViewClientManager {
 
     // Sync on Back Url
     public void syncOnBackForward(String url){
-        okWebViewClient.updateSyncForWeb(this);
+        okWebViewClient.updateSyncForWeb(this, url);
     }
 
     // Fullscreen Video

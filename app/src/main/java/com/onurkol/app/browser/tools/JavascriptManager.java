@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.webkit.ValueCallback;
+import android.webkit.WebView;
 
-import com.onurkol.app.browser.lib.browser.HistoryManager;
 import com.onurkol.app.browser.menu.webview.MenuWebViewContext;
 import com.onurkol.app.browser.webview.OKWebView;
 
@@ -33,6 +33,12 @@ public class JavascriptManager {
     public void exec(String javascript, ValueCallback<String> javascriptResultCallback){
         if(getWebView!=null)
             getWebView.evaluateJavascript(javascript,javascriptResultCallback);
+    }
+    public void exec(OKWebView view, String javascript){
+        view.evaluateJavascript(javascript,null);
+    }
+    public void exec(OKWebView view, String javascript, ValueCallback<String> javascriptResultCallback){
+        view.evaluateJavascript(javascript,javascriptResultCallback);
     }
 
     public void getUrlAndTitleWithJavascript(String type, String url){
