@@ -33,6 +33,11 @@
                 android:id="@+id/includeFindToolbar"
                 layout="@layout/toolbar_search_view"
                 android:visibility="gone"/>
+            <!-- ADS !-->
+            <com.startapp.sdk.ads.banner.Banner
+                android:id="@+id/startAppBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
         <!-- Swipe Refresh !-->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

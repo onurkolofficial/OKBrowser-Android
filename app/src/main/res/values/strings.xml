@@ -1,4 +1,5 @@
 <resources>
+    <string name="startapp_app_id" translatable="false">201992680</string>
     <string name="app_name">Browser</string>
     <string name="lang_english_text">English</string>
     <string name="lang_turkish_text">Turkish</string>

@@ -61,6 +61,10 @@ import com.onurkol.app.browser.tools.KeyboardController;
 import com.onurkol.app.browser.tools.ProcessDelay;
 import com.onurkol.app.browser.tools.URLChecker;
 import com.onurkol.app.browser.webview.OKWebView;
+import com.startapp.sdk.ads.banner.Banner;
+import com.startapp.sdk.ads.banner.BannerListener;
+import com.startapp.sdk.adsbase.StartAppAd;
+import com.startapp.sdk.adsbase.StartAppSDK;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -111,6 +115,32 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         setContentView(R.layout.activity_main);
         // Init Browser Data
         dataManager.initBrowserDataClasses();
+
+        // Ads Initialize
+        String getAppId=getString(R.string.startapp_app_id);
+        StartAppSDK.init(this, getAppId, false);
+        // Disable Startapp Splash Screen.
+        StartAppAd.disableSplash();
+        // Get Banner
+        final Banner appBanner=findViewById(R.id.startAppBanner);
+
+        // Set Listener
+        appBanner.setBannerListener(new BannerListener() {
+            @Override
+            public void onReceiveAd(View view) {
+                appBanner.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onFailedToReceiveAd(View view) {
+                appBanner.setVisibility(View.GONE);
+            }
+            @Override
+            public void onImpression(View view) {}
+            @Override
+            public void onClick(View view) {}
+        });
+        // Hide Default
+        appBanner.setVisibility(View.GONE);
 
         // Get Elements
         browserSwipeRefresh=findViewById(R.id.browserSwipeRefresh);
