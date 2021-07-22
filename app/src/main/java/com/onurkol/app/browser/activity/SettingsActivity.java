@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     // Intents
     Intent installerIntent;
     // Variables
-    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false;
+    public static boolean isCreated=false,isCreatedView=false,isConfigChanged=false,isCloseActivity=false;
     public static String changedConfigName;
     public static Integer changedConfigValue;
 
@@ -98,6 +98,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         // Re-Building ContextManager
         ContextManager.Build(this);
+
+        if(isCloseActivity){
+            isCloseActivity=false;
+            finish();
+        }
 
         if(isConfigChanged) {
             MainActivity.isConfigChanged=true;

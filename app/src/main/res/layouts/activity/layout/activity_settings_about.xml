@@ -17,5 +17,8 @@
             layout="@layout/toolbar_settings" />
     </com.google.android.material.appbar.AppBarLayout>
     <!-- Settings Content !-->
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settingsAboutFragmentContent"/>
 </LinearLayout>

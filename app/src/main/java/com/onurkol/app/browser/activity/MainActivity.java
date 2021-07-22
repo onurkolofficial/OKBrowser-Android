@@ -17,6 +17,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         dataManager=new BrowserDataManager();
         tabBuilder=TabBuilder.Build();
         tabCounter=new ToolbarTabCounter();
-
         // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -173,22 +173,26 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         }
         else {
             // Continue or onCreateView()
+            // Check Intent
             checkIntentData(getIntent());
         }
-        // Set isCreated variable
+        // Set isCreated
         isCreated=true;
     }
 
     private void startTabsSync(){
-        // Check Saved Tabs
-        if (tabBuilder.getSavedTabList().size() <= 0)
-            // Create New Tab.
-            tabBuilder.createNewTab();
-        else
-            // Synchronize Tabs
-            tabBuilder.syncSavedTabs();
-        // Update Tab Counts
-        browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+        // Check Installer Activity
+        if(!dataManager.startInstallerActivity) {
+            // Check Saved Tabs
+            if (tabBuilder.getSavedTabList().size() <= 0)
+                // Create New Tab.
+                tabBuilder.createNewTab();
+            else
+                // Synchronize Tabs
+                tabBuilder.syncSavedTabs();
+            // Update Tab Counts
+            browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
+        }
     }
 
     @Nullable
@@ -207,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
 
                 // Register Download Receiver
                 registerReceiver(DownloadsHelper.fileDownloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-
             }
             isCreatedView=true;
         }
@@ -276,29 +279,29 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
     protected void onResume() {
         // Re-Building ContextManager
         ContextManager.BuildBase(this);
-        View toolbarNoTab=findViewById(R.id.includeNoTabToolbar);
-        View toolbarMain=findViewById(R.id.includeTabToolbar);
+        View toolbarNoTab = findViewById(R.id.includeNoTabToolbar);
+        View toolbarMain = findViewById(R.id.includeTabToolbar);
 
         // Reset Variables
-        backPressHomeLayout=false;
+        backPressHomeLayout = false;
         // Variables
-        ArrayList<TabFragment> tabFragmentList=tabBuilder.getTabFragmentList();
-        ArrayList<TabData> tabDataList=tabBuilder.getTabDataList();
-        List<Integer> changeList=TabListFragment.changedIndexList;
+        ArrayList<TabFragment> tabFragmentList = tabBuilder.getTabFragmentList();
+        ArrayList<TabData> tabDataList = tabBuilder.getTabDataList();
+        List<Integer> changeList = TabListFragment.changedIndexList;
 
-        ArrayList<IncognitoTabFragment> incognitoFragmentList=tabBuilder.getIncognitoTabFragmentList();
-        ArrayList<IncognitoTabData> incognitoDataList=tabBuilder.getIncognitoTabDataList();
-        List<Integer> changeIncognitoList=IncognitoTabListFragment.changedIndexList;
+        ArrayList<IncognitoTabFragment> incognitoFragmentList = tabBuilder.getIncognitoTabFragmentList();
+        ArrayList<IncognitoTabData> incognitoDataList = tabBuilder.getIncognitoTabDataList();
+        List<Integer> changeIncognitoList = IncognitoTabListFragment.changedIndexList;
 
         // <BUG> Check Views for Theme Changed
-        if(isConfigChanged)
+        if (isConfigChanged)
             checkDataView(true);
 
         // Check Action Keys
         // Check Get Intents
-        if(updatedIntent!=null) {
+        if (updatedIntent != null) {
             checkIntentData(updatedIntent);
-            updatedIntent=null;
+            updatedIntent = null;
         }
 
         // * Check Closed Tabs.
@@ -307,36 +310,34 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
         // **
         // * 1 & 2 valid for Incognito Tabs
         // Check Tabs
-        if(TabListFragment.isChanged || IncognitoTabListFragment.isChanged){
+        if(TabListFragment.isChanged || IncognitoTabListFragment.isChanged) {
             // Check Exists Tab
-            if (tabDataList.size() <= 0) {
+            if(tabDataList.size() <= 0) {
                 tabBuilder.getClassesTabDataList().clear();
-                if (incognitoDataList.size() <= 0) {
+                if(incognitoDataList.size() <= 0) {
                     // (Closed All Tabs)
                     // Change Toolbar
                     toolbarNoTab.setVisibility(View.VISIBLE);
                     toolbarMain.setVisibility(View.GONE);
                     // Remove Views & Fragments
                     browserFragmentView.removeAllViews();
-                    for(int in=0; in<tabBuilder.getTabDataList().size(); in++) {
+                    for(int in=0; in<tabBuilder.getTabDataList().size(); in++){
                         tabBuilder.getTabFragmentList().get(in).getWebView().destroy();
                         tabBuilder.removeFragment(tabBuilder.getTabFragmentList().get(in));
                     }
-                    for(int ii=0; ii<tabBuilder.getIncognitoTabDataList().size(); ii++) {
+                    for(int ii=0; ii<tabBuilder.getIncognitoTabDataList().size(); ii++){
                         tabBuilder.getIncognitoTabFragmentList().get(ii).getWebView().destroy();
                         tabBuilder.removeFragment(tabBuilder.getIncognitoTabFragmentList().get(ii));
                     }
-                }
-                else {
+                } else {
                     // Show Incognito Tab
                     tabBuilder.changeIncognitoTab(0);
                     // Show Incognito Icon
                     incognitoIconStatic.get().setVisibility(View.VISIBLE);
                 }
-            }
-            else {
+            } else {
                 // Check Toolbar
-                if (toolbarMain.getVisibility() == View.GONE) {
+                if(toolbarMain.getVisibility() == View.GONE) {
                     toolbarNoTab.setVisibility(View.GONE);
                     toolbarMain.setVisibility(View.VISIBLE);
                 }
@@ -345,9 +346,9 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 int changedIncognitoListSize = changeIncognitoList.size();
                 // Tabs
                 if(changedListSize>0 && tabFragmentList.size()>0) {
-                    for (int i = 0; i < changedListSize; i++) {
+                    for(int i=0; i<changedListSize; i++){
                         int index = changeList.get(i);
-                        if(index!=0){
+                        if(index != 0) {
                             // Get Fragments
                             TabFragment frag = tabFragmentList.get(index);
                             // Remove View
@@ -362,9 +363,9 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                 }
                 // Incognito
                 if(changedIncognitoListSize>0 && incognitoFragmentList.size()>0) {
-                    for (int i = 0; i < changedIncognitoListSize; i++) {
+                    for(int i=0; i<changedIncognitoListSize; i++){
                         int index = changeIncognitoList.get(i);
-                        if(index!=0) {
+                        if(index != 0){
                             // Get Fragments
                             IncognitoTabFragment frag = incognitoFragmentList.get(index);
                             // Remove View
@@ -378,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
                     IncognitoTabListFragment.changedIndexList.clear();
                 }
                 // Check Views
-                if ((incognitoFragmentList.size() > 0) && (tabFragmentList.size() <= 0))
+                if((incognitoFragmentList.size() > 0) && (tabFragmentList.size() <= 0))
                     tabBuilder.changeIncognitoTab(0);
                 else if ((tabFragmentList.size() > 0) && (incognitoFragmentList.size() <= 0)) {
                     tabBuilder.changeTab(0);
@@ -395,12 +396,11 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
 
         // Update Tab Count
         // Check Active Tab Type (Tab or Incognito Tab)
-        if(tabBuilder.getActiveTabFragment()!=null) {
-            if (tabBuilder.getTabFragmentList().size() > 0)
+        if(tabBuilder.getActiveTabFragment()!=null){
+            if(tabBuilder.getTabFragmentList().size()>0)
                 // Re-Update Tab Counts
                 browserTabListButton.setImageDrawable(tabCounter.getTabCountDrawable());
-        }
-        else{
+        } else {
             if (tabBuilder.getIncognitoTabFragmentList().size() > 0)
                 // Re-Update Tab Counts
                 browserTabListButton.setImageDrawable(tabCounter.getIncognitoTabCountDrawable());

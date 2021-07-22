@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="@string/browser_settings_text">
+    <PreferenceCategory
+        android:title="@string/browser_settings_text"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="pref_web_settings"
             android:summary="@string/web_settings_summary"
@@ -13,7 +15,9 @@
             android:title="@string/search_engine_text"
             app:icon="@drawable/ic_baseline_search_24"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/appearance_settings_text">
+    <PreferenceCategory
+        android:title="@string/appearance_settings_text"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="pref_theme"
             android:summary="@string/theme_settings_summary"
@@ -25,7 +29,9 @@
             android:title="@string/language_text"
             app:icon="@drawable/ic_baseline_translate_24"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/advanced_settings_text">
+    <PreferenceCategory
+        android:title="@string/advanced_settings_text"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="developer_settings"
             android:summary="@string/developer_options_summary"
@@ -33,7 +39,9 @@
             app:enabled="false"
             app:icon="@drawable/ic_baseline_developer_mode_24" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_settings_text">
+    <PreferenceCategory
+        android:title="@string/other_settings_text"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="pref_show_about"
             android:summary="@string/about_settings_summary"

@@ -95,4 +95,13 @@
     <string name="downloading_image_text">Downloading Image!</string>
     <string name="open_file_text">Open File</string>
     <string name="downloading_file_text">Downloading File!</string>
+    <string name="version_text">Version</string>
+    <string name="app_version_text">Application Version</string>
+    <string name="android_version_text">Android Version</string>
+    <string name="contact_text">Contact</string>
+    <string name="developer_web_page_text">Web Page</string>
+    <string name="developer_web_page_summary">Open developer web page.</string>
+    <string name="developer_text">Developer</string>
+    <string name="app_package_text">Application Package</string>
+    <string name="app_package_free_text">Free (free)</string>
 </resources>

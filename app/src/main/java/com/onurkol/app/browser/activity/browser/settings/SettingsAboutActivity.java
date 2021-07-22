@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.data.BrowserDataManager;
+import com.onurkol.app.browser.fragments.settings.SettingsAboutFragment;
 import com.onurkol.app.browser.lib.AppPreferenceManager;
 import com.onurkol.app.browser.lib.ContextManager;
 
@@ -31,7 +32,7 @@ public class SettingsAboutActivity extends AppCompatActivity {
         ContextManager.Build(this);
         // Get Classes
         dataManager=new BrowserDataManager();
-        prefManager= AppPreferenceManager.getInstance();
+        prefManager=AppPreferenceManager.getInstance();
         // Create View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_about);
@@ -45,6 +46,9 @@ public class SettingsAboutActivity extends AppCompatActivity {
 
         // Button Click Events
         backButton.setOnClickListener(view -> finish());
+
+        // Get Fragment
+        getSupportFragmentManager().beginTransaction().add(R.id.settingsAboutFragmentContent, new SettingsAboutFragment()).commit();
     }
 
     @Nullable

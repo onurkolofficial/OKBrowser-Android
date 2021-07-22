@@ -95,4 +95,13 @@
     <string name="downloading_image_text">Resim İndiriliyor!</string>
     <string name="open_file_text">Dosya Aç</string>
     <string name="downloading_file_text">Dosya İndiriliyor!</string>
+    <string name="version_text">Sürüm</string>
+    <string name="app_version_text">Uygulama Sürümü</string>
+    <string name="android_version_text">Android Sürümü</string>
+    <string name="contact_text">İletişim</string>
+    <string name="developer_web_page_text">Web Sayfası</string>
+    <string name="developer_web_page_summary">Geliştirici web sayfasını aç.</string>
+    <string name="developer_text">Geliştirici</string>
+    <string name="app_package_text">Uygulama Paketi</string>
+    <string name="app_package_free_text">Ücretsiz (free)</string>
 </resources>

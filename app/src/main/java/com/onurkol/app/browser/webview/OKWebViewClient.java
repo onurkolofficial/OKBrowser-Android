@@ -114,7 +114,6 @@ public class OKWebViewClient extends WebViewClient {
         if(redirectLoad){
             webView.isLoading=false;
             webView.isRefreshing=false;
-
             if(tabBuilder==null)
                 tabBuilder=TabBuilder.Build();
 
