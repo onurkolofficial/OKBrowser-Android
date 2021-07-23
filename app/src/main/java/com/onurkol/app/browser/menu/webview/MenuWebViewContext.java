@@ -5,7 +5,9 @@ import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,15 +23,20 @@ import com.onurkol.app.browser.data.browser.DownloadsData;
 import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
 import com.onurkol.app.browser.lib.ContextManager;
 import com.onurkol.app.browser.lib.browser.downloads.DownloadsHelper;
+import com.onurkol.app.browser.lib.browser.downloads.DownloadsManager;
 import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
 import com.onurkol.app.browser.lib.browser.tabs.core.ToolbarTabCounter;
 import com.onurkol.app.browser.lib.core.PermissionManager;
 import com.onurkol.app.browser.tools.CharLimiter;
 import com.onurkol.app.browser.tools.DateManager;
+import com.onurkol.app.browser.tools.URLChecker;
 import com.onurkol.app.browser.tools.JavascriptManager;
 import com.onurkol.app.browser.webview.OKWebView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -310,27 +317,79 @@ public class MenuWebViewContext {
         DownloadManager downloadManager = (DownloadManager)ContextManager.getManager().getContext().getSystemService(DOWNLOAD_SERVICE);
 
         if(permissionManager.getStoragePermission()){
-            // Get File Info
-            Uri fileUri=Uri.parse(getImageLink);
-            File file=new File(String.valueOf(fileUri));
-            // Set Download Manager Request
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(getImageLink));
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-            // Get File Name
-            String fileName=file.getName();
-            // Get Folder
-            String downloadFolder=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
+            // Get Download Folder
+            String downloadFolder= BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
+            String storageFolder=BrowserDefaultSettings.BROWSER_STORAGE_FOLDER;
             // Get Download Date
-            String downloadDate=DateManager.getDate();
-            // Set Folder
-            request.setDestinationInExternalPublicDir(downloadFolder,fileName);
+            String downloadDate= DateManager.getDate();
 
-            // Create Data
-            DownloadsHelper.downloadsData=new DownloadsData(fileName, downloadFolder, downloadDate);
-            // Enqueue
-            downloadManager.enqueue(request);
+            // Check Image Url
+            if(URLChecker.isDataImage(getImageLink)){
+                // Save Image
+                File path = new File(storageFolder+"/"+downloadFolder);
+                String filetype = getImageLink.substring(getImageLink.indexOf("/") + 1, getImageLink.indexOf(";"));
+                String filename = System.currentTimeMillis() + "." + filetype;
+                File file = new File(path, filename);
+                try {
+                    if(!path.exists())
+                        path.mkdirs();
+                    if(!file.exists())
+                        file.createNewFile();
+
+                    String base64EncodedString = getImageLink.substring(getImageLink.indexOf(",") + 1);
+                    byte[] decodedBytes = Base64.decode(base64EncodedString, Base64.DEFAULT);
+                    OutputStream os = new FileOutputStream(file);
+                    os.write(decodedBytes);
+                    os.close();
+
+                    //Tell the media scanner about the new file so that it is immediately available to the user.
+                    MediaScannerConnection.scanFile(context,
+                            new String[]{file.toString()}, null,
+                            (path1, uri) -> {});
+
+                    // Add Download Data (Because not enqueue download manager)
+                    DownloadsManager.getInstance().newDownload(new DownloadsData(file.getName(), downloadFolder, downloadDate));
+                    /*
+                    //Set notification after download complete and add "click to view" action to that
+                    String mimetype = getImageLink.substring(getImageLink.indexOf(":") + 1, getImageLink.indexOf("/"));
+                    Intent intent = new Intent();
+                    intent.setAction(android.content.Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), (mimetype + "/*"));
+                    PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+                    Notification notification = new Notification.Builder(context)
+                            .setSmallIcon(android.R.drawable.ic_menu_save)
+                            .setContentText(context.getString(R.string.download_image_text))
+                            .setContentTitle(filename)
+                            .setContentIntent(pIntent)
+                            .build();
+
+                    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                    int notificationId = 85851;
+                    NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(notificationId, notification);
+                     */
+                } catch (IOException e) {}
+            }
+            else{
+                // Download Image
+                Uri fileUri=Uri.parse(getImageLink);
+                File file=new File(String.valueOf(fileUri));
+                // Set Download Manager Request
+                DownloadManager.Request request = new DownloadManager.Request(fileUri);
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                // Get File Name
+                String fileName=file.getName();
+                // Set Folder
+                request.setDestinationInExternalPublicDir(downloadFolder,fileName);
+
+                // Create Data
+                DownloadsHelper.downloadsData=new DownloadsData(fileName, downloadFolder, downloadDate);
+                // Enqueue
+                downloadManager.enqueue(request);
+            }
             // Show Message
             Toast.makeText(context,context.getString(R.string.downloading_image_text), Toast.LENGTH_LONG).show();
         }

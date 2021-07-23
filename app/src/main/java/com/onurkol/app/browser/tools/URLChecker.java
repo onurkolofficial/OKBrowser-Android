@@ -35,6 +35,10 @@ public class URLChecker {
         return pattern.matcher(url).matches();
     }
 
+    public static boolean isDataImage(String url){
+        return url.startsWith("data:");
+    }
+
     public static String convertHttpUrl(String url) {
         String outUrl;
         if (url == null)
