@@ -307,11 +307,13 @@ public class MainActivity extends AppCompatActivity implements BrowserActionKeys
             }
         }
         else{
-            // Check 'Open As' URL
-            Uri data = intent.getData();
-            if(data != null){
-                String intentUrl = data.toString();
-                ProcessDelay.Delay(() -> activityNewTabHandler(intentUrl),320);
+            if(!isCreated) {
+                // Check 'Open As' URL
+                Uri data = intent.getData();
+                if (data != null) {
+                    String intentUrl = data.toString();
+                    ProcessDelay.Delay(() -> activityNewTabHandler(intentUrl), 320);
+                }
             }
         }
     }
