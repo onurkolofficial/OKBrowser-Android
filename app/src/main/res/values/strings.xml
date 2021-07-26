@@ -104,5 +104,5 @@
     <string name="developer_web_page_summary">Open developer web page.</string>
     <string name="developer_text">Developer</string>
     <string name="app_package_text">Application Package</string>
-    <string name="app_package_free_text">Free (free)</string>
+    <string name="app_package_free_text">Free</string>
 </resources>

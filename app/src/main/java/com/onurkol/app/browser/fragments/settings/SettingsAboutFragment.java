@@ -16,7 +16,7 @@ import com.onurkol.app.browser.lib.ContextManager;
 
 public class SettingsAboutFragment extends PreferenceFragmentCompat implements BrowserActionKeys {
 
-    Preference appVersionPref,androidVersionPref,openDevWebPref;
+    Preference appPackagePref,appVersionPref,androidVersionPref,openDevWebPref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -27,16 +27,19 @@ public class SettingsAboutFragment extends PreferenceFragmentCompat implements B
         ContextManager contextManager=ContextManager.getManager();
 
         // Get Version Data
+        String appPackage=getActivity().getString(R.string.app_package_free_text)+" -"+ BuildConfig.BUILD_TYPE+"/free";
         String appVersion=BuildConfig.VERSION_NAME+" - "+BuildConfig.VERSION_CODE;
         String androidVersion=Build.VERSION.RELEASE+" - API "+Build.VERSION.SDK_INT;
         String developerWebPage="https://onurkolofficial.cf/en";
 
         // Get Preferences
+        appPackagePref=findPreference("pref_app_package");
         appVersionPref=findPreference("pref_app_version");
         androidVersionPref=findPreference("pref_android_version");
         openDevWebPref=findPreference("pref_dev_web_page");
 
         // Set Summary Texts
+        appPackagePref.setSummary(appPackage);
         appVersionPref.setSummary(appVersion);
         androidVersionPref.setSummary(androidVersion);
 

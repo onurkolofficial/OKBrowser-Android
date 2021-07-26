@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/secondary_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?android:attr/windowBackground</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?android:attr/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Light Theme -->
         <item name="cardViewStyle">@style/CardViewStyle</item>

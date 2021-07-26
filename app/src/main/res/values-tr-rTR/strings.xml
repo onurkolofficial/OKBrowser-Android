@@ -103,5 +103,5 @@
     <string name="developer_web_page_summary">Geliştirici web sayfasını aç.</string>
     <string name="developer_text">Geliştirici</string>
     <string name="app_package_text">Uygulama Paketi</string>
-    <string name="app_package_free_text">Ücretsiz (free)</string>
+    <string name="app_package_free_text">Ücretsiz</string>
 </resources>

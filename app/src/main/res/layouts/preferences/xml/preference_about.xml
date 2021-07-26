@@ -5,7 +5,8 @@
         android:title="@string/version_text"
         app:iconSpaceReserved="false">
         <Preference
-            android:summary="@string/app_package_free_text"
+            android:key="pref_app_package"
+            android:summary="APP_PACKAGE"
             android:title="@string/app_package_text"
             app:iconSpaceReserved="false"/>
         <Preference
