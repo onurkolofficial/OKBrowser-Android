@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -319,14 +320,22 @@ public class MenuWebViewContext {
         if(permissionManager.getStoragePermission()){
             // Get Download Folder
             String downloadFolder= BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
+            String downloadFolderApi30Up= BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER_API30_UP;
+            String dataDownloadFolder="";
             String storageFolder=BrowserDefaultSettings.BROWSER_STORAGE_FOLDER;
             // Get Download Date
-            String downloadDate= DateManager.getDate();
+            String downloadDate=DateManager.getDate();
+
+            // Check Folder
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+                dataDownloadFolder=downloadFolderApi30Up;
+            else
+                dataDownloadFolder=downloadFolder;
 
             // Check Image Url
             if(URLChecker.isDataImage(getImageLink)){
                 // Save Image
-                File path = new File(storageFolder+"/"+downloadFolder);
+                File path = new File(storageFolder+"/"+dataDownloadFolder);
                 String filetype = getImageLink.substring(getImageLink.indexOf("/") + 1, getImageLink.indexOf(";"));
                 String filename = System.currentTimeMillis() + "." + filetype;
                 File file = new File(path, filename);
@@ -348,7 +357,7 @@ public class MenuWebViewContext {
                             (path1, uri) -> {});
 
                     // Add Download Data (Because not enqueue download manager)
-                    DownloadsManager.getInstance().newDownload(new DownloadsData(file.getName(), downloadFolder, downloadDate));
+                    DownloadsManager.getInstance().newDownload(new DownloadsData(file.getName(), dataDownloadFolder, downloadDate));
                     /*
                     //Set notification after download complete and add "click to view" action to that
                     String mimetype = getImageLink.substring(getImageLink.indexOf(":") + 1, getImageLink.indexOf("/"));
@@ -383,7 +392,7 @@ public class MenuWebViewContext {
                 // Get File Name
                 String fileName=file.getName();
                 // Set Folder
-                request.setDestinationInExternalPublicDir(downloadFolder,fileName);
+                request.setDestinationInExternalPublicDir(dataDownloadFolder,fileName);
 
                 // Create Data
                 DownloadsHelper.downloadsData=new DownloadsData(fileName, downloadFolder, downloadDate);

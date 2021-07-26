@@ -29,6 +29,7 @@ public interface BrowserDefaultSettings {
 
     // Download Folder
     String BROWSER_DOWNLOAD_FOLDER=Environment.DIRECTORY_DOWNLOADS+"/OKDownloads";
+    String BROWSER_DOWNLOAD_FOLDER_API30_UP=Environment.DIRECTORY_DOWNLOADS;
     String BROWSER_STORAGE_FOLDER=Environment.getExternalStorageDirectory().getPath();
 
     // browser/values/search_engines.xml
