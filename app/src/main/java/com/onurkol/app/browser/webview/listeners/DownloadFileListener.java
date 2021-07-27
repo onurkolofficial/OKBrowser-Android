@@ -46,6 +46,7 @@ public class DownloadFileListener implements DownloadListener, DownloadsSettings
             // Get Folder
             String downloadFolder=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER;
             String downloadFolderApi30Up=BrowserDefaultSettings.BROWSER_DOWNLOAD_FOLDER_API30_UP;
+            String dataDownloadFolder="";
             // Get Download Date
             String downloadDate=DateManager.getDate();
 
