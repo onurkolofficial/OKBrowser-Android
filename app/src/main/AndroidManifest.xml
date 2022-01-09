@@ -8,6 +8,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +22,7 @@
         <activity android:name=".activity.browser.settings.SettingsAboutActivity" />
         <activity
             android:name=".activity.browser.installer.InstallerActivity"
-            android:configChanges="screenSize|screenLayout|locale"/>
+            android:configChanges="screenSize|screenLayout|locale" />
         <activity android:name=".activity.browser.core.DownloadsActivity" />
         <activity android:name=".activity.browser.core.TabListViewActivity" />
         <activity android:name=".activity.browser.BookmarkActivity" />
@@ -31,7 +32,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
