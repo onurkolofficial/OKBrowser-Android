@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.SettingsActivity">
+    tools:context=".activity.browser.SettingsActivity">
     <!-- Toolbars Layout !-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         app:elevation="0dp">
-        <!-- Toolbar Main !-->
+        <!-- Toolbar Settings !-->
         <include
             layout="@layout/toolbar_settings" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -20,5 +20,5 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/settingsFragmentContent"/>
+        android:id="@+id/settingsFragmentView"/>
 </LinearLayout>

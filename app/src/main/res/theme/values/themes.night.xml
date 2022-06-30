@@ -1,0 +1,55 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <!-- This theme file isn't android day/night mode. It's THEME file. -->
+    <!-- Because API 29 and lower 'AppCompatDelegate' freezing on night mode change. -->
+    <style name="Theme.OKBrowser.Night" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <!-- '?android:attr/colorBackground' is only night mode.     -->
+        <!-- 'res/values/themes.xml' & 'res/values-night/themes.xml' -->
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Theme Font Family !-->
+        <item name="fontFamily">@font/sarpanch</item>
+        <!-- Night Theme -->
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="android:textColor">@drawable/night_text_icon_color_selector</item>
+        <item name="android:textColorHint">@color/text_color_secondary_dark</item>
+        <item name="android:textColorSecondary">@drawable/night_text_color_summary_selector</item>
+        <item name="android:editTextColor">@drawable/night_text_icon_color_selector</item>
+        <item name="colorControlNormal">?android:textColor</item>
+        <item name="popupMenuBackground">@color/popups_background_dark</item>
+        <item name="cardViewStyle">@style/CardViewNightStyle</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogNightStyle</item>
+        <item name="borderlessButtonStyle">@style/BorderlessButtonNightStyle</item>
+        <!-- No Theme -->
+        <item name="preferenceTheme">@style/PreferenceDividerHide</item>
+    </style>
+    <!-- New Tab Search Input !-->
+    <style name="newTabSearchInputNightStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@color/item_background_dark</item>
+    </style>
+    <!-- CardView !-->
+    <style name="CardViewNightStyle">
+        <item name="cardElevation">3dp</item>
+        <item name="cardBackgroundColor">@color/card_view_background_dark</item>
+    </style>
+    <!-- Borderless Button !-->
+    <style name="BorderlessButtonNightStyle" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+    </style>
+    <!-- Dialog !-->
+    <style name="AlertDialogNightStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@color/popups_background_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/AlertDialogButtonStyle</item>
+    </style>
+</resources>

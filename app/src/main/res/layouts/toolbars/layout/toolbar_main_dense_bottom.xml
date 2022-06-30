@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:layout_gravity="bottom"
+    android:background="?android:attr/windowBackground"
+    android:focusableInTouchMode="true">
+    <!-- Input Groups -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/browserToolbarBackButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_icon_arrow_left_circle"
+            android:contentDescription="@string/back_text"
+            android:tooltipText="@string/back_text"
+            tools:targetApi="o" />
+        <!-- Forward Button -->
+        <ImageButton
+            android:id="@+id/browserToolbarForwardButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_icon_arrow_right_circle"
+            android:contentDescription="@string/next_text"
+            android:tooltipText="@string/next_text"
+            tools:targetApi="o" />
+        <!-- Home Button -->
+        <ImageButton
+            android:id="@+id/browserToolbarHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_icon_home_circle"
+            android:contentDescription="@string/home_text"
+            android:tooltipText="@string/home_text"
+            tools:targetApi="o" />
+        <!-- Tab List Button -->
+        <ImageButton
+            android:id="@+id/browserToolbarTabCountButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_tab_num_0"
+            android:contentDescription="@string/tabs_text"
+            android:tooltipText="@string/tabs_text"
+            tools:targetApi="o" />
+        <!-- Menu Button -->
+        <ImageButton
+            android:id="@+id/browserToolbarMenuButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_icon_menu_vertical_circle"
+            android:contentDescription="@string/menu_text"
+            android:tooltipText="@string/menu_text"
+            tools:targetApi="o" />
+    </LinearLayout>
+</androidx.appcompat.widget.Toolbar>

@@ -1,21 +1,31 @@
 package com.onurkol.app.browser.data.browser;
 
 public class HistoryData {
-    private String getHistoryDate, getHistoryTitle, getHistoryUrl;
+    private String mHistoryWebTitle;
+    private String mHistoryWebUrl;
+    private String mHistoryDate;
 
-    public HistoryData(String historyTitle,String historyUrl, String historyDate){
-        getHistoryDate=historyDate;
-        getHistoryTitle=historyTitle;
-        getHistoryUrl=historyUrl;
+    public HistoryData(String historyTitle, String historyUrl, String historyDate) {
+        mHistoryWebTitle=historyTitle;
+        mHistoryWebUrl=historyUrl;
+        mHistoryDate=historyDate;
     }
 
+    public void setTitle(String Title){
+        mHistoryWebTitle=Title;
+    }
     public String getTitle(){
-        return getHistoryTitle;
+        return mHistoryWebTitle;
+    }
+
+    public void setUrl(String Url){
+        mHistoryWebUrl=Url;
     }
     public String getUrl(){
-        return getHistoryUrl;
+        return mHistoryWebUrl;
     }
-    public String getDate() {
-        return getHistoryDate;
+
+    public String getDate(){
+        return mHistoryDate;
     }
 }

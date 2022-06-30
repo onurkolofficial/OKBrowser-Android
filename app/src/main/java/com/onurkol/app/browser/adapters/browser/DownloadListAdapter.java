@@ -1,5 +1,6 @@
 package com.onurkol.app.browser.adapters.browser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,43 +17,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.data.browser.DownloadsData;
-import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
-import com.onurkol.app.browser.interfaces.browser.downloads.DownloadsSettings;
-import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.downloads.DownloadsManager;
-import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
-import com.onurkol.app.browser.tools.CharLimiter;
+import com.onurkol.app.browser.activity.browser.DownloadsActivity;
+import com.onurkol.app.browser.controller.browser.DownloadController;
+import com.onurkol.app.browser.data.browser.DownloadData;
+import com.onurkol.app.browser.interfaces.BrowserDataInterface;
+import com.onurkol.app.browser.libs.CharLimiter;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class DownloadListAdapter extends ArrayAdapter<DownloadsData> implements DownloadsSettings {
+public class DownloadListAdapter extends ArrayAdapter<DownloadData> implements BrowserDataInterface {
     private final LayoutInflater inflater;
+    private final Context mContext;
     private ViewHolder holder;
-    private final ArrayList<DownloadsData> getDownloadsList;
-    private final ListView getListView;
+    private final ArrayList<DownloadData> mDownloadData;
 
-    // Classes
-    ContextManager contextManager;
-    TabBuilder tabBuilder;
-    DownloadsManager downloadsManager;
-    Context getContext;
+    DownloadController downloadController;
 
-    public DownloadListAdapter(Context context, ListView downloadsListView, ArrayList<DownloadsData> downloadsList) {
-        super(context, 0, downloadsList);
-        getDownloadsList=downloadsList;
-        getContext=context;
-        getListView=downloadsListView;
+    ListView downloadListView;
+
+    public DownloadListAdapter(@NonNull Context context, ListView listView, ArrayList<DownloadData> downloadData){
+        super(context, 0, downloadData);
         inflater=LayoutInflater.from(context);
-        contextManager=ContextManager.getManager();
-        tabBuilder=TabBuilder.Build();
-        downloadsManager=DownloadsManager.getInstance();
-    }
-
-    @Override
-    public int getCount() {
-        return getDownloadsList.size();
+        mContext=context;
+        downloadListView=listView;
+        mDownloadData=downloadData;
+        downloadController=DownloadController.getController();
     }
 
     @NonNull
@@ -61,32 +51,28 @@ public class DownloadListAdapter extends ArrayAdapter<DownloadsData> implements 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_download_data, null);
             holder = new ViewHolder();
-            holder.downloadFileNameText = convertView.findViewById(R.id.downloadFileNameText);
-            holder.downloadFolderText = convertView.findViewById(R.id.downloadFolderText);
-            holder.deleteDownloadFileButton = convertView.findViewById(R.id.deleteDownloadFileButton);
-            holder.openFileLayoutButton = convertView.findViewById(R.id.openFileLayoutButton);
-
+            holder.downloadFileNameText=convertView.findViewById(R.id.downloadFileNameText);
+            holder.downloadFolderText=convertView.findViewById(R.id.downloadFolderText);
+            holder.openFileLayoutButton=convertView.findViewById(R.id.openFileLayoutButton);
+            holder.deleteDownloadFileButton=convertView.findViewById(R.id.deleteDownloadFileButton);
             convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
-
+        else{
+            holder=(ViewHolder)convertView.getTag();
+        }
         // Get Data
-        DownloadsData data=getDownloadsList.get(position);
+        DownloadData data=mDownloadData.get(position);
 
         String downloadFile=CharLimiter.Limit(data.getFileName(),34);
-        String downloadFolder=CharLimiter.Limit(data.getFolder(),38);
-        // Set Texts
+        String downloadFolder="/"+CharLimiter.Limit(data.getFolder(),38);
         holder.downloadFileNameText.setText(downloadFile);
         holder.downloadFolderText.setText(downloadFolder);
 
-        // Button Click Events
-        holder.openFileLayoutButton.setOnClickListener(view -> {
-            // Open File
-            String file=BrowserDefaultSettings.BROWSER_STORAGE_FOLDER+"/"+data.getFolder()+"/"+data.getFileName();
-            // Check File
+        holder.openFileLayoutButton.setOnClickListener(v -> {
+            // Get File
+            String file=BROWSER_STORAGE_FOLDER+"/"+data.getFolder()+"/"+data.getFileName();
             Uri uri=Uri.parse(file);
-            // Set Intent
+            // Open File Intent
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // Check File Type
             // Images
@@ -102,34 +88,31 @@ public class DownloadListAdapter extends ArrayAdapter<DownloadsData> implements 
                 intent.setType("text/*");
             else
                 intent.setType("application/*");
-
             intent.putExtra(Intent.ACTION_VIEW,uri);
 
-            getContext.startActivity(Intent.createChooser(intent,getContext.getString(R.string.open_file_text)));
+            mContext.startActivity(Intent.createChooser(intent,mContext.getString(R.string.open_file_text)));
         });
 
-        holder.deleteDownloadFileButton.setOnClickListener(view -> {
-            // Get Delete File
-            String file=BrowserDefaultSettings.BROWSER_STORAGE_FOLDER+"/"+data.getFolder()+"/"+data.getFileName();
-            // Deleting File
+        holder.deleteDownloadFileButton.setOnClickListener(v -> {
+            // Get File
+            String file=BROWSER_STORAGE_FOLDER+"/"+data.getFolder()+"/"+data.getFileName();
+            // Delete File
             File fileData = new File(file);
-            fileData.delete();
-            // Delete Preference Data
-            // Remove Item (Current)
-            BROWSER_DOWNLOAD_LIST.remove(position);
-            // Save Current List
-            downloadsManager.saveDownloadsListPreference(BROWSER_DOWNLOAD_LIST);
+            if(fileData.exists())
+                fileData.delete();
+            // Delete Data
+            downloadController.deleteDownload(position);
             // Refresh List View
-            getListView.invalidateViews();
+            downloadListView.invalidateViews();
+            DownloadsActivity.updateView(mContext);
         });
 
         return convertView;
     }
 
-    //View Holder
     private static class ViewHolder {
-        TextView downloadFileNameText,downloadFolderText;
-        ImageButton deleteDownloadFileButton;
+        TextView downloadFileNameText, downloadFolderText;
         LinearLayout openFileLayoutButton;
+        ImageButton deleteDownloadFileButton;
     }
 }

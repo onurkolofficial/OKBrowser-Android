@@ -10,6 +10,9 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+import com.onurkol.app.browser.controller.ContextController;
+import com.onurkol.app.browser.controller.PreferenceController;
+
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -22,5 +25,12 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.onurkol.app.browser", appContext.getPackageName());
+    }
+
+    @Test
+    public void getPreferenceController(){
+        // To get PreferenceController, Context must be taken.
+        ContextController.setBaseContext(InstrumentationRegistry.getInstrumentation().getContext());
+        assertNotNull(PreferenceController.getController());
     }
 }

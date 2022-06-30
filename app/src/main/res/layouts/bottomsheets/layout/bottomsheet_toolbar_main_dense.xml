@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/popupMenuBackground"
+    android:orientation="vertical">
+    <!-- Menu Side Icon Group !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Forward Button !-->
+        <ImageButton
+            android:id="@+id/menuForwardButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:background="?attr/actionBarItemBackground"
+            app:srcCompat="@drawable/ic_icon_arrow_right_circle" />
+        <!-- Refresh Button !-->
+        <ImageButton
+            android:id="@+id/menuRefreshButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:background="?attr/actionBarItemBackground"
+            app:srcCompat="@drawable/ic_icon_sync_circle" />
+        <!-- Add Bookmark Button !-->
+        <ImageButton
+            android:id="@+id/addBookmarkButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:background="?attr/actionBarItemBackground"
+            app:srcCompat="@drawable/ic_icon_star_circle" />
+        <!-- Downloads Button !-->
+        <ImageButton
+            android:id="@+id/downloadsButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:background="?attr/actionBarItemBackground"
+            app:srcCompat="@drawable/ic_icon_download_circle" />
+        <!-- History Button !-->
+        <ImageButton
+            android:id="@+id/historyButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:background="?attr/actionBarItemBackground"
+            app:srcCompat="@drawable/ic_icon_history_circle" />
+    </LinearLayout>
+    <!-- Divider !-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+    <!-- Menu Buttons Layout !-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Grid Layout !-->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:columnCount="3">
+            <!-- New Tab Layout Button !-->
+            <LinearLayout
+                android:id="@+id/newTabLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/new_tab_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_add_circle" />
+            </LinearLayout>
+            <!-- New Incognito Tab Layout Button !-->
+            <LinearLayout
+                android:id="@+id/newIncognitoTabLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/new_incognito_tab_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_glasses_add_circle" />
+            </LinearLayout>
+            <!-- Desktop Mode Layout Checkbox !-->
+            <LinearLayout
+                android:id="@+id/desktopModeLayoutCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!-- Title !-->
+                <TextView
+                    android:id="@+id/desktopModeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/desktop_mode_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_desktop_mode_circle" />
+                <!--
+                It's haven't checkbox. (GONE)
+                So if enable checked to use 'drawableTint' to 'primary' color.
+                -->
+                <!-- Checkbox !-->
+                <CheckBox
+                    android:id="@+id/desktopModeCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+            <!-- Find in Page Layout Button !-->
+            <LinearLayout
+                android:id="@+id/findInPageLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:layout_marginTop="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/find_in_page_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_search_circle" />
+            </LinearLayout>
+            <!-- Bookmarks Layout Button !-->
+            <LinearLayout
+                android:id="@+id/bookmarksLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:layout_marginTop="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/bookmarks_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_bookmark_circle" />
+            </LinearLayout>
+            <!-- Settings Layout Button !-->
+            <LinearLayout
+                android:id="@+id/settingsLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:layout_marginTop="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/settings_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_settings_circle" />
+            </LinearLayout>
+            <!-- Close All Tabs Layout Button !-->
+            <LinearLayout
+                android:id="@+id/closeAllTabsLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:layout_marginTop="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/close_all_tabs_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_close_all_tabs_circle" />
+            </LinearLayout>
+            <!-- Space for Empty Button !-->
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="0.35" />
+            <!-- Exit Browser Layout Button !-->
+            <LinearLayout
+                android:id="@+id/exitBrowserLayoutButton"
+                android:layout_width="0dp"
+                android:layout_height="74dp"
+                android:layout_columnWeight="0.35"
+                android:layout_marginTop="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="2dp"
+                    android:text="@string/exit_browser_text"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    app:drawableTopCompat="@drawable/ic_icon_close_circle" />
+            </LinearLayout>
+        </GridLayout>
+    </RelativeLayout>
+</LinearLayout>

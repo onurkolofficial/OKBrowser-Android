@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/popupMenuBackground"
+    android:orientation="vertical">
     <!-- Image Url !-->
     <LinearLayout
+        android:id="@+id/contextMenuShowUrlFullLayoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/showWebUrl"
+            android:id="@+id/contextMenuShowUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -27,7 +30,7 @@
         android:orientation="vertical">
         <!-- Open Image Layout Button !-->
         <LinearLayout
-            android:id="@+id/imageOpenLayoutButton"
+            android:id="@+id/contextMenuOpenImageLayoutButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
@@ -44,11 +47,11 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/open_image_text"
                 android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_outline_image_24" />
+                app:drawableStartCompat="@drawable/ic_icon_arrow_right_circle" />
         </LinearLayout>
         <!-- Open Image With New Tab Layout Button !-->
         <LinearLayout
-            android:id="@+id/imageOpenNewTabLayoutButton"
+            android:id="@+id/contextMenuOpenImageNewTabLayoutButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
@@ -65,11 +68,11 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/open_image_new_tab_text"
                 android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_baseline_add_24" />
+                app:drawableStartCompat="@drawable/ic_icon_add_circle" />
         </LinearLayout>
         <!-- Open Image With Incognito Tab Layout Button !-->
         <LinearLayout
-            android:id="@+id/imageOpenIncognitoLayoutButton"
+            android:id="@+id/contextMenuOpenImageIncognitoTabLayoutButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
@@ -86,11 +89,11 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/open_image_incognito_text"
                 android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_baseline_add_box_24" />
+                app:drawableStartCompat="@drawable/ic_icon_glasses_add_circle" />
         </LinearLayout>
         <!-- Download Image Layout Button !-->
         <LinearLayout
-            android:id="@+id/imageDownloadLayoutButton"
+            android:id="@+id/contextMenuDownloadImageLayoutButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
@@ -107,11 +110,11 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/download_image_text"
                 android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_baseline_get_app_24" />
+                app:drawableStartCompat="@drawable/ic_icon_download_circle" />
         </LinearLayout>
         <!-- Copy Link Layout Button !-->
         <LinearLayout
-            android:id="@+id/imageCopyLinkLayoutButton"
+            android:id="@+id/contextMenuCopyImageURLButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
@@ -128,7 +131,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/copy_link_text"
                 android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_baseline_content_copy_24" />
+                app:drawableStartCompat="@drawable/ic_icon_copy_circle" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

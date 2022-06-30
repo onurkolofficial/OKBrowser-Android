@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabPageRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- WebView !-->
+    <com.onurkol.app.browser.webview.OKWebView
+        android:id="@+id/okBrowserWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+    <!-- Content Layouts !-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Home Page Layout !-->
+        <include
+            android:id="@+id/tabNewTabView"
+            layout="@layout/screen_tab_new"/>
+        <!-- Incognito Page Layout !-->
+        <include
+            android:id="@+id/tabIncognitoTabView"
+            layout="@layout/screen_tab_incognito"/>
+        <!-- Not Connection Page Layout !-->
+        <include
+            android:id="@+id/tabNotConnectionView"
+            layout="@layout/screen_tab_not_connection"/>
+        <!-- Searches Page Layout !-->
+        <include
+            android:id="@+id/tabSearchesLayout"
+            layout="@layout/screen_tab_searches"/>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/incognitoHomeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="40dp"
+    android:background="@color/background_dark"
+    android:orientation="vertical">
+    <!-- Incognito Layout !-->
+    <!-- Image !-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_icon_glasses"/>
+    <!-- Title !-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="20dp"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="@string/incognito_tab_title" />
+    <!-- Message !-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="20dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:text="@string/incognito_tab_text" />
+</LinearLayout>

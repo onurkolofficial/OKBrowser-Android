@@ -2,36 +2,36 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="setting_geo_location"
+        android:key="settingGeoLocation"
         android:title="@string/geo_location_text"
-        app:icon="@drawable/ic_baseline_public_24"/>
+        app:icon="@drawable/ic_icon_geo_location_circle"/>
     <CheckBoxPreference
-        android:key="setting_javascript"
+        android:key="settingJavascript"
         android:title="@string/javascript_text"
-        app:icon="@drawable/ic_baseline_scatter_plot_24"/>
+        app:icon="@drawable/ic_icon_javascript_circle"/>
     <CheckBoxPreference
-        android:key="setting_popups"
+        android:key="settingPopups"
         android:title="@string/popups_text"
-        app:icon="@drawable/ic_baseline_filter_none_24"/>
+        app:icon="@drawable/ic_icon_popups_circle"/>
     <CheckBoxPreference
-        android:key="setting_save_forms"
+        android:key="settingSaveForms"
         android:title="@string/save_forms_text"
-        app:icon="@drawable/ic_baseline_format_list_bulleted_24"/>
+        app:icon="@drawable/ic_icon_form_circle"/>
     <CheckBoxPreference
-        android:key="setting_zoom"
+        android:key="settingZoom"
         android:title="@string/zoom_support_text"
-        app:icon="@drawable/ic_baseline_zoom_in_24"/>
+        app:icon="@drawable/ic_icon_zoom_in_circle"/>
     <CheckBoxPreference
-        android:key="setting_zoom_buttons"
+        android:key="settingZoomButtons"
         android:title="@string/zoom_buttons_text"
         android:enabled="false"
-        app:icon="@drawable/ic_baseline_more_horiz_24"/>
+        app:icon="@drawable/ic_icon_button_circle"/>
     <CheckBoxPreference
-        android:key="setting_local_storage"
+        android:key="settingWebStorage"
         android:title="@string/web_storage_text"
-        app:icon="@drawable/ic_baseline_storage_24"/>
+        app:icon="@drawable/ic_icon_storage_circle"/>
     <CheckBoxPreference
-        android:key="setting_app_cache"
+        android:key="settingAppCache"
         android:title="@string/app_cache_text"
-        app:icon="@drawable/ic_baseline_app_settings_alt_24"/>
+        app:icon="@drawable/ic_icon_settings_circle"/>
 </PreferenceScreen>

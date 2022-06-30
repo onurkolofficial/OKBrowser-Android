@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/popupMenuBackground"
+    android:orientation="vertical">
     <!-- Menu Buttons Layout !-->
     <ScrollView
         android:layout_width="match_parent"
@@ -12,30 +14,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <!-- Buttons !-->
-            <!-- History Layout Button !-->
-            <LinearLayout
-                android:id="@+id/noTabHistoryLayoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:clickable="true"
-                android:focusable="true">
-                <!-- Title !-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/history_text"
-                    android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_history_24" />
-            </LinearLayout>
             <!-- Bookmarks Layout Button !-->
             <LinearLayout
-                android:id="@+id/noTabBookmarksLayoutButton"
+                android:id="@+id/bookmarksLayoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="?attr/selectableItemBackground"
@@ -51,12 +32,33 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/bookmarks_text"
-                    android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_bookmark_border_24" />
+                    android:textSize="15sp"
+                    app:drawableStartCompat="@drawable/ic_icon_bookmark_circle" />
+            </LinearLayout>
+            <!-- History Layout Button !-->
+            <LinearLayout
+                android:id="@+id/historyLayoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:clickable="true"
+                android:focusable="true">
+                <!-- Title !-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/history_text"
+                    android:textSize="15sp"
+                    app:drawableStartCompat="@drawable/ic_icon_history_circle" />
             </LinearLayout>
             <!-- Downloads Layout Button !-->
             <LinearLayout
-                android:id="@+id/noTabDownloadsLayoutButton"
+                android:id="@+id/downloadsLayoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="?attr/selectableItemBackground"
@@ -72,12 +74,12 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/downloads_text"
-                    android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_get_app_24" />
+                    android:textSize="15sp"
+                    app:drawableStartCompat="@drawable/ic_icon_download_circle" />
             </LinearLayout>
             <!-- Settings Layout Button !-->
             <LinearLayout
-                android:id="@+id/noTabSettingsLayoutButton"
+                android:id="@+id/settingsLayoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="?attr/selectableItemBackground"
@@ -93,12 +95,12 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/settings_text"
-                    android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_settings_24" />
+                    android:textSize="15sp"
+                    app:drawableStartCompat="@drawable/ic_icon_settings_circle" />
             </LinearLayout>
             <!-- Exit Browser Layout Button !-->
             <LinearLayout
-                android:id="@+id/noTabExitBrowserLayoutButton"
+                android:id="@+id/exitBrowserLayoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="?attr/selectableItemBackground"
@@ -114,8 +116,8 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/exit_browser_text"
-                    android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_close_24" />
+                    android:textSize="15sp"
+                    app:drawableStartCompat="@drawable/ic_icon_close_circle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

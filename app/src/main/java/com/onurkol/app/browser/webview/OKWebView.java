@@ -1,134 +1,57 @@
 package com.onurkol.app.browser.webview;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.onurkol.app.browser.fragments.browser.tabs.IncognitoTabFragment;
-import com.onurkol.app.browser.fragments.browser.tabs.TabFragment;
-import com.onurkol.app.browser.interfaces.webview.WebViewClientManager;
+import com.onurkol.app.browser.controller.tabs.TabController;
+import com.onurkol.app.browser.interfaces.webview.OKWebViewInterface;
 
-import java.util.Map;
+public class OKWebView extends WebView implements OKWebViewInterface {
+    TabController tabController;
+    Context wContext;
 
-public class OKWebView extends WebView implements WebViewClientManager {
-    // Variables
-    public boolean isIncognitoWebView=false,
-            isRefreshing=false,isLoading=false,onBackView=false,
-            isDesktopMode=false;
-    private boolean addedJavascriptInterface;
-    // Fragments
-    private TabFragment webviewTabFragment;
-    private IncognitoTabFragment webviewIncognitoTabFragment;
-    // Get Tab Fragments
-    public void setTabFragment(TabFragment fragment){
-        webviewTabFragment=fragment;
-    }
-    public TabFragment getTabFragment(){
-        return webviewTabFragment;
-    }
-    // Get Incognito Tab Fragments
-    public void setIncognitoTabFragment(IncognitoTabFragment fragment){
-        webviewIncognitoTabFragment=fragment;
-    }
-    public IncognitoTabFragment getIncognitoTabFragment(){
-        return webviewIncognitoTabFragment;
-    }
-
-    // WebView Clients
     OKWebViewClient okWebViewClient;
     OKWebViewChromeClient okWebViewChromeClient;
 
-    // WebView Client
+    public OKWebView(@NonNull Context context) {
+        super(context);
+        tabController=TabController.getController(context);
+        wContext=context;
+    }
+    public OKWebView(@NonNull Context context, AttributeSet attrs){
+        super(context, attrs);
+        tabController=TabController.getController(context);
+        wContext=context;
+    }
+    public OKWebView(@NonNull Context context, AttributeSet attrs, int defStyle){
+        super(context, attrs);
+        tabController=TabController.getController(context);
+        wContext=context;
+    }
+
     @Override
-    public void setOKWebViewClient(OKWebViewClient webViewClient){
+    public void setOKWebViewClient(@NonNull OKWebViewClient webViewClient) {
         okWebViewClient=webViewClient;
-        // Set Client
         setWebViewClient(webViewClient);
     }
+
     @Override
-    public OKWebViewClient getOKWebViewClient(){
+    public void setOKWebViewChromeClient(@NonNull OKWebViewChromeClient webViewChromeClient) {
+        okWebViewChromeClient=webViewChromeClient;
+        setWebChromeClient(webViewChromeClient);
+    }
+
+    @Override
+    public OKWebViewClient getOKWebViewClient() {
         return okWebViewClient;
     }
 
     @Override
-    public void setOKWebViewChromeClient(OKWebViewChromeClient webViewChromeClient){
-        okWebViewChromeClient=webViewChromeClient;
-        // Set Client
-        setWebChromeClient(webViewChromeClient);
-    }
-    @Override
-    public OKWebViewChromeClient getOKWebViewChromeClient(){
+    public OKWebViewChromeClient getOKWebViewChromeClient() {
         return okWebViewChromeClient;
     }
 
-    // Sync on Back Url
-    public void syncOnBackForward(String url){
-        okWebViewClient.updateSyncForWeb(this, url);
-    }
-
-    // WebView Javascript Interface Class
-    public class OKWebViewJavascriptInterface {
-        @android.webkit.JavascriptInterface
-        public void notifyVideoEnd(){
-            // End Video
-            new Handler(Looper.getMainLooper()).post(() -> {
-                if (okWebViewChromeClient!=null)
-                    okWebViewChromeClient.onHideCustomView();
-            });
-        }
-    }
-
-    public OKWebView(@NonNull Context context) {
-        super(context);
-        addedJavascriptInterface = false;
-    }
-    public OKWebView(@NonNull Context context, AttributeSet attrs){
-        super(context, attrs);
-        addedJavascriptInterface = false;
-    }
-    public OKWebView(@NonNull Context context, AttributeSet attrs, int defStyle){
-        super(context, attrs);
-        addedJavascriptInterface = false;
-    }
-
-    @Override
-    public void loadData(String data, String mimeType, String encoding) {
-        addJavascriptInterface();
-        super.loadData(data, mimeType, encoding);
-    }
-
-    @Override
-    public void loadDataWithBaseURL(@Nullable String baseUrl, @NonNull String data, @Nullable String mimeType, @Nullable String encoding, @Nullable String historyUrl) {
-        addJavascriptInterface();
-        super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl);
-    }
-
-    @Override
-    public void loadUrl(@NonNull String url) {
-        addJavascriptInterface();
-        super.loadUrl(url);
-    }
-
-    @Override
-    public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {
-        addJavascriptInterface();
-        super.loadUrl(url, additionalHttpHeaders);
-    }
-
-    public boolean isVideoFullscreen(){
-        return okWebViewChromeClient != null && okWebViewChromeClient.isVideoFullscreen();
-    }
-
-    private void addJavascriptInterface() {
-        if (!addedJavascriptInterface){
-            // Add javascript interface to be called when the video ends (must be done before page load)
-            addJavascriptInterface(new OKWebViewJavascriptInterface(), "OKWebView"); // Must match Javascript interface name of VideoEnabledWebChromeClient
-            addedJavascriptInterface = true;
-        }
-    }
 }

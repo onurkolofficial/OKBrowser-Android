@@ -1,188 +1,119 @@
 package com.onurkol.app.browser.webview;
 
-import android.media.MediaPlayer;
-import android.view.SurfaceView;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.VideoView;
-
-import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
+import com.onurkol.app.browser.controller.settings.GUIController;
 
-public class OKWebViewChromeClient extends WebChromeClient implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
-    private View rootView;
+public class OKWebViewChromeClient extends WebChromeClient {
+    private View mVideoProgressView, mCustomView;
+    private final FrameLayout customViewContainer;
+    private final OKWebView mWebView;
 
-    public interface ToggledFullscreenCallback {
-        public void toggledFullscreen(boolean fullscreen);
-    }
+    private final Context wcContext;
+    private WebChromeClient.CustomViewCallback customViewCallback;
 
-    private View mWebViewLayout;
-    private ViewGroup mWebViewVideoLayout;
-    private View mLoadingView;
-    private OKWebView mWebView;
+    private boolean isVideoFullscreen;
 
-    private boolean isVideoFullscreen; // Indicates if the video is being displayed using a custom view (typically full-screen)
-    private FrameLayout videoViewContainer;
-    private CustomViewCallback videoViewCallback;
-
-    private ToggledFullscreenCallback toggledFullscreenCallback;
-
-    // WebView Chrome Clients
-    public OKWebViewChromeClient(){/*NULL*/}
-    public OKWebViewChromeClient(View webViewLayout, ViewGroup webViewVideoLayout){
-        this.mWebViewLayout = webViewLayout;
-        this.mWebViewVideoLayout = webViewVideoLayout;
-        this.mLoadingView = null;
-        this.mWebView = null;
-        this.isVideoFullscreen = false;
-    }
-    public OKWebViewChromeClient(View webViewLayout, ViewGroup webViewVideoLayout, View loadingView){
-        this.mWebViewLayout = webViewLayout;
-        this.mWebViewVideoLayout = webViewVideoLayout;
-        this.mLoadingView = loadingView;
-        this.mWebView = null;
-        this.isVideoFullscreen = false;
-    }
-    public OKWebViewChromeClient(View webViewLayout, ViewGroup webViewVideoLayout, View loadingView, OKWebView webView){
-        this.mWebViewLayout = webViewLayout;
-        this.mWebViewVideoLayout = webViewVideoLayout;
-        this.mLoadingView = loadingView;
-        this.mWebView = webView;
-        this.isVideoFullscreen = false;
+    public OKWebViewChromeClient(Context context, OKWebView webView, FrameLayout viewContainer){
+        mWebView=webView;
+        customViewContainer=viewContainer;
+        wcContext=context;
+        isVideoFullscreen=false;
     }
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         // Get RootView
-        rootView = view.getRootView();
-
-        if(rootView != null) {
+        View rootView = view.getRootView();
+        if(rootView!=null) {
             // Get Elements
-            ProgressBar toolbarProgressBar = rootView.findViewById(R.id.browserProgressbar);
+            ProgressBar browserToolbarProgressbar=rootView.findViewById(R.id.browserToolbarProgressbar);
 
-            if(toolbarProgressBar!=null) {
+            if(browserToolbarProgressbar!=null) {
                 // Show & Loading Progressbar
                 if (newProgress >= 100) {
-                    toolbarProgressBar.setProgress(0);
-                    toolbarProgressBar.setVisibility(View.GONE);
+                    browserToolbarProgressbar.setProgress(0);
+                    browserToolbarProgressbar.setVisibility(View.GONE);
                 } else {
-                    toolbarProgressBar.setProgress(newProgress);
-                    toolbarProgressBar.setVisibility(View.VISIBLE);
+                    browserToolbarProgressbar.setProgress(newProgress);
+                    browserToolbarProgressbar.setVisibility(View.VISIBLE);
                 }
             }
         }
         super.onProgressChanged(view, newProgress);
     }
 
-    // Fullscreen Video View
-    public boolean isVideoFullscreen(){
-        return isVideoFullscreen;
-    }
-    public void setOnToggledFullscreen(ToggledFullscreenCallback callback) {
-        this.toggledFullscreenCallback = callback;
+    @Override
+    public void onShowCustomView(View view, CustomViewCallback callback) {
+        // if a view already exists then immediately terminate the new one
+        if (mCustomView != null) {
+            callback.onCustomViewHidden();
+            return;
+        }
+        // Hide Status Bar
+        WindowManager.LayoutParams attrs = ((Activity)wcContext).getWindow().getAttributes();
+        attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        attrs.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        ((Activity)wcContext).getWindow().setAttributes(attrs);
+        ((Activity)wcContext).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+
+        // Hide Bottom toolbar (dense mode)
+        if(GUIController.getController().isDenseMode())
+            ((Activity)wcContext).findViewById(R.id.toolbarMainDenseBottomView).setVisibility(View.GONE);
+        mCustomView = view;
+        mWebView.setVisibility(View.GONE);
+        customViewContainer.setVisibility(View.VISIBLE);
+        customViewContainer.addView(view);
+        customViewCallback = callback;
+        isVideoFullscreen = true;
     }
 
     @Override
-    public void onShowCustomView(View view, CustomViewCallback callback) {
-        if (view instanceof FrameLayout){
-            FrameLayout frameLayout = (FrameLayout) view;
-            View focusedChild = frameLayout.getFocusedChild();
-
-            this.isVideoFullscreen = true;
-            this.videoViewContainer = frameLayout;
-            this.videoViewCallback = callback;
-
-            // Hide WebView and show Video View.
-            mWebViewLayout.setVisibility(View.INVISIBLE);
-            mWebViewVideoLayout.addView(videoViewContainer, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mWebViewVideoLayout.setVisibility(View.VISIBLE);
-
-            if(focusedChild instanceof android.widget.VideoView){
-                VideoView videoView = (VideoView)focusedChild;
-
-                videoView.setOnPreparedListener(this);
-                videoView.setOnCompletionListener(this);
-                videoView.setOnErrorListener(this);
-            }
-            else{
-                // Other classes
-                if(mWebView != null && mWebView.getSettings().getJavaScriptEnabled() && focusedChild instanceof SurfaceView){
-                    // Run javascript code that detects the video end and notifies the Javascript interface
-                    String js = "javascript:";
-                    js += "var _ytrp_html5_video_last;";
-                    js += "var _ytrp_html5_video = document.getElementsByTagName('video')[0];";
-                    js += "if (_ytrp_html5_video != undefined && _ytrp_html5_video != _ytrp_html5_video_last) {";
-                    {
-                        js += "_ytrp_html5_video_last = _ytrp_html5_video;";
-                        js += "function _ytrp_html5_video_ended() {";
-                        {
-                            js += "OKWebView.notifyVideoEnd();"; // Must match Javascript interface name and method of OKWebView
-                        }
-                        js += "}";
-                        js += "_ytrp_html5_video.addEventListener('ended', _ytrp_html5_video_ended);";
-                    }
-                    js += "}";
-                    mWebView.loadUrl(js);
-                }
-            }
-            // Notify full-screen change
-            if (toggledFullscreenCallback != null) {
-                toggledFullscreenCallback.toggledFullscreen(true);
-            }
+    public View getVideoLoadingProgressView() {
+        if (mVideoProgressView == null) {
+            LayoutInflater inflater = LayoutInflater.from(wcContext);
+            mVideoProgressView = inflater.inflate(R.layout.screen_video_loading, null);
         }
+        return mVideoProgressView;
     }
 
     @Override
     public void onHideCustomView() {
-        if(isVideoFullscreen){
-            mWebViewVideoLayout.setVisibility(View.INVISIBLE);
-            mWebViewVideoLayout.removeView(videoViewContainer);
-            mWebViewLayout.setVisibility(View.VISIBLE);
-        }
+        super.onHideCustomView(); //To change body of overridden methods use File | Settings | File Templates.
+        if (mCustomView == null)
+            return;
 
-        if (videoViewCallback != null && !videoViewCallback.getClass().getName().contains(".chromium."))
-            videoViewCallback.onCustomViewHidden();
+        // Show Status Bar
+        WindowManager.LayoutParams attrs = ((Activity)wcContext).getWindow().getAttributes();
+        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        attrs.flags &= ~WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        ((Activity)wcContext).getWindow().setAttributes(attrs);
+        ((Activity)wcContext).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
-        // Reset values
-        isVideoFullscreen = false;
-        videoViewContainer = null;
-        videoViewCallback = null;
+        // Show Bottom toolbar (dense mode)
+        if(GUIController.getController().isDenseMode())
+            ((Activity)wcContext).findViewById(R.id.toolbarMainDenseBottomView).setVisibility(View.VISIBLE);
+        mWebView.setVisibility(View.VISIBLE);
+        customViewContainer.setVisibility(View.GONE);
 
-        if (toggledFullscreenCallback != null) {
-            toggledFullscreenCallback.toggledFullscreen(false);
-        }
-    }
+        // Hide the custom view.
+        mCustomView.setVisibility(View.GONE);
 
-    @Nullable
-    @Override
-    public View getVideoLoadingProgressView() {
-        if (mLoadingView != null){
-            mLoadingView.setVisibility(View.VISIBLE);
-            return mLoadingView;
-        }
-        else{
-            return super.getVideoLoadingProgressView();
-        }
-    }
+        // Remove the custom view from its container.
+        customViewContainer.removeView(mCustomView);
+        customViewCallback.onCustomViewHidden();
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        onHideCustomView();
-    }
-    @Override
-    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-        return false;
-    }
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        if (mLoadingView != null) {
-            mLoadingView.setVisibility(View.GONE);
-        }
+        mCustomView = null;
+        isVideoFullscreen=false;
     }
 
     public boolean onBackPressed(){
@@ -193,5 +124,4 @@ public class OKWebViewChromeClient extends WebChromeClient implements MediaPlaye
         else
             return false;
     }
-
 }

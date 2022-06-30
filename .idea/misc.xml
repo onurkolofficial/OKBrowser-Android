@@ -1,53 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="NullableNotNullManager">
-    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
-    <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />
-    <option name="myNullables">
-      <value>
-        <list size="14">
-          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
-          <item index="1" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
-          <item index="2" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
-          <item index="3" class="java.lang.String" itemvalue="androidx.annotation.Nullable" />
-          <item index="4" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNullable" />
-          <item index="5" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
-          <item index="6" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
-          <item index="7" class="java.lang.String" itemvalue="javax.annotation.CheckForNull" />
-          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
-          <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableDecl" />
-          <item index="10" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
-          <item index="11" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.Nullable" />
-          <item index="12" class="java.lang.String" itemvalue="io.reactivex.annotations.Nullable" />
-          <item index="13" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.Nullable" />
-        </list>
-      </value>
-    </option>
-    <option name="myNotNulls">
-      <value>
-        <list size="14">
-          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
-          <item index="1" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
-          <item index="2" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
-          <item index="3" class="java.lang.String" itemvalue="androidx.annotation.NonNull" />
-          <item index="4" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNonNull" />
-          <item index="5" class="java.lang.String" itemvalue="com.android.annotations.NonNull" />
-          <item index="6" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
-          <item index="7" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.NonNull" />
-          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
-          <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
-          <item index="10" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
-          <item index="11" class="java.lang.String" itemvalue="io.reactivex.annotations.NonNull" />
-          <item index="12" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.NonNull" />
-          <item index="13" class="java.lang.String" itemvalue="lombok.NonNull" />
-        </list>
-      </value>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/border_radius.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_baseline_translate_24.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_code.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_add.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_add_circle.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_app_logo.xml" value="0.147" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_app_logo_circle.xml" value="0.147" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_arrow_left.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_arrow_left_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_arrow_right.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_arrow_right_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_bookmark.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_bookmark_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_button_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_close.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_close_all_tabs.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_close_all_tabs_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_close_circle.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_code.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_code_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_collection_add.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_collection_add_circle.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_console.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_console_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_copy.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_copy_circle.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_copy_text.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_copy_text_circle.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_day.xml" value="0.1815" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_day_night_mode.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_day_night_mode_circle.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_desktop_mode.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_desktop_mode_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_dev_phone.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_dev_phone_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_download.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_download_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_edit.xml" value="0.1895" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_edit_circle.xml" value="0.1895" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_form.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_form_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_geo_location.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_geo_location_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_glasses.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_glasses_add_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_gui.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_gui_circle.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_history.xml" value="0.1155" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_history_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_home.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_home_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_info.xml" value="0.147" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_info_circle.xml" value="0.147" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_javascript_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_menu.xml" value="0.1155" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_menu_circle.xml" value="0.1155" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_menu_vertical.xml" value="0.1155" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_menu_vertical_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_night.xml" value="0.1815" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_popups.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_popups_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_search.xml" value="0.1815" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_search_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_settings.xml" value="0.1155" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_settings_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_star.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_star_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_star_fill.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_star_fill_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_storage.xml" value="0.19" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_storage_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_subtract.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_subtract_circle.xml" value="0.145" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_sync.xml" value="0.1815" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_sync_circle.xml" value="0.1695" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_translate.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_translate_circle.xml" value="0.1755" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_warning.xml" value="0.1805" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_warning_circle.xml" value="0.1805" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_wifi.xml" value="0.19" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_zoom_in.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_zoom_in_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_zoom_out.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_icon_zoom_out_circle.xml" value="0.1935" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_outline_view_quilt_24.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_0.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_1.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_2.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_3.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_4.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_5.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_6.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_7.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_8.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_9.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_tab_num_9_more.xml" value="0.1405" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/icon_app_logo.xml" value="0.147" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/item_border_radius.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/layout_select_border.xml" value="0.182" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/font/sarpanch.xml" value="0.23020833333333332" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_bookmark.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_downloads.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_history.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_settings.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_settings_about.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_settings_day_night.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_tab_list.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layout/activity_welcome.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout-land/activity_settings_gui.xml" value="0.19895833333333332" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_bookmark.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_downloads.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_history.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_installer.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_main_dense.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_main_dense_backup.xml" value="0.19895833333333332" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_main_simple.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_about.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_day_night.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_gui.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_language.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_search_engine.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_web.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_tab_list.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_welcome.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/bottomsheets/layout/bottomsheet_toolbar_main_dense.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/bottomsheets/layout/bottomsheet_toolbar_main_no_tab.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/fragments/layout/fragment_tab.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout-land/item_web_collection_data.xml" value="0.22552083333333334" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_bookmark_data.xml" value="0.33" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_checkbox_data.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_checkbox_icon_data.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_collection_web.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_collection_web_data.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_download_data.xml" value="0.33" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_history_data.xml" value="0.33" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_preferences_checkbox_icon_data.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_recent_search_data.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_tab_list_data.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_web_collection_data.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/menus/layout/menu_toolbar_main_simple.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/menus/layout/menu_toolbar_no_tab.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/menus/layout/menu_webview_anchor.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/menus/layout/menu_webview_image.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/menus/layout/menu_webview_image_anchor.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/preferences/xml/preference_settings.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/preferences/xml/preference_settings_about.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/preferences/xml/preference_settings_home.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/preferences/xml/preference_settings_web.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/preferences/xml/testx.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/page_installer_welcome.xml" value="0.21302083333333333" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_complete.xml" value="0.16614583333333333" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_daynight_mode.xml" value="0.18125" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_gui_mode.xml" value="0.15260416666666668" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_language.xml" value="0.18125" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_permissions.xml" value="0.17708333333333334" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_installer_welcome.xml" value="0.15260416666666668" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_tab_incognito.xml" value="0.22083333333333333" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout-land/screen_tab_new.xml" value="0.15625" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/layout_video_loading.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_browser_layout_dense.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_browser_layout_simple.xml" value="0.19895833333333332" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_complete.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_daynight_mode.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_gui_mode.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_language.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_permissions.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_installer_welcome.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_incognito.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_list.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_new.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_new_edit_collection_web.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_new_layout.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_not_connection.xml" value="0.22" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_search.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_searches.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_web_collection_new_edit.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/drawable/ic_code.xml" value="0.1" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_dense_layout_main.xml" value="0.19895833333333332" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_find_page.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_main_dense.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_main_dense_bottom.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_main_simple.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_no_tab.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_settings.xml" value="0.25" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_simple_layout_main.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_tab_list.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_web_search.xml" value="0.2" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/dark_text_color.xml" value="0.1485" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/day_control_color_selector.xml" value="0.1965" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/day_text_color_selector.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/day_text_color_summary_selector.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/day_text_icon_color_selector.xml" value="0.168" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_collection_add.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_collection_add_circle.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_copy.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_copy_circle.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_copy_text.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_copy_text_circle.xml" value="0.148" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_warning.xml" value="0.177" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/ic_icon_warning_circle.xml" value="0.1805" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/light_text_color.xml" value="0.1485" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/night_control_color_selector.xml" value="0.1965" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/night_drawable_tint_selector.xml" value="0.168" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/night_text_color_selector.xml" value="0.173" />
+        <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/theme/drawable/night_text_color_summary_selector.xml" value="0.173" />
+      </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>

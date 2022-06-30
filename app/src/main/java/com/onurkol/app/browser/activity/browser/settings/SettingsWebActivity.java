@@ -1,61 +1,80 @@
 package com.onurkol.app.browser.activity.browser.settings;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.data.BrowserDataManager;
+import com.onurkol.app.browser.activity.installer.InstallerActivity;
+import com.onurkol.app.browser.controller.ContextController;
+import com.onurkol.app.browser.controller.PreferenceController;
+import com.onurkol.app.browser.controller.browser.BrowserDataInitController;
+import com.onurkol.app.browser.controller.settings.DayNightModeController;
+import com.onurkol.app.browser.controller.settings.LanguageController;
 import com.onurkol.app.browser.fragments.settings.SettingsWebFragment;
-import com.onurkol.app.browser.lib.AppPreferenceManager;
-import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.interfaces.BrowserDataInterface;
+import com.onurkol.app.browser.libs.ActivityActionAnimator;
 
-public class SettingsWebActivity extends AppCompatActivity {
+public class SettingsWebActivity extends AppCompatActivity implements BrowserDataInterface {
+    BrowserDataInitController browserDataController;
+    PreferenceController preferenceController;
+    DayNightModeController dayNightController;
+    LanguageController languageController;
 
-    // Elements
+    public static boolean isCreated;
+
     ImageButton backButton;
     TextView settingName;
-    // Classes
-    BrowserDataManager dataManager;
-    AppPreferenceManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Set Current Activity Context
-        ContextManager.Build(this);
-        // Get Classes
-        dataManager=new BrowserDataManager();
-        prefManager=AppPreferenceManager.getInstance();
-        // Create View
+        ContextController.setContext(this);
+
+        preferenceController=PreferenceController.getController();
+        browserDataController=BrowserDataInitController.getController();
+        browserDataController.init();
+
+        dayNightController=DayNightModeController.getController();
+        languageController=LanguageController.getController();
+
+        if(!browserDataController.isInstallerCompleted()){
+            startActivity(new Intent(this, InstallerActivity.class));
+            finish();
+        }
+
+        // Set Theme|Language
+        dayNightController.setDayNightMode(this, preferenceController.getInt(KEY_DAY_NIGHT_MODE));
+        languageController.setLanguage(this, preferenceController.getInt(KEY_LANGUAGE));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_web);
 
-        // Get Elements
-        backButton=findViewById(R.id.backSettingsButton);
-        settingName=findViewById(R.id.settingName);
+        backButton=findViewById(R.id.settingsBackButton);
+        settingName=findViewById(R.id.settingsTitle);
 
-        // Set Toolbar Title
         settingName.setText(getString(R.string.web_settings_text));
 
-        // Button Click Events
-        backButton.setOnClickListener(view -> finish());
+        backButton.setOnClickListener(view -> ActivityActionAnimator.finish(this));
 
-        // Get Fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.settingsFragmentContent,new SettingsWebFragment()).commit();
+        // for uiMode Change
+        if(!SettingsWebFragment.isCreated)
+            getSupportFragmentManager().beginTransaction().add(R.id.settingsFragmentView, new SettingsWebFragment()).commit();
+
+        isCreated=true;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        // Init Browser Data ( Applying View Settings )
-        dataManager.initBrowserPreferenceSettings();
-        return super.onCreateView(name, context, attrs);
+    public void onBackPressed() {
+        ActivityActionAnimator.finish(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        isCreated=false;
+        SettingsWebFragment.isCreated=false;
+        super.onDestroy();
     }
 }

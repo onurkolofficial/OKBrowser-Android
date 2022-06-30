@@ -1,9 +1,10 @@
 package com.onurkol.app.browser.adapters.browser;
 
-import android.app.Activity;
+import static com.onurkol.app.browser.libs.ActivityActionAnimator.finishAndStartActivity;
+
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,43 +19,33 @@ import androidx.annotation.Nullable;
 
 import com.onurkol.app.browser.R;
 import com.onurkol.app.browser.activity.MainActivity;
+import com.onurkol.app.browser.activity.browser.HistoryActivity;
+import com.onurkol.app.browser.controller.ContextController;
+import com.onurkol.app.browser.controller.browser.HistoryController;
 import com.onurkol.app.browser.data.browser.HistoryData;
-import com.onurkol.app.browser.interfaces.BrowserActionKeys;
-import com.onurkol.app.browser.interfaces.browser.history.HistorySettings;
-import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.HistoryManager;
-import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
-import com.onurkol.app.browser.tools.CharLimiter;
-import com.onurkol.app.browser.tools.DateManager;
+import com.onurkol.app.browser.libs.ActivityActionAnimator;
+import com.onurkol.app.browser.libs.CharLimiter;
+import com.onurkol.app.browser.libs.DateManager;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements BrowserActionKeys, HistorySettings {
+public class HistoryListAdapter extends ArrayAdapter<HistoryData> {
     private final LayoutInflater inflater;
+    private final Context mContext;
     private ViewHolder holder;
-    private final List<HistoryData> getHistoryList;
-    private final ListView getListView;
+    private final ArrayList<HistoryData> mHistoryData;
 
-    // Classes
-    ContextManager contextManager;
-    TabBuilder tabBuilder;
-    HistoryManager historyManager;
-    Context getContext;
+    HistoryController historyController;
 
-    public HistoryListAdapter(Context context, ListView historyListView, List<HistoryData> historyList) {
-        super(context, 0, historyList);
-        getHistoryList=historyList;
-        getContext=context;
-        getListView=historyListView;
+    ListView historyListView;
+
+    public HistoryListAdapter(@NonNull Context context, ListView listView, ArrayList<HistoryData> historyData){
+        super(context, 0, historyData);
         inflater=LayoutInflater.from(context);
-        contextManager=ContextManager.getManager();
-        tabBuilder=TabBuilder.Build();
-        historyManager=HistoryManager.getInstance();
-    }
-
-    @Override
-    public int getCount() {
-        return getHistoryList.size();
+        mContext=context;
+        mHistoryData=historyData;
+        historyListView=listView;
+        historyController=HistoryController.getController();
     }
 
     @NonNull
@@ -63,25 +54,25 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_history_data, null);
             holder = new ViewHolder();
-            holder.historyDateText = convertView.findViewById(R.id.historyDateText);
-            holder.historyTitleText = convertView.findViewById(R.id.historyTitleText);
-            holder.historyUrlText = convertView.findViewById(R.id.historyUrlText);
-            holder.deleteHistoryButton = convertView.findViewById(R.id.deleteHistoryButton);
-            holder.openHistoryLayoutButton = convertView.findViewById(R.id.openHistoryLayoutButton);
-
+            holder.historyTitleText=convertView.findViewById(R.id.historyTitleText);
+            holder.historyUrlText=convertView.findViewById(R.id.historyUrlText);
+            holder.historyDateText=convertView.findViewById(R.id.historyDateText);
+            holder.openHistoryLayoutButton=convertView.findViewById(R.id.openHistoryLayoutButton);
+            holder.deleteHistoryButton=convertView.findViewById(R.id.deleteHistoryButton);
             convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
-
+        else{
+            holder=(ViewHolder)convertView.getTag();
+        }
         // Get Data
-        HistoryData data=getHistoryList.get(position);
+        HistoryData data=mHistoryData.get(position);
+
         // Check Today-Yesterday-Days Ago
-        String dateText;
+        String dateText="";
         String dataDate = data.getDate(),
                 currentDate = DateManager.getDate();
         if (currentDate.equals(dataDate))
-            dateText = getContext.getString(R.string.today_text);
+            dateText = mContext.getString(R.string.today_text);
         else {
             // Check Yesterday
             int currentDateDays=Integer.parseInt(currentDate.split("/")[0].trim());
@@ -91,87 +82,46 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryData> implements Bro
                 daysAgo*=-1;
 
             if(daysAgo==1)
-                dateText = getContext.getString(R.string.yesterday_text);
+                dateText = mContext.getString(R.string.yesterday_text);
             else
-                dateText = daysAgo+" "+getContext.getString(R.string.days_ago_text);
+                dateText = daysAgo+" "+mContext.getString(R.string.days_ago_text);
         }
         holder.historyDateText.setText(dateText);
 
         String historyTitle=CharLimiter.Limit(data.getTitle(),30);
-        String historyUrl=CharLimiter.Limit(data.getUrl(),34);
-        // Set Texts
+        String historyUrl= CharLimiter.Limit(data.getUrl(),34);
         holder.historyTitleText.setText(historyTitle);
         holder.historyUrlText.setText(historyUrl);
 
-        // Button Click Events
-        holder.openHistoryLayoutButton.setOnClickListener(view -> {
-            // Get Intent
-            Intent mainActivityIntent;
-            boolean isCreateNewActivity;
-
-            // Check Context
-            if(contextManager.getContextActivity().isTaskRoot()) {
-                isCreateNewActivity=true;
-                mainActivityIntent = new Intent(getContext, MainActivity.class);
-            }
-            else {
-                isCreateNewActivity=false;
-                if(contextManager.getContextActivity().getParentActivityIntent()!=null)
-                    mainActivityIntent = contextManager.getContextActivity().getParentActivityIntent();
-                else
-                    mainActivityIntent = new Intent(getContext, MainActivity.class);
-            }
-            // Variables
-            String action_name;
-            // Create new Bundle
-            Bundle bundle = new Bundle();
-            // Check Action
-            if(contextManager.getContextActivity().isTaskRoot()){
-                action_name=KEY_ACTION_TAB_ON_CREATE;
+        holder.openHistoryLayoutButton.setOnClickListener(v -> {
+            if(ContextController.getController()==null)
+                ContextController.setContext(mContext);
+            if(ContextController.getController().getBaseContext()==null){
+                Intent mainActivityIntent=new Intent(mContext, MainActivity.class);
+                mainActivityIntent.setData(Uri.parse(data.getUrl()));
+                finishAndStartActivity(mContext, mainActivityIntent);
             }
             else{
-                if(tabBuilder.getTabFragmentList().size()<=0 && tabBuilder.getIncognitoTabFragmentList().size()<=0){
-                    action_name=KEY_ACTION_TAB_ON_CREATE;
-                }
-                else{
-                    if(tabBuilder.getActiveTabFragment()!=null){
-                        action_name=KEY_ACTION_TAB_ON_START;
-                    }
-                    else{
-                        action_name=KEY_ACTION_INCOGNITO_ON_START;
-                    }
-                }
+                ContextController.getController().getBaseContextActivity().getIntent()
+                        .setData(Uri.parse(data.getUrl()));
+                ActivityActionAnimator.finish(mContext);
             }
-            bundle.putString(ACTION_NAME, action_name);
-            bundle.putString(ACTION_VALUE, data.getUrl());
-            // Set extras
-            mainActivityIntent.putExtras(bundle);
-
-            // Check Activity
-            if(isCreateNewActivity)
-                getContext.startActivity(mainActivityIntent);
-            else
-                MainActivity.updatedIntent=mainActivityIntent;
-            // Close Current Activity
-            ((Activity)getContext).finish();
         });
 
-        holder.deleteHistoryButton.setOnClickListener(view -> {
-            // Remove Item (Current)
-            BROWSER_HISTORY_LIST.remove(position);
-            // Save Current List
-            historyManager.saveHistoryListPreference(BROWSER_HISTORY_LIST);
+        holder.deleteHistoryButton.setOnClickListener(v -> {
+            // Delete Data
+            historyController.deleteHistory(position);
             // Refresh List View
-            getListView.invalidateViews();
+            historyListView.invalidateViews();
+            HistoryActivity.updateView(mContext);
         });
 
         return convertView;
     }
 
-    //View Holder
     private static class ViewHolder {
-        TextView historyDateText,historyTitleText,historyUrlText;
-        ImageButton deleteHistoryButton;
+        TextView historyTitleText, historyUrlText, historyDateText;
         LinearLayout openHistoryLayoutButton;
+        ImageButton deleteHistoryButton;
     }
 }

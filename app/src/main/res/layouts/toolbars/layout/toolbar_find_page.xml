@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbarFind"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- Close Button !-->
+        <ImageButton
+            android:id="@+id/findCloseButton"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_icon_close_circle"
+            android:contentDescription="@string/close_text"
+            android:tooltipText="@string/close_text"
+            tools:targetApi="o" />
+        <!-- Search View !-->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/findSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            app:queryHint="@string/find_the_page_text"
+            app:iconifiedByDefault="false"
+            app:searchIcon="@null"
+            app:closeIcon="@null"/>
+        <!-- Next Button !-->
+        <ImageButton
+            android:id="@+id/findBackButton"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_icon_arrow_left_circle"
+            android:contentDescription="@string/next_text"
+            android:tooltipText="@string/next_text"
+            tools:targetApi="o" />
+        <!-- Previous Button !-->
+        <ImageButton
+            android:id="@+id/findNextButton"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_icon_arrow_right_circle"
+            android:contentDescription="@string/back_text"
+            android:tooltipText="@string/back_text"
+            tools:targetApi="o" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Data Item Layout !-->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dataItemSelectLayoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingEnd="16dp"
+        android:paddingStart="2dp"
+        android:clickable="true"
+        android:focusable="true">
+        <!-- Data Item Icon !-->
+        <ImageView
+            android:id="@+id/dataItemIcon"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:padding="15dp"
+            android:background="@color/transparent"
+            app:tint="?attr/colorControlNormal"/>
+        <!-- Data Item Title !-->
+        <TextView
+            android:id="@+id/dataItemNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:text="DATA_NAME"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+        <!-- Checkbox !-->
+        <CheckBox
+            android:id="@+id/dataItemCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_weight="0"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

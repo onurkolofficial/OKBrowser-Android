@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names !-->
+    <string-array name="day_night_mode_name">
+        <item>@string/night_mode_system_text</item>
+        <item>@string/night_mode_day_text</item>
+        <item>@string/night_mode_night_text</item>
+    </string-array>
+    <!-- Values !-->
+    <integer-array name="day_night_mode_value">
+        <item>2</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+    <!-- for Settings Preferences !-->
+    <integer-array name="day_night_mode_preference_icons">
+        <item>@drawable/ic_icon_sync</item>
+        <item>@drawable/ic_icon_day</item>
+        <item>@drawable/ic_icon_night</item>
+    </integer-array>
+</resources>

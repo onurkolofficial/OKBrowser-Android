@@ -1,8 +1,8 @@
 package com.onurkol.app.browser.webview;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -10,145 +10,85 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import androidx.core.widget.NestedScrollView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.data.browser.HistoryData;
-import com.onurkol.app.browser.data.browser.tabs.ClassesTabData;
-import com.onurkol.app.browser.data.browser.tabs.IncognitoTabData;
-import com.onurkol.app.browser.data.browser.tabs.TabData;
-import com.onurkol.app.browser.lib.ContextManager;
-import com.onurkol.app.browser.lib.browser.HistoryManager;
-import com.onurkol.app.browser.lib.browser.tabs.TabBuilder;
-import com.onurkol.app.browser.tools.DateManager;
-import com.onurkol.app.browser.tools.JavascriptManager;
-import com.onurkol.app.browser.tools.ScreenManager;
+import com.onurkol.app.browser.controller.browser.HistoryController;
+import com.onurkol.app.browser.controller.settings.GUIController;
+import com.onurkol.app.browser.controller.tabs.TabController;
+import com.onurkol.app.browser.data.tabs.TabData;
+import com.onurkol.app.browser.fragments.tabs.TabFragment;
+import com.onurkol.app.browser.libs.JavascriptManager;
+import com.onurkol.app.browser.libs.ScreenManager;
 
 public class OKWebViewClient extends WebViewClient {
-    Activity activity;
-    // Variables
-    boolean redirectLoad;
-    // Classes
-    TabBuilder tabBuilder;
-    JavascriptManager jsManager;
-    // Elements
-    EditText browserSearch;
-    LinearLayout connectFailedLayout;
+    TabController tabController;
+    GUIController guiController;
+    HistoryController historyController;
+    Context wcContext;
+
+    JavascriptManager javascriptManager;
+
+    TabData currentTabData;
+
+    boolean isPageFinished=false;
+
+    public OKWebViewClient(Context context){
+        tabController=TabController.getController(context);
+        guiController=GUIController.getController();
+        historyController=HistoryController.getController();
+        javascriptManager=JavascriptManager.getManager();
+        wcContext=context;
+        currentTabData=tabController.getCurrentTabData();
+    }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        // Get Views
-        activity=ContextManager.getManager().getContextActivity();
-        View rootView=view.getRootView();
-        // Variables
-        redirectLoad=false;
-        // Get Classes
-        tabBuilder=TabBuilder.Build();
-        jsManager=JavascriptManager.getManager();
-        // Get Elements
-        browserSearch=activity.findViewById(R.id.browserSearch);
-        connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
-        // Get WebView
-        OKWebView webView=((OKWebView)view);
-        webView.isLoading=true;
-
-        if(!webView.isIncognitoWebView) {
-            // New Preference Data
-            TabData newData = new TabData(view.getTitle(), url);
-            ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
-            // Synchronize New Data for Fixed re-change tab in show web page
-            tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
-        }
-        // Remove Error Page
-        if(connectFailedLayout.getVisibility()==View.VISIBLE) {
-            connectFailedLayout.setVisibility(View.GONE);
-            webView.setVisibility(View.VISIBLE);
-        }
-        // Set Url
-        browserSearch.setText(url);
+        updateTabData(view);
+        // Update View Data
+        EditText browserToolbarSearchInput=((Activity)wcContext).findViewById(R.id.browserToolbarSearchInput);
+        browserToolbarSearchInput.setText(url);
+        // Check GUI Mode and update button state (DENSE MODE BOTTOM MENU)
+        if(view.canGoForward())
+            tabController.getCurrentTab().setBackForwardState(TabFragment.MENU_UI_CAN_FORWARD_BACK_STATE);
+        else
+            tabController.getCurrentTab().setBackForwardState(TabFragment.MENU_UI_CAN_BACK_NO_FORWARD_STATE);
+        tabController.getCurrentTab().setMenuUIStateUpdate();
         super.onPageStarted(view, url, favicon);
     }
 
     @Override
-    public void onLoadResource(WebView view, String url) {
-        super.onLoadResource(view, url);
-        if(activity==null){
-            activity=ContextManager.getManager().getContextActivity();
-            browserSearch=activity.findViewById(R.id.browserSearch);
-        }
-        // Set youtube video url
-        if(url.contains("watch?")) {
-            browserSearch.setText(url);
-            // Check WebView Height (some bugs)
-            //checkWebViewHeight((OKWebView)view);
-            // Update for Resource page
-            updateSyncForWeb((OKWebView)view, url);
-        }
-    }
-
-    @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        view.loadUrl(url);
-        return true;
-    }
-
-    @Override
     public void onPageFinished(WebView view, String url) {
-        // Get Views
-        Activity activity=ContextManager.getManager().getContextActivity();
+        updateTabData(view);
 
-        // Get Elements
-        SwipeRefreshLayout browserSwipeRefresh = activity.findViewById(R.id.browserSwipeRefresh);
-        NestedScrollView browserNestedScroll = activity.findViewById(R.id.browserNestedScroll);
-        // Get WebView
-        OKWebView webView=((OKWebView)view);
+        // <BUG-Fixed> WebView not scrolled with nested scroll.
+        checkWebViewHeight((OKWebView)view);
 
-        // Stop Swipe Refresh
-        if(browserSwipeRefresh!=null)
-            browserSwipeRefresh.setRefreshing(false);
+        if(!isPageFinished){
+            // Called onPageFinish 1 time in this block.
+            javascriptManager.exec("window.scrollTo(0,0);");
 
-        // Check WebView Height (some bugs)
-        checkWebViewHeight(webView);
-
-        if(redirectLoad){
-            webView.isLoading=false;
-            webView.isRefreshing=false;
-            if(tabBuilder==null)
-                tabBuilder=TabBuilder.Build();
-
-            // Reset Scroll Position
-            if(browserNestedScroll!=null) {
-                browserNestedScroll.scrollTo(0, 0);
-                view.scrollTo(0, 0);
+            // Sync and Save History
+            if(!tabController.getCurrentTab().isIncognito()) {
+                historyController.syncHistoryData();
+                historyController.newHistory(view.getTitle(), url); // Note! History add index always '0'.
             }
-            // Update Web Page
-            updateSyncForWeb(webView, webView.getUrl());
-            // Add History Data
-            if(!webView.isIncognitoWebView) {
-                HistoryData historyData = new HistoryData(webView.getTitle(), webView.getUrl(), DateManager.getDate());
-                HistoryManager.getInstance().newHistory(historyData);
-            }
+            isPageFinished=true;
         }
-        redirectLoad=true;
-        // Check Javascript Manager
-        if(jsManager==null)
-            jsManager=JavascriptManager.getManager();
-        // Exec Javascript
-        jsManager.exec(webView,"var w=window;" +
-                "function wrappedOnDownFunc(e){" +
-                "  w._touchtarget = e.touches[0].target;" +
-                "}" +
-                "w.addEventListener('touchstart',wrappedOnDownFunc);");
+        else
+            isPageFinished=false;
+
+        // For get touch title
+        javascriptManager.exec("var w=window;"
+                + "function wrappedOnDownFunc(e){"
+                + "  w._touchtarget = e.touches[0].target;"
+                + "}"
+                + "w.addEventListener('touchstart',wrappedOnDownFunc);");
 
         super.onPageFinished(view, url);
     }
 
     private void checkWebViewHeight(OKWebView webView){
         // <BUG> Clicked youtube menu button, webview height set to :wrap
-
-        // Fixed Nested Scroll Height:
-        int getScreenHeigth = ScreenManager.getScreenHeight();
+        int getScreenHeigth = ScreenManager.getScreenHeight(wcContext);
         int getContentHeight = webView.getContentHeight();
         // Params
         LinearLayout.LayoutParams heightWrap = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -161,43 +101,31 @@ public class OKWebViewClient extends WebViewClient {
             webView.setLayoutParams(heightWrap);
     }
 
-    public void updateSyncForWeb(OKWebView webView, String url){
-        if(tabBuilder==null)
-            tabBuilder=TabBuilder.Build();
-        if(!webView.isIncognitoWebView) {
-            // Update ScreenShot
-            webView.getTabFragment().updateScreenShot();
-            // New Preference Data
-            TabData newData = new TabData(webView.getTitle(), url);
-            ClassesTabData newClassesData = new ClassesTabData(webView.getTabFragment(), ScreenManager.getScreenshot(webView.getTabFragment().getView()));
-            // RE-Synchronize New Data
-            tabBuilder.updateSyncTabData(webView.getTabFragment().getTabIndex(), newData, newClassesData);
-        }
-        else{
-            // Update ScreenShot
-            webView.getIncognitoTabFragment().updateScreenShot();
-            // Update Data
-            IncognitoTabData data=tabBuilder.getIncognitoTabDataList().get(tabBuilder.getActiveIncognitoFragment().getTabIndex());
-            data.setTitle(webView.getTitle());
-            data.setUrl(url);
-            data.setTabPreview(webView.getIncognitoTabFragment().getUpdatedScreenShot());
-        }
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        updateTabData(view);
+        view.loadUrl(url);
+        return true;
+    }
+
+    private void updateTabData(WebView view){
+        // Update Tab Data (Finish)
+        currentTabData.setUrl(view.getUrl());
+        currentTabData.setTitle(view.getTitle());
+        if(currentTabData.getTabFragment().isIncognito())
+            tabController.replaceIncognitoTabData(currentTabData.getTabIndex(), currentTabData);
+        else
+            tabController.replaceTabData(currentTabData.getTabIndex(), currentTabData);
+        // Save Preference (is not incognito)
+        if(currentTabData.getTabFragment()!=null &&
+                !currentTabData.getTabFragment().isIncognito() &&
+                view.getUrl()!=null)
+            tabController.saveTabDataPreference();
     }
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        // Get Root View
-        View rootView=view.getRootView();
-
-        // Get Elements
-        LinearLayout connectFailedLayout=rootView.findViewById(R.id.connectFailedLayout);
-        // Get WebView
-        OKWebView webView=((OKWebView)view);
-
-        // Hide WebView
-        webView.setVisibility(View.GONE);
-        connectFailedLayout.setVisibility(View.VISIBLE);
-
+        tabController.getCurrentTab().setUIStateError();
         super.onReceivedError(view, request, error);
     }
 }

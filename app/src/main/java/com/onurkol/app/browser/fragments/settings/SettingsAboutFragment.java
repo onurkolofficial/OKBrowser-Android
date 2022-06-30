@@ -1,84 +1,53 @@
 package com.onurkol.app.browser.fragments.settings;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.BuildConfig;
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.MainActivity;
-import com.onurkol.app.browser.activity.SettingsActivity;
-import com.onurkol.app.browser.interfaces.BrowserActionKeys;
-import com.onurkol.app.browser.lib.ContextManager;
+import com.onurkol.app.browser.activity.browser.SettingsActivity;
+import com.onurkol.app.browser.libs.ActivityActionAnimator;
 
-public class SettingsAboutFragment extends PreferenceFragmentCompat implements BrowserActionKeys {
+public class SettingsAboutFragment extends PreferenceFragmentCompat {
+    Preference preferenceAppPackage,preferenceAppVersion,preferenceAndroidVersion,preferenceDeveloperWebPage;
 
-    Preference appPackagePref,appVersionPref,androidVersionPref,openDevWebPref;
+    public static boolean isCreated;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         // Set Resource
-        setPreferencesFromResource(R.xml.preference_about, rootKey);
+        setPreferencesFromResource(R.xml.preference_settings_about,rootKey);
 
-        // Get Classes
-        ContextManager contextManager=ContextManager.getManager();
+        preferenceAppPackage=findPreference("preferenceAppPackage");
+        preferenceAppVersion=findPreference("preferenceAppVersion");
+        preferenceAndroidVersion=findPreference("preferenceAndroidVersion");
+        preferenceDeveloperWebPage=findPreference("preferenceDeveloperWebPage");
 
-        // Get Version Data
-        String appPackage=getActivity().getString(R.string.app_package_free_text)+" -"+ BuildConfig.BUILD_TYPE+"/free";
-        String appVersion=BuildConfig.VERSION_NAME+" - "+BuildConfig.VERSION_CODE;
+        // Data
+        String appPackage=requireActivity().getString(R.string.app_package_free_text)+" -"+ BuildConfig.BUILD_TYPE+"/free";
+        String appVersion=BuildConfig.VERSION_NAME+"."+BuildConfig.VERSION_CODE;
         String androidVersion=Build.VERSION.RELEASE+" - API "+Build.VERSION.SDK_INT;
         String developerWebPage="https://onurkolofficial.cf/en";
 
-        // Get Preferences
-        appPackagePref=findPreference("pref_app_package");
-        appVersionPref=findPreference("pref_app_version");
-        androidVersionPref=findPreference("pref_android_version");
-        openDevWebPref=findPreference("pref_dev_web_page");
+        preferenceAppPackage.setSummary(appPackage);
+        preferenceAppVersion.setSummary(appVersion);
+        preferenceAndroidVersion.setSummary(androidVersion);
 
-        // Set Summary Texts
-        appPackagePref.setSummary(appPackage);
-        appVersionPref.setSummary(appVersion);
-        androidVersionPref.setSummary(androidVersion);
+        preferenceDeveloperWebPage.setOnPreferenceClickListener(preference -> {
+            SettingsActivity.isClosedAndStartMain=true;
+            // Set Data
+            SettingsActivity.isData=Uri.parse(developerWebPage);
 
-        // Set Click Listener
-        openDevWebPref.setOnPreferenceClickListener(preference -> {
-            // Get Intent
-            Intent mainActivityIntent;
-            boolean isCreateNewActivity;
-
-            // Check Context
-            if(contextManager.getBaseContext()==null) {
-                isCreateNewActivity=true;
-                mainActivityIntent = new Intent(getActivity(), MainActivity.class);
-            }
-            else {
-                isCreateNewActivity=false;
-                if(contextManager.getBaseContextActivity().getIntent()!=null)
-                    mainActivityIntent = contextManager.getBaseContextActivity().getIntent();
-                else
-                    mainActivityIntent = new Intent(getActivity(), MainActivity.class);
-            }
-            // Create new Bundle
-            Bundle bundle = new Bundle();
-            // Check Action
-            bundle.putString(ACTION_NAME, KEY_ACTION_TAB_ON_CREATE);
-            bundle.putString(ACTION_VALUE, developerWebPage);
-            // Set extras
-            mainActivityIntent.putExtras(bundle);
-
-            // Check Activity
-            if(isCreateNewActivity)
-                getActivity().startActivity(mainActivityIntent);
-            else
-                MainActivity.updatedIntent=mainActivityIntent;
-            // Close Current and Parent (SettingsActivity) Activity
-            SettingsActivity.isCloseActivity=true;
-            getActivity().finish();
-
+            ActivityActionAnimator.finish(requireActivity());
             return false;
         });
+
+        isCreated=true;
     }
 }

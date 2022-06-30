@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -51,7 +52,8 @@
                 android:layout_gravity="center_vertical"
                 android:background="?attr/actionBarItemBackground"
                 android:tooltipText="@string/delete_text"
-                app:srcCompat="@drawable/ic_baseline_delete_24" />
+                tools:targetApi="o"
+                app:srcCompat="@drawable/ic_icon_close_circle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Settings Activity !-->
     <shortcut
-        android:shortcutId="sh_settings"
+        android:shortcutId="shortcutSettings"
         android:enabled="true"
         android:icon="@drawable/shortcut_settings"
         android:shortcutShortLabel="@string/settings_text"
         android:shortcutLongLabel="@string/settings_text"
-        android:shortcutDisabledMessage="@string/settings_text">
+        android:shortcutDisabledMessage="@string/settings_text"
+        tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.onurkol.app.browser"
-            android:targetClass="com.onurkol.app.browser.activity.SettingsActivity" />
+            android:targetClass="com.onurkol.app.browser.activity.browser.SettingsActivity" />
     </shortcut>
     <!-- Downloads Activity !-->
     <shortcut
-        android:shortcutId="sh_downloads"
+        android:shortcutId="shortcutDownloads"
         android:enabled="true"
         android:icon="@drawable/shortcut_downloads"
         android:shortcutShortLabel="@string/downloads_text"
         android:shortcutLongLabel="@string/downloads_text"
-        android:shortcutDisabledMessage="@string/downloads_text">
+        android:shortcutDisabledMessage="@string/downloads_text"
+        tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.onurkol.app.browser"
-            android:targetClass="com.onurkol.app.browser.activity.browser.core.DownloadsActivity" />
+            android:targetClass="com.onurkol.app.browser.activity.browser.DownloadsActivity" />
     </shortcut>
     <!-- Bookmarks Activity !-->
     <shortcut
-        android:shortcutId="sh_bookmarks"
+        android:shortcutId="shortcutBookmarks"
         android:enabled="true"
         android:icon="@drawable/shortcut_bookmark"
         android:shortcutShortLabel="@string/bookmarks_text"
         android:shortcutLongLabel="@string/bookmarks_text"
-        android:shortcutDisabledMessage="@string/bookmarks_text">
+        android:shortcutDisabledMessage="@string/bookmarks_text"
+        tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="isShortcut"
@@ -42,12 +46,13 @@
     </shortcut>
     <!-- History Activity !-->
     <shortcut
-        android:shortcutId="sh_history"
+        android:shortcutId="shortcutHistory"
         android:enabled="true"
         android:icon="@drawable/shortcut_history"
         android:shortcutShortLabel="@string/history_text"
         android:shortcutLongLabel="@string/history_text"
-        android:shortcutDisabledMessage="@string/history_text">
+        android:shortcutDisabledMessage="@string/history_text"
+        tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.onurkol.app.browser"

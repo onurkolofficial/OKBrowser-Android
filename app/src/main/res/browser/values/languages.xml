@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names !-->
+    <string-array name="languages_name">
+        <item>@string/lang_system_default</item>
+        <item>@string/lang_english_text</item>
+        <item>@string/lang_turkish_text</item>
+    </string-array>
+    <!-- Values !-->
+    <integer-array name="languages_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+    <!-- for Settings Preferences !-->
+    <integer-array name="languages_preference_icons">
+        <item>@drawable/ic_icon_sync</item>
+        <item>@drawable/ic_icon_translate</item>
+        <item>@drawable/ic_icon_translate</item>
+    </integer-array>
+</resources>

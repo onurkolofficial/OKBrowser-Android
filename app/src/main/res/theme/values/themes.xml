@@ -1,0 +1,69 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.OKBrowser" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <!-- '?android:attr/colorBackground' use if UIMode changed. (themes.night.xml) -->
+        <item name="android:statusBarColor">@color/background_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Theme Font Family !-->
+        <item name="fontFamily">@font/sarpanch</item>
+        <!-- Day Theme -->
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:textColor">@drawable/day_text_icon_color_selector</item>
+        <item name="android:textColorHint">@color/text_color_secondary_light</item>
+        <item name="android:textColorSecondary">@drawable/day_text_color_summary_selector</item>
+        <item name="android:editTextColor">@drawable/day_text_icon_color_selector</item>
+        <item name="colorControlNormal">?android:textColor</item>
+        <item name="popupMenuBackground">@color/popups_background_light</item>
+        <item name="cardViewStyle">@style/CardViewDayStyle</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDayStyle</item>
+        <item name="borderlessButtonStyle">@style/BorderlessButtonDayStyle</item>
+        <!-- No Theme -->
+        <item name="preferenceTheme">@style/PreferenceDividerHide</item>
+    </style>
+    <!-- New Tab Search Input !-->
+    <style name="newTabSearchInputDayStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@color/item_background_light</item>
+    </style>
+    <!-- CardView !-->
+    <style name="CardViewDayStyle">
+        <item name="cardElevation">3dp</item>
+        <item name="cardBackgroundColor">@color/card_view_background_light</item>
+    </style>
+    <!-- Borderless Button !-->
+    <style name="BorderlessButtonDayStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/black4</item>
+        <item name="iconTint">@color/black4</item>
+    </style>
+    <!-- Dialog !-->
+    <style name="AlertDialogDayStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/popups_background_light</item>
+        <item name="android:buttonBarButtonStyle">@style/AlertDialogButtonStyle</item>
+    </style>
+
+    <!-- No Theme Styles !-->
+    <!-- Preference Style !-->
+    <style name="PreferenceDividerHide" parent="PreferenceThemeOverlay">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+    <!-- Dialog Button Text Color !-->
+    <style name="AlertDialogButtonStyle" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+    <!-- Delete Button !-->
+    <style name="DeleteButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/danger</item>
+    </style>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.browser.TabListActivity">
+    <!-- Toolbars Layout !-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:elevation="0dp">
+        <!-- Toolbar Main !-->
+        <include
+            android:id="@+id/toolbarTabListView"
+            layout="@layout/toolbar_tab_list" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Pager for Tabs & Incognito Lists !-->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/tabListPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

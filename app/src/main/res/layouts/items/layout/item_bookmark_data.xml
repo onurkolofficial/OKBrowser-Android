@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:text="PAGE_TITLE"/>
                 <!-- Page Url !-->
                 <TextView
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:text="PAGE_URL"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <!-- Delete Button !-->
@@ -51,7 +51,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="?attr/actionBarItemBackground"
                 android:tooltipText="@string/delete_text"
-                app:srcCompat="@drawable/ic_baseline_delete_24" />
+                app:srcCompat="@drawable/ic_icon_close_circle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/browser_settings_text"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="preferenceWebSettings"
+            android:summary="@string/web_settings_summary"
+            android:title="@string/web_settings_text"
+            app:icon="@drawable/ic_icon_app_logo_circle"/>
+        <Preference
+            android:key="preferenceSearchEngine"
+            android:summary="@string/search_engine_settings_summary"
+            android:title="@string/search_engine_text"
+            app:icon="@drawable/ic_icon_search_circle"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/appearance_settings_text"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="prefereneceDayNightMode"
+            android:summary="@string/day_night_settings_summary"
+            android:title="@string/day_night_mode_text"
+            app:icon="@drawable/ic_icon_day_night_mode_circle"/>
+        <Preference
+            android:key="prefereneceGUIMode"
+            android:summary="@string/gui_settings_summary"
+            android:title="@string/gui_text"
+            app:icon="@drawable/ic_icon_gui_circle"/>
+        <Preference
+            android:key="preferenceLanguage"
+            android:summary="@string/language_settings_summary"
+            android:title="@string/language_text"
+            app:icon="@drawable/ic_icon_translate_circle"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/advanced_settings_text"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="preferenceDeveloperSettings"
+            android:summary="@string/developer_options_summary"
+            android:title="@string/developer_options_text"
+            android:enabled="false"
+            app:icon="@drawable/ic_icon_dev_phone_circle" />
+        <Preference
+            android:key="preferenceResetApp"
+            android:summary="@string/reset_app_summary"
+            android:title="@string/reset_app_text"
+            app:icon="@drawable/ic_icon_warning_circle" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/other_settings_text"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="preferenceAboutApp"
+            android:summary="@string/about_settings_summary"
+            android:title="@string/about_text"
+            app:icon="@drawable/ic_icon_info_circle" />
+    </PreferenceCategory>
+</PreferenceScreen>

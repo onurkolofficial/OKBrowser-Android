@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Data Item Layout !-->
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/dataItemSelectLayoutButton"
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -20,7 +21,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:padding="15dp"
-            android:background="@color/transparent" />
+            android:background="@color/transparent"
+            app:tint="?attr/colorControlNormal" />
         <!-- Data Item Title !-->
         <TextView
             android:id="@+id/dataItemNameView"
@@ -29,6 +31,7 @@
             android:drawablePadding="10dp"
             android:fontFamily="sans-serif-medium"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="DATA_NAME"
             android:textSize="16sp"
             android:layout_weight="1"/>
@@ -41,5 +44,5 @@
             android:clickable="false"
             android:focusable="false"
             android:layout_weight="0"/>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

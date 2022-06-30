@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+    <!-- Coordinator Layout !-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/browserCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Toolbars Layout !-->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+            <!-- Toolbar Main (Dense GUI) !-->
+            <include
+                android:id="@+id/toolbarMainDenseView"
+                layout="@layout/toolbar_main_dense"
+                android:visibility="visible" />
+            <!-- Toolbar No Tab !-->
+            <include
+                android:id="@+id/toolbarNoTabView"
+                layout="@layout/toolbar_no_tab"
+                android:visibility="gone"/>
+            <!-- Toolbar Find Page !-->
+            <include
+                android:id="@+id/toolbarFindView"
+                layout="@layout/toolbar_find_page"
+                android:visibility="gone"/>
+            <!-- ADS !-->
+            <com.startapp.sdk.ads.banner.Banner
+                android:id="@+id/startAppBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.appbar.AppBarLayout>
+        <!-- Swipe Refresh !-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/browserSwipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <!-- Nested Scroll View for Toolbar Scroll !-->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/browserNestedScroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+                <!-- Fragment Layout (for WebView) !-->
+                <LinearLayout
+                    android:id="@+id/browserFragmentViewForWeb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"/>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <!-- WebView Fullscreen Video Layout !-->
+        <FrameLayout
+            android:id="@+id/customViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <!-- Toolbar Main Bottom (Dense GUI) !-->
+        <include
+            android:id="@+id/toolbarMainDenseBottomView"
+            layout="@layout/toolbar_main_dense_bottom"
+            android:visibility="visible" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

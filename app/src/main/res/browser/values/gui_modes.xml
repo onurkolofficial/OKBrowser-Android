@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names !-->
+    <string-array name="gui_mode_name">
+        <item>@string/gui_mode_simple_text</item>
+        <item>@string/gui_mode_dense_text</item>
+    </string-array>
+    <!-- Values !-->
+    <integer-array name="gui_mode_value">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+    <!-- for Settings Preferences !-->
+    <integer-array name="gui_mode_preference_icons">
+        <item>@drawable/ic_icon_gui</item>
+        <item>@drawable/ic_icon_gui</item>
+    </integer-array>
+</resources>

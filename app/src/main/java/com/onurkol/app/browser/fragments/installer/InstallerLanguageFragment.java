@@ -1,5 +1,10 @@
 package com.onurkol.app.browser.fragments.installer;
 
+import static com.onurkol.app.browser.data.settings.xml.LanguageXMLToList.getLanguageIconList;
+import static com.onurkol.app.browser.data.settings.xml.LanguageXMLToList.getLanguageNameList;
+import static com.onurkol.app.browser.data.settings.xml.LanguageXMLToList.getLanguageValueList;
+
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,66 +12,65 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.activity.browser.installer.InstallerActivity;
-import com.onurkol.app.browser.adapters.installer.InstallerDataItemAdapter;
-import com.onurkol.app.browser.data.installer.InstallerDataInteger;
-import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
-import com.onurkol.app.browser.lib.settings.AppLanguage;
+import com.onurkol.app.browser.adapters.settings.SettingsPreferenceListWithIconAdapter;
+import com.onurkol.app.browser.data.settings.SettingXMLDataWithIcon;
+import com.onurkol.app.browser.interfaces.BrowserDataInterface;
 
 import java.util.ArrayList;
 
-public class InstallerLanguageFragment extends Fragment {
-    // Elements
+public class InstallerLanguageFragment extends Fragment implements BrowserDataInterface {
     ViewPager2 installerPager;
-    Button languageNextButton;
-    ListView languageItemList;
+    Button pagerNextButton,pagerPreviousButton;
+    ListView languageList;
 
-    ArrayList<InstallerDataInteger> LANGUAGE_DATA_LIST=new ArrayList<>();
+    ArrayList<SettingXMLDataWithIcon> DATA_LIST=new ArrayList<>();
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.page_installer_language, container, false);
+        View view=inflater.inflate(R.layout.screen_installer_language, container, false);
 
-        // Get Elements
-        installerPager=InstallerActivity.installerPagerStatic.get();
-        languageItemList=view.findViewById(R.id.languageItemList);
-        languageNextButton=view.findViewById(R.id.languageNextButton);
+        installerPager=requireActivity().findViewById(R.id.installerPager);
+        pagerNextButton=view.findViewById(R.id.pagerNextButton);
+        pagerPreviousButton=view.findViewById(R.id.pagerPreviousButton);
+        languageList=view.findViewById(R.id.languageList);
 
-        // Set Adapter
-        languageItemList.setAdapter(new InstallerDataItemAdapter(getActivity(), languageItemList, LANGUAGE_DATA_LIST));
+        // Set ListView Adapter
+        languageList.setAdapter(new SettingsPreferenceListWithIconAdapter(requireActivity(), DATA_LIST, false));
+
+        pagerNextButton.setOnClickListener(v -> {
+            int nextPage=installerPager.getCurrentItem() + 1;
+            installerPager.setCurrentItem(nextPage);
+        });
+        pagerPreviousButton.setOnClickListener(v -> {
+            int previousPage=installerPager.getCurrentItem() - 1;
+            installerPager.setCurrentItem(previousPage);
+        });
 
         // Get Data
-        ArrayList<String> xmlStringValue=AppLanguage.getInstance().getLanguageNameList();
-        ArrayList<Integer> xmlIntegerValue=AppLanguage.getInstance().getLanguageValueList();
+        ArrayList<String> xmlStringValue=getLanguageNameList(requireActivity());
+        ArrayList<Integer> xmlIntegerValue=getLanguageValueList(requireActivity());
+        TypedArray xmlDataIcons=getLanguageIconList(requireActivity());
 
         // Add Data
         for(int i=0; i<xmlStringValue.size(); i++)
-            LANGUAGE_DATA_LIST.add(new InstallerDataInteger(xmlStringValue.get(i),xmlIntegerValue.get(i), true, BrowserDefaultSettings.KEY_APP_LANGUAGE));
-
-        // Set Listeners
-        languageNextButton.setOnClickListener(installerNextPageListener);
+            DATA_LIST.add(new SettingXMLDataWithIcon(xmlStringValue.get(i), xmlIntegerValue.get(i), xmlDataIcons.getDrawable(i), KEY_LANGUAGE));
 
         return view;
     }
 
     @Override
     public void onResume() {
-        // <BUG> Re-Set Adapter
-        languageItemList.setAdapter(new InstallerDataItemAdapter(getActivity(), languageItemList, LANGUAGE_DATA_LIST));
+        // Re-set Adapter
+        languageList.setAdapter(new SettingsPreferenceListWithIconAdapter(requireActivity(), DATA_LIST, false));
 
         super.onResume();
     }
-
-    // Listeners
-    View.OnClickListener installerNextPageListener=view -> {
-        // Get Next Page
-        int nextPage=installerPager.getCurrentItem() + 1;
-        // Open Next Page
-        installerPager.setCurrentItem(nextPage);
-    };
 }

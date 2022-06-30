@@ -7,8 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <!-- BGW !-->
     <color name="black">#FF000000</color>
+    <color name="gray">#FF454545</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray">#FF404040</color>
     <!-- Palette: BGW !-->
     <color name="black1">#FF050505</color>
     <color name="black2">#FF0A0A0A</color>
@@ -37,21 +37,28 @@
     <!-- Transparent !-->
     <color name="transparent">#00000000</color>
     <!-- Global Variables !-->
-    <color name="primary">#2181D9</color>
-    <color name="primary_dark">#0050A8</color>
-    <color name="secondary">#4C84B8</color>
-    <color name="secondary_dark">#2B6397</color>
+    <color name="primary">#3983DB</color>
+    <color name="primary_dark">#2B5F95</color>
+    <color name="secondary">#4494F3</color>
+    <color name="secondary_dark">#36659E</color>
     <color name="incognito_list_background">@color/gray1</color>
     <color name="tab_item_background">@color/gray5</color>
-    <!-- Theme Variables (Light) !-->
-    <color name="background_light">#FFFFFF</color>
+    <color name="danger">#FFDF1A1A</color>
+    <!-- Theme Variables (Day) !-->
+    <color name="background_light">#FFFFFFFF</color>
+    <color name="text_icon_color_light">@color/gray1</color> <!-- Text Color, Icon Tint -->
+    <color name="text_icon_color_disabled_light">@color/white3</color> <!-- Text Color, Icon Tint : Disabled -->
+    <color name="text_color_secondary_light">@color/white1</color> <!-- Preference Summary, EditText Hint -->
     <color name="item_background_light">@color/white5</color>
     <color name="popups_background_light">@color/white5</color>
-    <color name="cardview_background_light">@color/white5</color>
-    <!-- Theme Variables (Dark) !-->
-    <color name="background_dark">#121212</color>
+    <color name="card_view_background_light">@color/white5</color>
+    <!-- Theme Variables (Night) !-->
+    <color name="background_dark">#FF121212</color>
+    <color name="text_icon_color_dark">@color/white6</color> <!-- Text Color, Icon Tint -->
+    <color name="text_icon_color_disabled_dark">@color/gray8</color> <!-- Text Color, Icon Tint : Disabled -->
+    <color name="text_color_secondary_dark">@color/white1</color> <!-- Preference Summary, EditText Hint -->
     <color name="item_background_dark">@color/gray1</color>
     <color name="popups_background_dark">@color/gray1</color>
-    <color name="cardview_background_dark">@color/gray1</color>
-
+    <color name="card_view_background_dark">@color/gray1</color>
+    <color name="icon_control_color_normal_dark">@color/white3</color>
 </resources>

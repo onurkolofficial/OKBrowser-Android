@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.browser.installer.InstallerActivity">
-    <!-- Installer Page Layout !-->
+    tools:context=".activity.installer.InstallerActivity">
+    <!-- Installer Pager !-->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/installerPager"
         android:layout_width="match_parent"

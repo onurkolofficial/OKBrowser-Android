@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Data Item Layout !-->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/openSearchLayoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="2dp"
+        android:clickable="true"
+        android:focusable="true">
+        <!-- Recent Search Item Title !-->
+        <TextView
+            android:id="@+id/recentSearchSentence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="SEARCH_TITLE"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+        <!-- Delete Button !-->
+        <ImageButton
+            android:id="@+id/deleteSearchButton"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/actionBarItemBackground"
+            android:tooltipText="@string/delete_text"
+            app:srcCompat="@drawable/ic_icon_close_circle" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

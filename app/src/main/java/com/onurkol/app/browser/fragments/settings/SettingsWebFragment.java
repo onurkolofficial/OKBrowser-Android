@@ -1,124 +1,120 @@
 package com.onurkol.app.browser.fragments.settings;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.onurkol.app.browser.R;
-import com.onurkol.app.browser.interfaces.BrowserDefaultSettings;
-import com.onurkol.app.browser.lib.AppPreferenceManager;
+import com.onurkol.app.browser.controller.PreferenceController;
+import com.onurkol.app.browser.interfaces.BrowserDataInterface;
 
-public class SettingsWebFragment extends PreferenceFragmentCompat {
+public class SettingsWebFragment extends PreferenceFragmentCompat implements BrowserDataInterface {
+    CheckBoxPreference settingGeoLocation, settingJavascript, settingPopups, settingSaveForms, settingZoom,
+            settingZoomButtons, settingWebStorage, settingAppCache;
+    boolean geoLocation, javascript, popups, saveForms, zoom, zoomButtons, webStorage, appCache;
 
-    CheckBoxPreference geoLocationPref,javascriptPref,popupsPref,saveFormsPref,zoomPref,zoomButtonsPref,localStoragePref,appCachePref;
-    boolean geoLocationData,javascriptData,popupsData,saveFormsData,zoomData,zoomButtonsData,localStorageData,appCacheData;
+    PreferenceController preferenceController;
+
+    public static boolean isCreated;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         // Set Resource
         setPreferencesFromResource(R.xml.preference_settings_web,rootKey);
 
-        // Get Classes
-        AppPreferenceManager prefManager=AppPreferenceManager.getInstance();
+        preferenceController=PreferenceController.getController();
 
-        // Get Preferences
-        geoLocationPref=findPreference("setting_geo_location");
-        javascriptPref=findPreference("setting_javascript");
-        popupsPref=findPreference("setting_popups");
-        saveFormsPref=findPreference("setting_save_forms");
-        zoomPref=findPreference("setting_zoom");
-        zoomButtonsPref=findPreference("setting_zoom_buttons");
-        localStoragePref=findPreference("setting_local_storage");
-        appCachePref=findPreference("setting_app_cache");
+        settingGeoLocation=findPreference("settingGeoLocation");
+        settingJavascript=findPreference("settingJavascript");
+        settingPopups=findPreference("settingPopups");
+        settingSaveForms=findPreference("settingSaveForms");
+        settingZoom=findPreference("settingZoom");
+        settingZoomButtons=findPreference("settingZoomButtons");
+        settingWebStorage=findPreference("settingWebStorage");
+        settingAppCache=findPreference("settingAppCache");
 
-        // Get Preference Data
-        geoLocationData=prefManager.getBoolean(BrowserDefaultSettings.KEY_GEO_LOCATION);
-        javascriptData=prefManager.getBoolean(BrowserDefaultSettings.KEY_JAVASCRIPT_MODE);
-        popupsData=prefManager.getBoolean(BrowserDefaultSettings.KEY_POPUPS);
-        saveFormsData=prefManager.getBoolean(BrowserDefaultSettings.KEY_SAVE_FORMS);
-        zoomData=prefManager.getBoolean(BrowserDefaultSettings.KEY_ZOOM);
-        zoomButtonsData=prefManager.getBoolean(BrowserDefaultSettings.KEY_ZOOM_BUTTONS);
-        localStorageData=prefManager.getBoolean(BrowserDefaultSettings.KEY_DOM_STORAGE);
-        appCacheData=prefManager.getBoolean(BrowserDefaultSettings.KEY_APP_CACHE);
+        // Get Data
+        geoLocation=preferenceController.getBoolean(KEY_GEO_LOCATION);
+        javascript=preferenceController.getBoolean(KEY_JAVASCRIPT_MODE);
+        popups=preferenceController.getBoolean(KEY_POPUPS);
+        saveForms=preferenceController.getBoolean(KEY_SAVE_FORMS);
+        zoom=preferenceController.getBoolean(KEY_ZOOM);
+        zoomButtons=preferenceController.getBoolean(KEY_ZOOM_BUTTONS);
+        webStorage=preferenceController.getBoolean(KEY_DOM_STORAGE);
+        appCache=preferenceController.getBoolean(KEY_APP_CACHE);
 
-        // Preference Click Events
-        // Geo Location
-        geoLocationPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            geoLocationData=(!geoLocationData);
+        settingGeoLocation.setOnPreferenceClickListener(preference -> {
+            // New Value
+            geoLocation=(!geoLocation);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_GEO_LOCATION, geoLocationData);
+            preferenceController.setPreference(KEY_GEO_LOCATION, geoLocation);
             return false;
         });
-        // Javascript
-        javascriptPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            javascriptData=(!javascriptData);
+        settingJavascript.setOnPreferenceClickListener(preference -> {
+            // New Value
+            javascript=(!javascript);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_JAVASCRIPT_MODE, javascriptData);
+            preferenceController.setPreference(KEY_JAVASCRIPT_MODE, javascript);
             return false;
         });
-        // Popups
-        popupsPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            popupsData=(!popupsData);
+        settingPopups.setOnPreferenceClickListener(preference -> {
+            // New Value
+            popups=(!popups);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_POPUPS, popupsData);
+            preferenceController.setPreference(KEY_POPUPS, popups);
             return false;
         });
-        // Save Forms
-        saveFormsPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            saveFormsData=(!saveFormsData);
+        settingSaveForms.setOnPreferenceClickListener(preference -> {
+            // New Value
+            saveForms=(!saveForms);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_SAVE_FORMS, saveFormsData);
+            preferenceController.setPreference(KEY_SAVE_FORMS, saveForms);
             return false;
         });
-        // Zoom
-        zoomPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            zoomData=(!zoomData);
-            // Check Zoom Settings
-            zoomButtonsPref.setEnabled(zoomData);
+        settingZoom.setOnPreferenceClickListener(preference -> {
+            // New Value
+            zoom=(!zoom);
+            // Zoom Button Status
+            settingZoomButtons.setEnabled(zoom);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_ZOOM, zoomData);
+            preferenceController.setPreference(KEY_ZOOM, zoom);
             return false;
         });
-        // Zoom Buttons
-        zoomButtonsPref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            zoomButtonsData=(!zoomButtonsData);
+        settingZoomButtons.setOnPreferenceClickListener(preference -> {
+            // New Value
+            zoomButtons=(!zoomButtons);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_ZOOM_BUTTONS, zoomButtonsData);
+            preferenceController.setPreference(KEY_ZOOM_BUTTONS, zoomButtons);
             return false;
         });
-        // Local Storage
-        localStoragePref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            localStorageData=(!localStorageData);
+        settingWebStorage.setOnPreferenceClickListener(preference -> {
+            // New Value
+            webStorage=(!webStorage);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_DOM_STORAGE, localStorageData);
+            preferenceController.setPreference(KEY_DOM_STORAGE, webStorage);
             return false;
         });
-        // App Cache
-        appCachePref.setOnPreferenceClickListener(preference -> {
-            // Set Value
-            appCacheData=(!appCacheData);
+        settingAppCache.setOnPreferenceClickListener(preference -> {
+            // New Value
+            appCache=(!appCache);
             // Save Preference
-            prefManager.setPreference(BrowserDefaultSettings.KEY_APP_CACHE, appCacheData);
+            preferenceController.setPreference(KEY_APP_CACHE, appCache);
             return false;
         });
 
-        // Check Settings
-        geoLocationPref.setChecked(geoLocationData);
-        javascriptPref.setChecked(javascriptData);
-        popupsPref.setChecked(popupsData);
-        saveFormsPref.setChecked(saveFormsData);
-        zoomPref.setChecked(zoomData);
-        zoomButtonsPref.setEnabled(zoomData);
-        zoomButtonsPref.setChecked(zoomButtonsData);
-        localStoragePref.setChecked(localStorageData);
-        appCachePref.setChecked(appCacheData);
+        settingGeoLocation.setChecked(geoLocation);
+        settingJavascript.setChecked(javascript);
+        settingPopups.setChecked(popups);
+        settingSaveForms.setChecked(saveForms);
+        settingZoom.setChecked(zoom);
+        settingZoomButtons.setEnabled(zoom);
+        settingZoomButtons.setChecked(zoomButtons);
+        settingWebStorage.setChecked(webStorage);
+        settingAppCache.setChecked(appCache);
+
+        isCreated=true;
     }
 }
