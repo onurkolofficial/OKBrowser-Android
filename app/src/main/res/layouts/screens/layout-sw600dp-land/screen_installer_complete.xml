@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <!-- Installer Complete Title !-->
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+    <!-- Title & Setting Layout !-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="100dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center_vertical"
         android:layout_weight="1">
         <!-- Settings Title !-->
         <TextView
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textColor="@color/primary"
-            android:textSize="30sp"
+            android:textSize="38sp"
             android:text="@string/installer_completed_text"/>
         <!-- Completed Summary 1 !-->
         <TextView
@@ -43,10 +44,10 @@
     <!-- Pager Layout!-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="60dp"
-        android:layout_weight="0">
+        android:gravity="center_vertical"
+        android:layout_weight="1">
         <!-- Pager Counter !-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,32 +57,38 @@
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_1_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_2_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_3_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_4_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_5_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_6_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
         </LinearLayout>
@@ -94,9 +101,10 @@
             <!-- Start Button !-->
             <Button
                 android:id="@+id/installerCompleteButton"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_width="200dp"
+                android:layout_height="66dp"
                 android:textAllCaps="false"
+                android:textSize="20sp"
                 android:text="@string/start_text" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>

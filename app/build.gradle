@@ -9,8 +9,8 @@ android {
         applicationId "com.onurkol.app.browser"
         minSdk 23
         targetSdk 32
-        versionCode 24
-        versionName "4.0.0"
+        versionCode 25
+        versionName "4.0.5"
 
         vectorDrawables.useSupportLibrary = true
 

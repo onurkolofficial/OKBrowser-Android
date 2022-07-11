@@ -1,52 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <!-- Installer Complete Title !-->
+    <!-- Welcome Text & Logo Layout !-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="100dp"
         android:orientation="vertical"
         android:layout_weight="1">
-        <!-- Settings Title !-->
+        <!-- Logo !-->
+        <ImageView
+            android:id="@+id/welcomeAppLogo"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/app_logo_round" />
+        <!-- Welcome Text !-->
         <TextView
-            android:id="@+id/completedTitle"
+            android:id="@+id/welcomeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/welcome_text"
             android:textAlignment="center"
             android:textColor="@color/primary"
-            android:textSize="30sp"
-            android:text="@string/installer_completed_text"/>
-        <!-- Completed Summary 1 !-->
+            android:textSize="38sp" />
+        <!-- Welcome Summary !-->
         <TextView
-            android:id="@+id/completedSummary1"
+            android:id="@+id/welcomeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="@string/welcome_summary_text"
             android:textAlignment="center"
-            android:textSize="22sp"
-            android:text="@string/installer_completed_summary1"/>
-        <!-- Completed Summary 2 !-->
-        <TextView
-            android:id="@+id/completedSummary2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            android:text="@string/installer_completed_summary2"/>
+            android:textSize="22sp" />
     </LinearLayout>
-    <!-- Pager & Start Layout!-->
-    <!-- Pager Layout!-->
+    <!-- Pager & Notice Text Layout !-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="60dp"
+        android:paddingBottom="100dp"
         android:layout_weight="0">
+        <!-- Notice Text !-->
+        <TextView
+            android:id="@+id/welcomeNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/welcome_notice_text"
+            android:textAlignment="center"
+            android:textSize="22sp" />
         <!-- Pager Counter !-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,48 +64,58 @@
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_1_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_2_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_3_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_4_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_5_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_6_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
         </LinearLayout>
-        <!-- Start Button Layout !-->
+        <!-- Next Button Layout !-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="bottom|center"
-            android:orientation="horizontal">
-            <!-- Start Button !-->
+            android:orientation="vertical">
+            <!-- Next Button !-->
             <Button
-                android:id="@+id/installerCompleteButton"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:id="@+id/pagerNextButton"
+                android:layout_width="200dp"
+                android:layout_height="66dp"
+                android:text="@string/next_text"
                 android:textAllCaps="false"
-                android:text="@string/start_text" />
+                android:textSize="20sp"
+                app:icon="@drawable/ic_icon_arrow_right_circle"
+                app:iconGravity="end"
+                app:iconSize="30dp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
 </LinearLayout>

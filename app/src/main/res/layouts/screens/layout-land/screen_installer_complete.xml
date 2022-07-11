@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="14dp"
         android:layout_weight="0">
         <!-- Pager Counter !-->
         <LinearLayout
@@ -89,14 +90,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom|center"
-            android:orientation="horizontal"
-            android:paddingBottom="14dp">
+            android:orientation="horizontal">
             <!-- Start Button !-->
             <Button
                 android:id="@+id/installerCompleteButton"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:drawableTint="@color/white"
                 android:textAllCaps="false"
                 android:text="@string/start_text" />
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -53,6 +55,7 @@ public class TabListAdapter extends ArrayAdapter<TabData> implements BrowserData
             holder.tabTitleText=convertView.findViewById(R.id.tabTitleText);
             holder.tabCloseButton=convertView.findViewById(R.id.tabCloseButton);
             holder.tabPreviewImage=convertView.findViewById(R.id.tabPreviewImage);
+            holder.tabStatusBackground=convertView.findViewById(R.id.tabStatusBackground);
             convertView.setTag(holder);
         }
         else{
@@ -72,6 +75,20 @@ public class TabListAdapter extends ArrayAdapter<TabData> implements BrowserData
         else
             holder.tabTitleText.setText(
                     CharLimiter.Limit(data.getTitle(), 15));
+
+        // Check Active Tab Border
+        if(tabController.getCurrentTabData().getTabIndex()==position){
+            if(!tabController.getCurrentTab().isIncognito() && data.getTabFragment().isIncognito()) {
+                holder.tabStatusBackground.setBackground(null);
+            }
+            else if(tabController.getCurrentTab().isIncognito() && !data.getTabFragment().isIncognito()){
+                holder.tabStatusBackground.setBackground(null);
+            }
+            else
+                holder.tabStatusBackground.setBackground(AppCompatResources.getDrawable(mContext,
+                        R.drawable.layout_select_border_corner));
+        }
+
 
         // Check Preview Image
         Bitmap getBitmap;
@@ -146,5 +163,6 @@ public class TabListAdapter extends ArrayAdapter<TabData> implements BrowserData
         TextView tabTitleText;
         ImageButton tabCloseButton;
         ImageView tabPreviewImage;
+        LinearLayout tabStatusBackground;
     }
 }

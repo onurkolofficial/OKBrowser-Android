@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <!-- Installer Setting Title Layout !-->
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+    <!-- Title & Setting Layout !-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="40dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="0">
-        <!-- Settings Title !-->
-        <TextView
-            android:id="@+id/settingTitle"
+        android:gravity="center_vertical"
+        android:layout_weight="1">
+        <!-- Installer Setting Title Layout !-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/primary"
-            android:textSize="30sp"
-            android:text="@string/day_night_mode_text"/>
-    </LinearLayout>
-    <!-- Installer Settings Content !-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <!-- Data List !-->
-        <ListView
-            android:id="@+id/dayNightList"
+            android:paddingTop="40dp"
+            android:orientation="vertical">
+            <!-- Settings Title !-->
+            <TextView
+                android:id="@+id/settingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/language_settings_text"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="38sp" />
+        </LinearLayout>
+        <!-- Installer Settings Content !-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null"/>
+            android:padding="50dp"
+            android:orientation="vertical">
+            <!-- Data List !-->
+            <ListView
+                android:id="@+id/languageList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"/>
+        </LinearLayout>
     </LinearLayout>
-    <!-- Pager Layout!-->
+    <!-- Pager Layout !-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="60dp"
-        android:layout_weight="0">
+        android:gravity="center_vertical"
+        android:layout_weight="1">
         <!-- Pager Counter !-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,32 +58,38 @@
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_1_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_2_text"
                 app:srcCompat="@drawable/pager_circle_fill" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_3_text"
-                app:srcCompat="@drawable/pager_circle_fill" />
+                app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_4_text"
                 app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_5_text"
                 app:srcCompat="@drawable/pager_circle_empty" />
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/installer_step_6_text"
                 app:srcCompat="@drawable/pager_circle_empty" />
         </LinearLayout>
@@ -89,21 +102,25 @@
             <!-- Previous Button !-->
             <Button
                 android:id="@+id/pagerPreviousButton"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_width="200dp"
+                android:layout_height="66dp"
                 android:layout_marginEnd="10dp"
-                android:textAllCaps="false"
                 android:text="@string/previous_text"
-                app:icon="@drawable/ic_icon_arrow_left_circle"/>
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                app:icon="@drawable/ic_icon_arrow_left_circle"
+                app:iconSize="30dp"/>
             <!-- Next Button !-->
             <Button
                 android:id="@+id/pagerNextButton"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:textAllCaps="false"
+                android:layout_width="200dp"
+                android:layout_height="66dp"
                 android:text="@string/next_text"
+                android:textAllCaps="false"
+                android:textSize="20sp"
                 app:icon="@drawable/ic_icon_arrow_right_circle"
-                app:iconGravity="end"/>
+                app:iconGravity="end"
+                app:iconSize="30dp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
 </LinearLayout>

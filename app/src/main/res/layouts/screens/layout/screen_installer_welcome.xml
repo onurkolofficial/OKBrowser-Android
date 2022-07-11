@@ -43,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="60dp"
         android:layout_weight="0">
         <!-- Notice Text !-->
         <TextView
@@ -97,17 +98,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|center"
-            android:orientation="vertical"
-            android:paddingBottom="60dp">
+            android:orientation="vertical">
             <!-- Next Button !-->
             <Button
                 android:id="@+id/pagerNextButton"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:drawableEnd="@drawable/ic_icon_arrow_right_circle"
-                android:drawableTint="@color/white"
                 android:text="@string/next_text"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                app:icon="@drawable/ic_icon_arrow_right_circle"
+                app:iconGravity="end" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
 </LinearLayout>
