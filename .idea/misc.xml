@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/activity/layout-sw600dp/activity_settings_gui.xml" value="0.22291666666666668" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/activity/layout/activity_settings_gui.xml" value="0.2972222222222222" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/items/layout-sw600dp/item_tab_list_data_tablet.xml" value="0.22291666666666668" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/items/layout/item_tab_list_data_tablet.xml" value="0.2972222222222222" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/screens/layout-sw600dp-land/screen_installer_gui_mode.xml" value="0.125390625" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/screens/layout-sw600dp-land/screen_tab_list.xml" value="0.125390625" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/screens/layout-sw600dp/screen_installer_gui_mode.xml" value="0.22291666666666668" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/screens/layout-sw600dp/screen_tab_list.xml" value="0.22291666666666668" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/screens/layout/screen_tab_list.xml" value="0.2972222222222222" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout-sw600dp/toolbar_main_simple.xml" value="0.22291666666666668" />
+        <entry key="..\:/Projeler/Android/OKBrowser/app/src/main/res/layouts/toolbars/layout/toolbar_main_simple.xml" value="0.2972222222222222" />
         <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/border_radius.xml" value="0.1695" />
         <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.148" />
         <entry key="..\:/Projelerim/Android/OKBrowser/app/src/main/res/drawables/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.148" />

@@ -39,7 +39,7 @@
             <!-- Simple Layout Button !-->
             <LinearLayout
                 android:id="@+id/simpleGuiLayoutButton"
-                android:layout_width="180dp"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/layout_select_border"
                 android:gravity="center"
@@ -48,10 +48,10 @@
                 android:orientation="vertical">
                 <!-- Item Image !-->
                 <ImageView
-                    android:layout_width="180dp"
+                    android:layout_width="238dp"
                     android:layout_height="200dp"
                     android:contentDescription="@string/gui_mode_simple_text"
-                    app:srcCompat="@drawable/simple_layout_preview" />
+                    app:srcCompat="@drawable/simple_layout_tablet_preview" />
                 <!-- Item Title !-->
                 <TextView
                     android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
             <!-- Dense Gui Layout Button !-->
             <LinearLayout
                 android:id="@+id/denseGuiLayoutButton"
-                android:layout_width="180dp"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
@@ -72,10 +72,10 @@
                 android:orientation="vertical">
                 <!-- Item Image !-->
                 <ImageView
-                    android:layout_width="180dp"
+                    android:layout_width="238dp"
                     android:layout_height="200dp"
                     android:contentDescription="@string/gui_mode_dense_text"
-                    app:srcCompat="@drawable/dense_layout_preview" />
+                    app:srcCompat="@drawable/dense_layout_tablet_preview" />
                 <!-- Item Title !-->
                 <TextView
                     android:layout_width="wrap_content"

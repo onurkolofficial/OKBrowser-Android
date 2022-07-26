@@ -31,7 +31,7 @@ public class SettingsAboutFragment extends PreferenceFragmentCompat {
 
         // Data
         String appPackage=requireActivity().getString(R.string.app_package_free_text)+" -"+ BuildConfig.BUILD_TYPE+"/free";
-        String appVersion=BuildConfig.VERSION_NAME+"."+BuildConfig.VERSION_CODE;
+        String appVersion=BuildConfig.VERSION_NAME;
         String androidVersion=Build.VERSION.RELEASE+" - API "+Build.VERSION.SDK_INT;
         String developerWebPage="https://onurkolofficial.cf/en";
 

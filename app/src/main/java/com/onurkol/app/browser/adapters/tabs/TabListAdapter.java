@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.onurkol.app.browser.R;
@@ -76,7 +77,7 @@ public class TabListAdapter extends ArrayAdapter<TabData> implements BrowserData
             holder.tabTitleText.setText(
                     CharLimiter.Limit(data.getTitle(), 15));
 
-        // Check Active Tab Border
+        // Check Active Tab Background
         if(tabController.getCurrentTabData().getTabIndex()==position){
             if(!tabController.getCurrentTab().isIncognito() && data.getTabFragment().isIncognito()) {
                 holder.tabStatusBackground.setBackground(null);
@@ -84,11 +85,18 @@ public class TabListAdapter extends ArrayAdapter<TabData> implements BrowserData
             else if(tabController.getCurrentTab().isIncognito() && !data.getTabFragment().isIncognito()){
                 holder.tabStatusBackground.setBackground(null);
             }
-            else
-                holder.tabStatusBackground.setBackground(AppCompatResources.getDrawable(mContext,
-                        R.drawable.layout_select_border_corner));
+            else {
+                // Active Tab Background
+                holder.tabStatusBackground.setBackgroundColor(ContextCompat.getColor(mContext,
+                        R.color.primary));
+                // Active Tab Text Color
+                holder.tabTitleText.setTextColor(ContextCompat.getColor(mContext,
+                        R.color.text_icon_color_dark));
+                // Close Tab Button Color
+                holder.tabCloseButton.setColorFilter(ContextCompat.getColor(mContext,
+                        R.color.text_icon_color_dark));
+            }
         }
-
 
         // Check Preview Image
         Bitmap getBitmap;

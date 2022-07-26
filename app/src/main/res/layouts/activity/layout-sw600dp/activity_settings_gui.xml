@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.browser.settings.SettingsGuiActivity">
+    <!-- Toolbars Layout !-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:elevation="0dp">
+        <!-- Toolbar Settings !-->
+        <include
+            layout="@layout/toolbar_settings" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Settings Content !-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+        <!-- Simple Layout Button !-->
+        <LinearLayout
+            android:id="@+id/simpleGuiLayoutButton"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_select_border"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+            <!-- Item Image !-->
+            <ImageView
+                android:layout_width="238dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/gui_mode_simple_text"
+                app:srcCompat="@drawable/simple_layout_tablet_preview" />
+            <!-- Item Title !-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/gui_mode_simple_text"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <!-- Dense Gui Layout Button !-->
+        <LinearLayout
+            android:id="@+id/denseGuiLayoutButton"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+            <!-- Item Image !-->
+            <ImageView
+                android:layout_width="238dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/gui_mode_dense_text"
+                app:srcCompat="@drawable/dense_layout_tablet_preview" />
+            <!-- Item Title !-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/gui_mode_dense_text"
+                android:textSize="20sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

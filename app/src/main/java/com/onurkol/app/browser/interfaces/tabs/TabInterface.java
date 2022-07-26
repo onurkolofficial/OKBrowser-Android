@@ -54,5 +54,5 @@ public interface TabInterface {
     void setUIStateError();
     int getUIState();
 
-    @NonNull OKWebView getWebView();
+    OKWebView getWebView();
 }
