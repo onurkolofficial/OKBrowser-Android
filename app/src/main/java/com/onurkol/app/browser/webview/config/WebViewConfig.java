@@ -51,14 +51,14 @@ public class WebViewConfig implements BrowserDataInterface {
 
         if(tabController.getCurrentTab().isIncognito()){
             // Set App Cache (Incognito)
-            browserWebSetting.setAppCacheEnabled(false);
+            //browserWebSetting.setAppCacheEnabled(false);
             // Set Dom Storage (Incognito)
             browserWebSetting.setDomStorageEnabled(false);
             browserWebSetting.setDatabaseEnabled(false);
         }
         else{
             // Set App Cache
-            browserWebSetting.setAppCacheEnabled(appCache);
+            //browserWebSetting.setAppCacheEnabled(appCache);
             // Set Dom Storage
             browserWebSetting.setDomStorageEnabled(domStorage);
             browserWebSetting.setDatabaseEnabled(domStorage);
