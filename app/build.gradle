@@ -3,13 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.onurkol.app.browser"
         minSdk 23
         targetSdk 35
-        versionCode 27
+        targetSdkVersion 35
+        versionCode 28
         versionName "4.1.0." + versionCode
 
         vectorDrawables.useSupportLibrary = true
@@ -57,7 +58,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.2.1'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'com.google.android.play:asset-delivery:2.2.2'
     implementation 'com.google.android.play:feature-delivery:2.1.0'
     implementation 'com.google.android.play:app-update:2.1.0'
